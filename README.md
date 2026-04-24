@@ -5,6 +5,7 @@
 | Package    | Description                                                      |
 | ---------- | ---------------------------------------------------------------- |
 | `ansi`     | ANSI-aware text wrapping, hyperlinks, and TTY fallback           |
+| `fs`       | Filesystem helpers: existence, type checks, writable probe       |
 | `human`    | Human-readable byte sizes, time-ago, and path helpers            |
 | `shell`    | Shell detection, path expansion, argument quoting, and splitting |
 | `slices`   | Slice helpers                                                    |

@@ -33,7 +33,7 @@ func EraseDisplay(n int) string { return xansi.EraseDisplay(n) }
 // cursor position (no cursor movement).
 func EraseCharacter(n int) string { return xansi.EraseCharacter(n) }
 
-// Cursor movement — single-step constants. Upstream's preferred names are
+// Cursor movement - single-step constants. Upstream's preferred names are
 // the opaque CUU1/CUD1/CUF1/CUB1 spellings; we keep the readable aliases
 // here and forward to the non-deprecated upstream symbols.
 const (
@@ -108,7 +108,7 @@ const (
 	DisableFocusEvents = xansi.ResetModeFocusEvent
 )
 
-// Terminal queries — the terminal replies with a corresponding report.
+// Terminal queries - the terminal replies with a corresponding report.
 const (
 	// RequestCursorPosition asks the terminal for the current cursor
 	// position (DSR 6). The reply is CSI <row> ; <col> R.
