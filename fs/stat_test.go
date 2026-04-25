@@ -1,6 +1,7 @@
 package fs_test
 
 import (
+	ifs "io/fs"
 	"os"
 	"path/filepath"
 	"testing"
@@ -91,17 +92,34 @@ func TestIsSymlink(t *testing.T) {
 	require.False(t, ok)
 }
 
-func TestResolvePath(t *testing.T) {
+func TestResolve(t *testing.T) {
 	t.Parallel()
 
-	dir := t.TempDir()
+	dir, err := filepath.EvalSymlinks(t.TempDir())
+	require.NoError(t, err)
 	file := filepath.Join(dir, "f")
-	link := filepath.Join(dir, "l")
+	link1 := filepath.Join(dir, "l1")
+	link2 := filepath.Join(dir, "l2")
 	require.NoError(t, os.WriteFile(file, []byte("x"), 0o600))
-	require.NoError(t, os.Symlink(file, link))
+	require.NoError(t, os.Symlink(file, link1))
+	require.NoError(t, os.Symlink(link1, link2))
 
-	require.Equal(t, file, xfs.ResolvePath(link))
-	require.Equal(t, file, xfs.ResolvePath(file))
+	got, err := xfs.Resolve(link2)
+	require.NoError(t, err)
+	require.Equal(t, file, got)
+
+	got, err = xfs.Resolve(link1)
+	require.NoError(t, err)
+	require.Equal(t, file, got)
+
+	got, err = xfs.Resolve(file)
+	require.NoError(t, err)
+	require.Equal(t, file, got)
+
+	missing := filepath.Join(dir, "missing")
+	got, err = xfs.Resolve(missing)
+	require.ErrorIs(t, err, ifs.ErrNotExist)
+	require.Equal(t, missing, got)
 }
 
 func TestIsWritableDir(t *testing.T) {

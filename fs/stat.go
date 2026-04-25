@@ -47,22 +47,20 @@ func IsSymlink(path string) (bool, error) {
 	}
 }
 
-// ResolvePath follows a symlink one level and returns the resolved absolute
-// path. If path is not a symlink, or the link cannot be read, path is returned
-// unchanged.
-func ResolvePath(path string) string {
-	link, err := os.Readlink(path)
+// Resolve recursively follows every symlink along path and returns the fully
+// resolved absolute path. On any error (missing component, cycle, permission)
+// the input path is returned alongside the error so callers can choose whether
+// to handle it or fall back.
+func Resolve(path string) (string, error) {
+	resolved, err := filepath.EvalSymlinks(path)
 	if err != nil {
-		return path
+		return path, err
 	}
-	if filepath.IsAbs(link) {
-		return link
-	}
-	abs, err := filepath.Abs(filepath.Join(filepath.Dir(path), link))
+	abs, err := filepath.Abs(resolved)
 	if err != nil {
-		return link
+		return resolved, err
 	}
-	return abs
+	return abs, nil
 }
 
 // IsWritableDir reports whether dir exists and the current process can create
