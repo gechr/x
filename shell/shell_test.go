@@ -151,23 +151,23 @@ func TestDetectFromProcess_Empty(t *testing.T) {
 	}
 }
 
-func TestXDGDataHome_EnvSet(t *testing.T) {
-	t.Setenv("XDG_DATA_HOME", "/custom/data")
+func TestXDGCacheHome_EnvSet(t *testing.T) {
+	t.Setenv("XDG_CACHE_HOME", "/custom/cache")
 
-	got, err := shell.XDGDataHome()
+	got, err := shell.XDGCacheHome()
 	require.NoError(t, err)
-	require.Equal(t, "/custom/data", got)
+	require.Equal(t, "/custom/cache", got)
 }
 
-func TestXDGDataHome_EnvUnset(t *testing.T) {
-	t.Setenv("XDG_DATA_HOME", "")
+func TestXDGCacheHome_EnvUnset(t *testing.T) {
+	t.Setenv("XDG_CACHE_HOME", "")
 
 	home, err := os.UserHomeDir()
 	require.NoError(t, err)
 
-	got, err := shell.XDGDataHome()
+	got, err := shell.XDGCacheHome()
 	require.NoError(t, err)
-	require.Equal(t, filepath.Join(home, ".local", "share"), got)
+	require.Equal(t, filepath.Join(home, ".cache"), got)
 }
 
 func TestXDGConfigHome_EnvSet(t *testing.T) {
@@ -187,6 +187,25 @@ func TestXDGConfigHome_EnvUnset(t *testing.T) {
 	got, err := shell.XDGConfigHome()
 	require.NoError(t, err)
 	require.Equal(t, filepath.Join(home, ".config"), got)
+}
+
+func TestXDGDataHome_EnvSet(t *testing.T) {
+	t.Setenv("XDG_DATA_HOME", "/custom/data")
+
+	got, err := shell.XDGDataHome()
+	require.NoError(t, err)
+	require.Equal(t, "/custom/data", got)
+}
+
+func TestXDGDataHome_EnvUnset(t *testing.T) {
+	t.Setenv("XDG_DATA_HOME", "")
+
+	home, err := os.UserHomeDir()
+	require.NoError(t, err)
+
+	got, err := shell.XDGDataHome()
+	require.NoError(t, err)
+	require.Equal(t, filepath.Join(home, ".local", "share"), got)
 }
 
 func TestCompletionFile(t *testing.T) {

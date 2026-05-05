@@ -12,7 +12,6 @@ func Is(f *os.File) bool {
 	if f == nil {
 		return false
 	}
-	//nolint:gosec // os.File.Fd() is always valid
 	return term.IsTerminal(int(f.Fd()))
 }
 
@@ -22,7 +21,6 @@ func Width(f *os.File) int {
 	if f == nil {
 		return 0
 	}
-	//nolint:gosec // os.File.Fd() is always valid
 	w, _, err := term.GetSize(int(f.Fd()))
 	if err != nil {
 		return 0
