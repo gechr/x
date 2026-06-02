@@ -1,22 +1,22 @@
-package fs
+package os
 
 import (
 	"fmt"
 	"io"
-	"os"
-	"path/filepath"
+	stdos "os"
+	stdpath "path/filepath"
 )
 
 // AtomicWrite writes data to path via a temp-file-and-rename in the same
 // directory. The temp file is removed on any failure.
-func AtomicWrite(path string, data []byte, perm os.FileMode) error {
-	dir := filepath.Dir(path)
-	tmp, err := os.CreateTemp(dir, "."+filepath.Base(path)+".*")
+func AtomicWrite(path string, data []byte, perm stdos.FileMode) error {
+	dir := stdpath.Dir(path)
+	tmp, err := stdos.CreateTemp(dir, "."+stdpath.Base(path)+".*")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)
 	}
 	tmpName := tmp.Name()
-	cleanup := func() { _ = os.Remove(tmpName) }
+	cleanup := func() { _ = stdos.Remove(tmpName) }
 
 	if _, err := tmp.Write(data); err != nil {
 		_ = tmp.Close()
@@ -37,7 +37,7 @@ func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 		cleanup()
 		return fmt.Errorf("failed to close temp file: %w", err)
 	}
-	if err := os.Rename(tmpName, path); err != nil {
+	if err := stdos.Rename(tmpName, path); err != nil {
 		cleanup()
 		return fmt.Errorf("failed to rename temp file: %w", err)
 	}
@@ -45,15 +45,15 @@ func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 }
 
 // EnsureDir creates dir and any parents with the given permissions.
-func EnsureDir(dir string, perm os.FileMode) error {
-	return os.MkdirAll(dir, perm)
+func EnsureDir(dir string, perm stdos.FileMode) error {
+	return stdos.MkdirAll(dir, perm)
 }
 
 // CopyFile copies src to dst, preserving src's mode bits. dst is fsynced
 // before close. When src and dst are the same file (including via hard link)
 // CopyFile is a no-op.
 func CopyFile(src, dst string) error {
-	in, err := os.Open(src)
+	in, err := stdos.Open(src)
 	if err != nil {
 		return fmt.Errorf("failed to open source file: %w", err)
 	}
@@ -67,12 +67,16 @@ func CopyFile(src, dst string) error {
 		return fmt.Errorf("source is not a regular file: %s", src)
 	}
 
-	if dstInfo, statErr := os.Stat(dst); statErr == nil && os.SameFile(info, dstInfo) {
+	same, err := sameFile(src, info, dst)
+	if err != nil {
+		return fmt.Errorf("failed to compare source and destination files: %w", err)
+	}
+	if same {
 		return nil
 	}
 
 	perm := info.Mode().Perm()
-	out, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
+	out, err := stdos.OpenFile(dst, stdos.O_WRONLY|stdos.O_CREATE|stdos.O_TRUNC, perm)
 	if err != nil {
 		return fmt.Errorf("failed to open destination file: %w", err)
 	}

@@ -1,14 +1,14 @@
-package fs
+package os
 
 import (
 	"fmt"
-	"os"
+	stdos "os"
 	"strings"
 )
 
 // ReadLines reads path and returns its non-empty, trimmed lines.
 func ReadLines(path string) ([]string, error) {
-	data, err := os.ReadFile(path)
+	data, err := stdos.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
@@ -24,7 +24,7 @@ func ReadLines(path string) ([]string, error) {
 
 // WriteLines atomically writes lines to path, one per line, with a trailing
 // newline.
-func WriteLines(path string, lines []string, perm os.FileMode) error {
+func WriteLines(path string, lines []string, perm stdos.FileMode) error {
 	var b strings.Builder
 	for _, line := range lines {
 		b.WriteString(line)

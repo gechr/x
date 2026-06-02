@@ -1,0 +1,73 @@
+package filepath_test
+
+import (
+	ifs "io/fs"
+	stdos "os"
+	stdpath "path/filepath"
+	"testing"
+
+	xfilepath "github.com/gechr/x/filepath"
+	"github.com/stretchr/testify/require"
+)
+
+func TestResolve(t *testing.T) {
+	t.Parallel()
+
+	dir, err := stdpath.EvalSymlinks(t.TempDir())
+	require.NoError(t, err)
+	file := stdpath.Join(dir, "f")
+	link1 := stdpath.Join(dir, "l1")
+	link2 := stdpath.Join(dir, "l2")
+	require.NoError(t, stdos.WriteFile(file, []byte("x"), 0o600))
+	require.NoError(t, stdos.Symlink(file, link1))
+	require.NoError(t, stdos.Symlink(link1, link2))
+
+	got, err := xfilepath.Resolve(link2)
+	require.NoError(t, err)
+	require.Equal(t, file, got)
+
+	got, err = xfilepath.Resolve(link1)
+	require.NoError(t, err)
+	require.Equal(t, file, got)
+
+	got, err = xfilepath.Resolve(file)
+	require.NoError(t, err)
+	require.Equal(t, file, got)
+
+	missing := stdpath.Join(dir, "missing")
+	got, err = xfilepath.Resolve(missing)
+	require.ErrorIs(t, err, ifs.ErrNotExist)
+	require.Equal(t, missing, got)
+}
+
+func TestResolveLenient(t *testing.T) {
+	t.Parallel()
+
+	dir, err := stdpath.EvalSymlinks(t.TempDir())
+	require.NoError(t, err)
+	realDir := stdpath.Join(dir, "real")
+	linkDir := stdpath.Join(dir, "link")
+	require.NoError(t, stdos.Mkdir(realDir, 0o755))
+	require.NoError(t, stdos.Symlink(realDir, linkDir))
+
+	got, err := xfilepath.ResolveLenient(stdpath.Join(linkDir, "missing"))
+	require.NoError(t, err)
+	require.Equal(t, stdpath.Join(realDir, "missing"), got)
+}
+
+func TestIsWithin(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xfilepath.IsWithin(".", "README.md"))
+	require.True(t, xfilepath.IsWithin(".", "a/b.go", "c/d.go"))
+	require.False(t, xfilepath.IsWithin("src", "lib/foo.go"))
+	require.False(t, xfilepath.IsWithin("src"))
+
+	dir := t.TempDir()
+	sub := stdpath.Join(dir, "sub")
+	require.NoError(t, stdos.Mkdir(sub, 0o755))
+
+	require.True(t, xfilepath.IsWithin(dir, sub))
+	require.True(t, xfilepath.IsWithin(dir, dir))
+	require.False(t, xfilepath.IsWithin(sub, dir))
+}
