@@ -208,6 +208,49 @@ func TestXDGDataHome_EnvUnset(t *testing.T) {
 	require.Equal(t, filepath.Join(home, ".local", "share"), got)
 }
 
+func TestXDGStateHome_EnvSet(t *testing.T) {
+	t.Setenv("XDG_STATE_HOME", "/custom/state")
+
+	got, err := shell.XDGStateHome()
+	require.NoError(t, err)
+	require.Equal(t, "/custom/state", got)
+}
+
+func TestXDGStateHome_EnvUnset(t *testing.T) {
+	t.Setenv("XDG_STATE_HOME", "")
+
+	home, err := os.UserHomeDir()
+	require.NoError(t, err)
+
+	got, err := shell.XDGStateHome()
+	require.NoError(t, err)
+	require.Equal(t, filepath.Join(home, ".local", "state"), got)
+}
+
+func TestXDGDataDirs_EnvSet(t *testing.T) {
+	t.Setenv("XDG_DATA_DIRS", "/a:/b:/c")
+
+	require.Equal(t, []string{"/a", "/b", "/c"}, shell.XDGDataDirs())
+}
+
+func TestXDGDataDirs_EnvUnset(t *testing.T) {
+	t.Setenv("XDG_DATA_DIRS", "")
+
+	require.Equal(t, []string{"/usr/local/share", "/usr/share"}, shell.XDGDataDirs())
+}
+
+func TestXDGConfigDirs_EnvSet(t *testing.T) {
+	t.Setenv("XDG_CONFIG_DIRS", "/a:/b")
+
+	require.Equal(t, []string{"/a", "/b"}, shell.XDGConfigDirs())
+}
+
+func TestXDGConfigDirs_EnvUnset(t *testing.T) {
+	t.Setenv("XDG_CONFIG_DIRS", "")
+
+	require.Equal(t, []string{"/etc/xdg"}, shell.XDGConfigDirs())
+}
+
 func TestCompletionFile(t *testing.T) {
 	t.Setenv("XDG_DATA_HOME", "/data")
 	t.Setenv("XDG_CONFIG_HOME", "/config")
