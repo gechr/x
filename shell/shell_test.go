@@ -227,10 +227,34 @@ func TestXDGStateHome_EnvUnset(t *testing.T) {
 	require.Equal(t, filepath.Join(home, ".local", "state"), got)
 }
 
+func TestXDGCacheHome_EnvRelative(t *testing.T) {
+	// The XDG spec requires relative paths to be treated as invalid.
+	t.Setenv("XDG_CACHE_HOME", "relative/cache")
+
+	home, err := os.UserHomeDir()
+	require.NoError(t, err)
+
+	got, err := shell.XDGCacheHome()
+	require.NoError(t, err)
+	require.Equal(t, filepath.Join(home, ".cache"), got)
+}
+
 func TestXDGDataDirs_EnvSet(t *testing.T) {
 	t.Setenv("XDG_DATA_DIRS", "/a:/b:/c")
 
 	require.Equal(t, []string{"/a", "/b", "/c"}, shell.XDGDataDirs())
+}
+
+func TestXDGDataDirs_SkipsInvalidEntries(t *testing.T) {
+	t.Setenv("XDG_DATA_DIRS", "/a::relative:/b:")
+
+	require.Equal(t, []string{"/a", "/b"}, shell.XDGDataDirs())
+}
+
+func TestXDGDataDirs_AllInvalid(t *testing.T) {
+	t.Setenv("XDG_DATA_DIRS", "relative:also/relative")
+
+	require.Equal(t, []string{"/usr/local/share", "/usr/share"}, shell.XDGDataDirs())
 }
 
 func TestXDGDataDirs_EnvUnset(t *testing.T) {
