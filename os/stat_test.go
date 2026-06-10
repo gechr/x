@@ -27,6 +27,11 @@ func TestExists(t *testing.T) {
 	got, err = xos.Exists(stdpath.Join(dir, "missing"))
 	require.NoError(t, err)
 	require.False(t, got)
+
+	// A path under a regular file does not exist (ENOTDIR, not an error).
+	got, err = xos.Exists(stdpath.Join(file, "sub"))
+	require.NoError(t, err)
+	require.False(t, got)
 }
 
 func TestIsFile(t *testing.T) {
@@ -87,6 +92,10 @@ func TestIsSymlink(t *testing.T) {
 	require.False(t, ok)
 
 	ok, err = xos.IsSymlink(stdpath.Join(dir, "missing"))
+	require.NoError(t, err)
+	require.False(t, ok)
+
+	ok, err = xos.IsSymlink(stdpath.Join(file, "sub"))
 	require.NoError(t, err)
 	require.False(t, ok)
 }

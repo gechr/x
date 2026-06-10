@@ -3,12 +3,19 @@ package os
 import (
 	"errors"
 	stdos "os"
+	"syscall"
 )
+
+// notExist reports whether err means the path does not exist, including
+// ENOTDIR (a non-directory component partway through the path).
+func notExist(err error) bool {
+	return errors.Is(err, stdos.ErrNotExist) || errors.Is(err, syscall.ENOTDIR)
+}
 
 // stat returns the FileInfo for path, or (nil, nil) if it does not exist.
 func stat(path string) (stdos.FileInfo, error) {
 	info, err := stdos.Stat(path)
-	if errors.Is(err, stdos.ErrNotExist) {
+	if notExist(err) {
 		return nil, nil //nolint:nilnil // fine for an internal helper
 	}
 	return info, err
@@ -36,7 +43,7 @@ func IsDir(path string) (bool, error) {
 func IsSymlink(path string) (bool, error) {
 	info, err := stdos.Lstat(path)
 	switch {
-	case errors.Is(err, stdos.ErrNotExist):
+	case notExist(err):
 		return false, nil
 	case err != nil:
 		return false, err
