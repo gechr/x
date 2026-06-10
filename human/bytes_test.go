@@ -35,6 +35,8 @@ func TestParseByteSize(t *testing.T) {
 		{name: "PB", s: "1 PB", want: PB},
 		{name: "EB", s: "1 EB", want: EB},
 		{name: "whitespace", s: "  27.61 MiB  ", want: 27.61 * MiB},
+		{name: "unknown unit", s: "5 XYZ", want: 0},
+		{name: "trailing garbage", s: "1e6", want: 0},
 	}
 
 	for _, test := range tests {

@@ -94,7 +94,7 @@ func ParseByteSize(s string) float64 {
 	case "bytes", "byte", UnitB, "": //nolint:goconst // this is fine
 		return num
 	default:
-		return num
+		return 0
 	}
 }
 
