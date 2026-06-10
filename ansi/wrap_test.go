@@ -311,3 +311,12 @@ func TestWrapper_ZeroWidth(t *testing.T) {
 	w := ansi.NewWrapper(ansi.WithWidth(0))
 	assert.Equal(t, "alpha bravo", w.Wrap("alpha bravo"))
 }
+
+func TestWrapper_NegativeWidth(t *testing.T) {
+	// An explicit width < 1 disables wrapping; it must not fall back to
+	// the terminal width when stdout is a TTY.
+	const s = "alpha bravo charlie delta echo foxtrot golf hotel india"
+	assert.Equal(t, s, ansi.WrapSoft(s, -1))
+	assert.Equal(t, s, ansi.WrapHard(s, -1))
+	assert.Equal(t, s, ansi.NewWrapper(ansi.WithWidth(-1)).Wrap(s))
+}

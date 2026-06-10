@@ -25,6 +25,7 @@ const (
 // Wrapper wraps text to a configured width, preserving ANSI escape sequences.
 type Wrapper struct {
 	width        int
+	widthSet     bool
 	widthFunc    func() int
 	mode         wrapMode
 	breakpoints  string
@@ -67,11 +68,13 @@ func (w *Wrapper) Wrap(s string) string {
 }
 
 // effectiveWidth returns the width to use: widthFunc > explicit width > terminal width.
+// An explicit width < 1 is honored (disabling wrapping) rather than falling
+// back to the terminal width.
 func (w *Wrapper) effectiveWidth() int {
 	if w.widthFunc != nil {
 		return w.widthFunc()
 	}
-	if w.width > 0 {
+	if w.widthSet {
 		return w.width
 	}
 	return terminal.Width(os.Stdout)
@@ -80,9 +83,12 @@ func (w *Wrapper) effectiveWidth() int {
 // WrapOption configures a [Wrapper].
 type WrapOption func(*Wrapper)
 
-// WithWidth sets a static wrap width.
+// WithWidth sets a static wrap width. A width < 1 disables wrapping.
 func WithWidth(width int) WrapOption {
-	return func(w *Wrapper) { w.width = width }
+	return func(w *Wrapper) {
+		w.width = width
+		w.widthSet = true
+	}
 }
 
 // WithWidthFunc sets a dynamic width function, called on each [Wrapper.Wrap] invocation.
