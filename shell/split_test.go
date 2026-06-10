@@ -44,6 +44,17 @@ func TestSplitCases(t *testing.T) {
 		{name: "comment at token boundary", in: "one # two\nthree", want: []string{"one", "three"}},
 		{name: "hash inside word", in: "one#two three", want: []string{"one#two", "three"}},
 		{name: "double quoted escaped backslash", in: `"one\\two"`, want: []string{`one\two`}},
+		{name: "double quoted escaped dollar", in: `"a\$b"`, want: []string{"a$b"}},
+		{name: "double quoted escaped backtick", in: "\"a\\`b\"", want: []string{"a`b"}},
+		{name: "double quoted literal backslash", in: `"a\nb"`, want: []string{`a\nb`}},
+		{name: "double quoted windows path", in: `"C:\dir\file"`, want: []string{`C:\dir\file`}},
+		{name: "line continuation in word", in: "one\\\ntwo", want: []string{"onetwo"}},
+		{name: "line continuation at word start", in: "\\\n one", want: []string{"one"}},
+		{
+			name: "line continuation in double quotes",
+			in:   "\"one\\\ntwo\"",
+			want: []string{"onetwo"},
+		},
 	}
 
 	for _, tt := range tests {
@@ -66,6 +77,7 @@ func TestSplitErrors(t *testing.T) {
 		wantErr string
 	}{
 		{name: "trailing escape", in: `one\`, wantErr: "EOF found after escape character"},
+		{name: "lone escape", in: `\`, wantErr: "EOF found after escape character"},
 		{
 			name:    "trailing double quote escape",
 			in:      `"one\`,

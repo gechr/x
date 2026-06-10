@@ -9,6 +9,7 @@ type splitState int
 
 const (
 	splitStart splitState = iota
+	splitStartEscape
 	splitWord
 	splitEscape
 	splitSingleQuote
@@ -18,8 +19,11 @@ const (
 )
 
 // Split partitions s into shell-style words. Whitespace separates words,
-// quotes preserve whitespace, backslashes escape the following rune, and a "#"
-// starts a comment when it appears where a new word could start.
+// quotes preserve whitespace, backslashes escape the following rune, a
+// backslash-newline pair is removed as a line continuation, and a "#" starts a
+// comment when it appears where a new word could start. Inside double quotes,
+// a backslash is special only before '$', '`', '"', '\', or a newline; before
+// any other rune it is kept literally, following POSIX.
 func Split(s string) ([]string, error) {
 	var words []string
 	var word strings.Builder
@@ -38,7 +42,7 @@ func Split(s string) ([]string, error) {
 			case r == '#':
 				state = splitComment
 			case r == '\\':
-				state = splitEscape
+				state = splitStartEscape
 			case r == '\'':
 				state = splitSingleQuote
 			case r == '"':
@@ -61,8 +65,17 @@ func Split(s string) ([]string, error) {
 			default:
 				word.WriteRune(r)
 			}
+		case splitStartEscape:
+			if r == '\n' {
+				state = splitStart
+			} else {
+				word.WriteRune(r)
+				state = splitWord
+			}
 		case splitEscape:
-			word.WriteRune(r)
+			if r != '\n' {
+				word.WriteRune(r)
+			}
 			state = splitWord
 		case splitSingleQuote:
 			if r == '\'' {
@@ -80,7 +93,14 @@ func Split(s string) ([]string, error) {
 				word.WriteRune(r)
 			}
 		case splitDoubleQuoteEscape:
-			word.WriteRune(r)
+			switch r {
+			case '$', '`', '"', '\\':
+				word.WriteRune(r)
+			case '\n': // line continuation: both runes are dropped
+			default:
+				word.WriteRune('\\')
+				word.WriteRune(r)
+			}
 			state = splitDoubleQuote
 		case splitComment:
 			if r == '\n' {
@@ -97,7 +117,7 @@ func Split(s string) ([]string, error) {
 	case splitWord:
 		emit()
 		return words, nil
-	case splitEscape, splitDoubleQuoteEscape:
+	case splitStartEscape, splitEscape, splitDoubleQuoteEscape:
 		return words, fmt.Errorf("EOF found after escape character")
 	case splitSingleQuote, splitDoubleQuote:
 		return words, fmt.Errorf("EOF found when expecting closing quote")
