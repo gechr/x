@@ -27,6 +27,7 @@ func TestFormatTimeAgoFrom(t *testing.T) {
 		{"10 days", now.Add(-10 * 24 * time.Hour), "1 week ago"},
 		{"60 days", now.Add(-60 * 24 * time.Hour), "2 months ago"},
 		{"35 days", now.Add(-35 * 24 * time.Hour), "1 month ago"},
+		{"362 days", now.Add(-362 * 24 * time.Hour), "12 months ago"},
 		{"400 days", now.Add(-400 * 24 * time.Hour), "1 year ago"},
 		{"800 days", now.Add(-800 * 24 * time.Hour), "2 years ago"},
 
@@ -42,6 +43,7 @@ func TestFormatTimeAgoFrom(t *testing.T) {
 		{"future 10 days", now.Add(10 * 24 * time.Hour), "in 1 week"},
 		{"future 60 days", now.Add(60 * 24 * time.Hour), "in 2 months"},
 		{"future 35 days", now.Add(35 * 24 * time.Hour), "in 1 month"},
+		{"future 362 days", now.Add(362 * 24 * time.Hour), "in 12 months"},
 		{"future 400 days", now.Add(400 * 24 * time.Hour), "in 1 year"},
 		{"future 800 days", now.Add(800 * 24 * time.Hour), "in 2 years"},
 	}
@@ -79,6 +81,7 @@ func TestFormatTimeAgoCompactFrom(t *testing.T) {
 		{"10 days", now.Add(-10 * 24 * time.Hour), "1w ago"},
 		{"60 days", now.Add(-60 * 24 * time.Hour), "2mo ago"},
 		{"35 days", now.Add(-35 * 24 * time.Hour), "1mo ago"},
+		{"362 days", now.Add(-362 * 24 * time.Hour), "12mo ago"},
 		{"400 days", now.Add(-400 * 24 * time.Hour), "1y ago"},
 		{"800 days", now.Add(-800 * 24 * time.Hour), "2y ago"},
 		// Future.

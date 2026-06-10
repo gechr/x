@@ -110,7 +110,7 @@ func formatDurationCompact(
 		return wrap(days, "d")
 	case weeks <= WeeksPerMonth:
 		return wrap(weeks, "w")
-	case months < MonthsPerYear:
+	case years < 1:
 		return wrap(months, "mo")
 	default:
 		return wrap(years, "y")
@@ -152,7 +152,7 @@ func formatDuration(seconds, minutes, hours, days, weeks, months, years int, fut
 		return wrap(weeks, "weeks")
 	case months == 1:
 		return wrapOne("month")
-	case months < MonthsPerYear:
+	case years < 1:
 		return wrap(months, "months")
 	case years == 1:
 		return wrapOne("year")
