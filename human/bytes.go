@@ -100,40 +100,28 @@ func ParseByteSize(s string) float64 {
 
 // FormatSIBytes formats a byte count using SI decimal units (KB, MB, GB, TB, PB, EB).
 func FormatSIBytes(b float64) string {
-	switch {
-	case b >= EB:
-		return fmt.Sprintf("%.2f %s", b/EB, UnitEB)
-	case b >= PB:
-		return fmt.Sprintf("%.2f %s", b/PB, UnitPB)
-	case b >= TB:
-		return fmt.Sprintf("%.2f %s", b/TB, UnitTB)
-	case b >= GB:
-		return fmt.Sprintf("%.2f %s", b/GB, UnitGB)
-	case b >= MB:
-		return fmt.Sprintf("%.2f %s", b/MB, UnitMB)
-	case b >= KB:
-		return fmt.Sprintf("%.2f %s", b/KB, UnitKB)
-	default:
-		return fmt.Sprintf("%.0f %s", b, UnitB)
-	}
+	return formatBytes(b, KB, []string{UnitKB, UnitMB, UnitGB, UnitTB, UnitPB, UnitEB})
 }
 
 // FormatIECBytes formats a byte count using IEC binary units (KiB, MiB, GiB, TiB, PiB, EiB).
 func FormatIECBytes(b float64) string {
-	switch {
-	case b >= EiB:
-		return fmt.Sprintf("%.2f %s", b/EiB, UnitEiB)
-	case b >= PiB:
-		return fmt.Sprintf("%.2f %s", b/PiB, UnitPiB)
-	case b >= TiB:
-		return fmt.Sprintf("%.2f %s", b/TiB, UnitTiB)
-	case b >= GiB:
-		return fmt.Sprintf("%.2f %s", b/GiB, UnitGiB)
-	case b >= MiB:
-		return fmt.Sprintf("%.2f %s", b/MiB, UnitMiB)
-	case b >= KiB:
-		return fmt.Sprintf("%.2f %s", b/KiB, UnitKiB)
-	default:
+	return formatBytes(b, KiB, []string{UnitKiB, UnitMiB, UnitGiB, UnitTiB, UnitPiB, UnitEiB})
+}
+
+// formatBytes scales b into the largest unit whose rounded value stays below
+// base, so values just under a boundary promote to the next unit ("1.00 MB")
+// instead of rounding to it ("1000.00 KB").
+func formatBytes(b, base float64, units []string) string {
+	if b < base {
 		return fmt.Sprintf("%.0f %s", b, UnitB)
 	}
+	v := b / base
+	for _, unit := range units[:len(units)-1] {
+		s := fmt.Sprintf("%.2f", v)
+		if rounded, _ := strconv.ParseFloat(s, 64); rounded < base {
+			return s + " " + unit
+		}
+		v /= base
+	}
+	return fmt.Sprintf("%.2f %s", v, units[len(units)-1])
 }

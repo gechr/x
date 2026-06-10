@@ -67,6 +67,9 @@ func TestFormatIECBytes(t *testing.T) {
 		{name: "TiB", b: 1.25 * TiB, want: "1.25 TiB"},
 		{name: "one PiB", b: PiB, want: "1.00 PiB"},
 		{name: "one EiB", b: EiB, want: "1.00 EiB"},
+		{name: "just under KiB boundary", b: KiB*KiB - 1, want: "1.00 MiB"},
+		{name: "just under MiB boundary", b: GiB - 200, want: "1.00 GiB"},
+		{name: "under boundary no rounding", b: 1023.99 * KiB, want: "1023.99 KiB"},
 	}
 
 	for _, test := range tests {
@@ -98,6 +101,9 @@ func TestFormatSIBytes(t *testing.T) {
 		{name: "TB", b: 1.25 * TB, want: "1.25 TB"},
 		{name: "one PB", b: PB, want: "1.00 PB"},
 		{name: "one EB", b: EB, want: "1.00 EB"},
+		{name: "just under KB boundary", b: MB - 1, want: "1.00 MB"},
+		{name: "just under MB boundary", b: GB - 2000, want: "1.00 GB"},
+		{name: "under boundary no rounding", b: 999.99 * KB, want: "999.99 KB"},
 	}
 
 	for _, test := range tests {
