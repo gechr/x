@@ -1,6 +1,9 @@
 package slices
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
 
 // Unique returns items in first-seen order with duplicates removed.
 func Unique[S ~[]E, E comparable](items S) S {
@@ -17,12 +20,13 @@ func Unique[S ~[]E, E comparable](items S) S {
 }
 
 // UniqueFold returns strings in first-seen order with duplicates removed
-// case-insensitively.
+// case-insensitively, using the same simple case-folding as
+// [strings.EqualFold].
 func UniqueFold[S ~[]E, E ~string](items S) S {
 	seen := make(map[string]struct{}, len(items))
 	unique := make(S, 0, len(items))
 	for _, item := range items {
-		key := strings.ToLower(string(item))
+		key := foldKey(string(item))
 		if _, ok := seen[key]; ok {
 			continue
 		}
@@ -30,4 +34,18 @@ func UniqueFold[S ~[]E, E ~string](items S) S {
 		unique = append(unique, item)
 	}
 	return unique
+}
+
+// foldKey maps each rune to the canonical (smallest) member of its case-fold
+// orbit, so two strings have equal keys iff strings.EqualFold reports them
+// equal. ToLower alone misses orbit members with distinct lowercase forms,
+// e.g. Greek final sigma 'ς' vs 'σ'.
+func foldKey(s string) string {
+	return strings.Map(func(r rune) rune {
+		key := r
+		for f := unicode.SimpleFold(r); f != r; f = unicode.SimpleFold(f) {
+			key = min(key, f)
+		}
+		return key
+	}, s)
 }

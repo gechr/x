@@ -28,6 +28,10 @@ func TestUniqueFold(t *testing.T) {
 		[]namedString{"one", "two"},
 		xslices.UniqueFold([]namedString{"one", "ONE", "two"}),
 	)
+	// EqualFold-equal pairs with distinct lowercase forms: Greek sigma
+	// (Σ/σ/ς) and Kelvin sign (K/K/k).
+	require.Equal(t, []string{"Σ"}, xslices.UniqueFold([]string{"Σ", "ς", "σ"}))
+	require.Equal(t, []string{"K"}, xslices.UniqueFold([]string{"K", "K", "k"}))
 }
 
 type namedString string
