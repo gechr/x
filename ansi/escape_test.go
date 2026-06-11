@@ -39,6 +39,8 @@ func TestModeConstants(t *testing.T) {
 	assert.Equal(t, "\x1b[?2004l", ansi.DisableBracketedPaste)
 	assert.Equal(t, "\x1b[?1004h", ansi.EnableFocusEvents)
 	assert.Equal(t, "\x1b[?1004l", ansi.DisableFocusEvents)
+	assert.Equal(t, "\x1b[?2026h", ansi.EnableSyncOutput)
+	assert.Equal(t, "\x1b[?2026l", ansi.DisableSyncOutput)
 	assert.Equal(t, "\x1b[6n", ansi.RequestCursorPosition)
 	assert.Equal(t, "\x1b[?6n", ansi.RequestExtendedCursorPosition)
 	assert.Equal(t, "\x1b[I", ansi.Focus)

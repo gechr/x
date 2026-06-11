@@ -108,6 +108,14 @@ const (
 	DisableFocusEvents = xansi.ResetModeFocusEvent
 )
 
+// Synchronized output mode (DEC 2026). Wrap a repaint in Enable/Disable so
+// the terminal applies the whole frame atomically; terminals without
+// support ignore both sequences.
+const (
+	EnableSyncOutput  = xansi.SetModeSynchronizedOutput
+	DisableSyncOutput = xansi.ResetModeSynchronizedOutput
+)
+
 // Terminal queries - the terminal replies with a corresponding report.
 const (
 	// RequestCursorPosition asks the terminal for the current cursor
