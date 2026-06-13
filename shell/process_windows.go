@@ -4,7 +4,6 @@ package shell
 
 import (
 	"path/filepath"
-	"strings"
 
 	"golang.org/x/sys/windows"
 )
@@ -26,8 +25,5 @@ func processName(pid int) string {
 		return ""
 	}
 
-	// Executable names are case-insensitive on Windows, so fold to lower case
-	// to match the lower-case known shell names, then drop the ".exe" suffix.
-	name := strings.ToLower(filepath.Base(windows.UTF16ToString(buf[:size])))
-	return strings.TrimSuffix(name, ".exe")
+	return normalizeExecName(filepath.Base(windows.UTF16ToString(buf[:size])))
 }

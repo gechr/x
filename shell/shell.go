@@ -46,7 +46,7 @@ func normalizeShellName(raw string) string {
 	if raw == "" {
 		return ""
 	}
-	name := filepath.Base(raw)
+	name := normalizeExecName(filepath.Base(raw))
 	if !IsKnown(name) {
 		return ""
 	}
