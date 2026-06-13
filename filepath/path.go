@@ -66,7 +66,7 @@ func IsWithin(base string, targets ...string) bool {
 		if err != nil {
 			return false
 		}
-		if absTarget != absBase && !strings.HasPrefix(absTarget, prefix) {
+		if !equalPath(absTarget, absBase) && !hasPathPrefix(absTarget, prefix) {
 			return false
 		}
 	}
