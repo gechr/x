@@ -10,19 +10,19 @@ import (
 func CompletionFile(command, sh string) (string, error) {
 	switch sh {
 	case Bash:
-		dir, err := XDGDataHome()
+		dir, err := DataDir()
 		if err != nil {
 			return "", err
 		}
 		return filepath.Join(dir, "bash-completion", "completions", command), nil
 	case Zsh:
-		dir, err := XDGDataHome()
+		dir, err := DataDir()
 		if err != nil {
 			return "", err
 		}
 		return filepath.Join(dir, "zsh", "site-functions", "_"+command), nil
 	case Fish:
-		dir, err := XDGConfigHome()
+		dir, err := ConfigDir()
 		if err != nil {
 			return "", err
 		}
