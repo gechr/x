@@ -163,6 +163,12 @@ func TestCompletionFile(t *testing.T) {
 			shell:   shell.Fish,
 			want:    "/config/fish/completions/myapp.fish",
 		},
+		{
+			name:    "nu",
+			command: "myapp",
+			shell:   shell.Nu,
+			want:    "/data/nushell/vendor/autoload/myapp.nu",
+		},
 	}
 
 	for _, tt := range tests {
