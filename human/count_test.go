@@ -7,6 +7,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestPlural(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		n        int
+		singular string
+		plural   string
+		want     string
+	}{
+		{0, "file", "files", "files"},
+		{1, "file", "files", "file"},
+		{2, "file", "files", "files"},
+		{42, "match", "matches", "matches"},
+	}
+	for _, tc := range cases {
+		require.Equal(t, tc.want, human.Plural(tc.n, tc.singular, tc.plural))
+	}
+}
+
 func TestPluralize(t *testing.T) {
 	t.Parallel()
 

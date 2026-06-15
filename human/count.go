@@ -7,15 +7,24 @@ import (
 
 const thousandsGroup = 3
 
+// Plural returns singular when n == 1, otherwise plural. Unlike Pluralize, it
+// omits the count.
+//
+//	Plural(1, "file", "files") // "file"
+//	Plural(3, "file", "files") // "files"
+func Plural(n int, singular, plural string) string {
+	if n == 1 {
+		return singular
+	}
+	return plural
+}
+
 // Pluralize returns "1 singular" or "n plural".
 //
 //	Pluralize(1, "file", "files") // "1 file"
 //	Pluralize(3, "file", "files") // "3 files"
 func Pluralize(n int, singular, plural string) string {
-	if n == 1 {
-		return "1 " + singular
-	}
-	return strconv.Itoa(n) + " " + plural
+	return strconv.Itoa(n) + " " + Plural(n, singular, plural)
 }
 
 // FormatNumber groups n's digits in threes from the right, joined with sep.
