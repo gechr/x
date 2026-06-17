@@ -55,3 +55,75 @@ func TestFormatDuration_MinInt64NoOverflow(t *testing.T) {
 		got,
 	)
 }
+
+func TestParseDuration(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		in   string
+		want time.Duration
+	}{
+		{"0", 0},
+		{"0s", 0},
+		{"90s", 90 * time.Second},
+		{"1m30s", 90 * time.Second},
+		{"2h15m", 2*time.Hour + 15*time.Minute},
+		{"1h30m45s", time.Hour + 30*time.Minute + 45*time.Second},
+		{"1w2d", 9 * 24 * time.Hour},
+		{"1y", 365 * 24 * time.Hour},
+		{"1y2w", 365*24*time.Hour + 2*7*24*time.Hour},
+		{"50ms", 50 * time.Millisecond},
+		{"2µs", 2 * time.Microsecond},
+		{"2us", 2 * time.Microsecond},
+		{"500ns", 500 * time.Nanosecond},
+		{"1m5ms", time.Minute + 5*time.Millisecond},
+		{"-1m30s", -90 * time.Second},
+		{"+2h", 2 * time.Hour},
+	}
+	for _, tc := range cases {
+		got, err := human.ParseDuration(tc.in)
+		require.NoError(t, err, "ParseDuration(%q)", tc.in)
+		require.Equal(t, tc.want, got, "ParseDuration(%q)", tc.in)
+	}
+}
+
+func TestParseDurationErrors(t *testing.T) {
+	t.Parallel()
+
+	cases := []string{
+		"",      // empty
+		"-",     // sign only
+		"5",     // missing unit
+		"5x",    // unknown unit
+		"5w5w",  // repeated unit
+		"1w1y",  // out of order
+		"1m1h",  // out of order
+		"5ms5m", // out of order across sub-second
+		"abc",   // no number
+		"1.5h",  // decimals unsupported
+	}
+	for _, in := range cases {
+		_, err := human.ParseDuration(in)
+		require.Error(t, err, "ParseDuration(%q)", in)
+	}
+}
+
+func TestParseDurationRoundTrip(t *testing.T) {
+	t.Parallel()
+
+	// FormatDuration output parses back to an equal duration for values it
+	// represents exactly (<= two units, second precision).
+	cases := []time.Duration{
+		90 * time.Second,
+		2*time.Hour + 15*time.Minute,
+		9 * 24 * time.Hour,
+		400 * 24 * time.Hour,
+		-90 * time.Second,
+		50 * time.Millisecond,
+	}
+	for _, d := range cases {
+		got, err := human.ParseDuration(human.FormatDuration(d))
+		require.NoError(t, err, "round-trip %s", d)
+		require.Equal(t, d, got, "round-trip %s", d)
+	}
+}
