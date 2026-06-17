@@ -13,7 +13,7 @@ func TestIsHex(t *testing.T) {
 	require.True(t, xstrings.IsHex("deadbeef"))
 	require.True(t, xstrings.IsHex("DEADBEEF"))
 	require.True(t, xstrings.IsHex("0123456789abcdefABCDEF"))
-	require.True(t, xstrings.IsHex(""))
+	require.False(t, xstrings.IsHex(""), "empty is not hex")
 	require.False(t, xstrings.IsHex("xyz"))
 	require.False(t, xstrings.IsHex("deadbeeg"))
 	require.False(t, xstrings.IsHex("dead beef"))

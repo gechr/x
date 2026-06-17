@@ -161,7 +161,11 @@ func ParseDuration(s string) (time.Duration, error) {
 			return 0, fmt.Errorf("invalid duration %q: unknown unit %q", orig, unit)
 		}
 		if size >= largest {
-			return 0, fmt.Errorf("invalid duration %q: unit %q is repeated or out of order", orig, unit)
+			return 0, fmt.Errorf(
+				"invalid duration %q: unit %q is repeated or out of order",
+				orig,
+				unit,
+			)
 		}
 		largest = size
 		total += time.Duration(n) * size

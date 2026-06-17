@@ -1,8 +1,11 @@
 package strings
 
-// IsHex reports whether s consists entirely of hexadecimal digits.
-// An empty string returns true.
+// IsHex reports whether s is non-empty and consists entirely of hexadecimal
+// digits. An empty string is not hex.
 func IsHex(s string) bool {
+	if s == "" {
+		return false
+	}
 	for _, c := range s {
 		if !IsHexChar(c) {
 			return false
