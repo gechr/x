@@ -18,3 +18,13 @@ func IsHex(s string) bool {
 func IsHexChar(c rune) bool {
 	return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')
 }
+
+// IsGitCommit reports whether s is 40 hexadecimal digits (a Git commit hash).
+func IsGitCommit(s string) bool {
+	return len(s) == 40 && IsHex(s)
+}
+
+// IsSHA256 reports whether s is 64 hexadecimal digits (a SHA-256 digest).
+func IsSHA256(s string) bool {
+	return len(s) == 64 && IsHex(s)
+}
