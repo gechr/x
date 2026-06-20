@@ -57,18 +57,112 @@ func IsWithin(base string, targets ...string) bool {
 	if err != nil {
 		return false
 	}
-	prefix := absBase
-	if !strings.HasSuffix(prefix, string(stdpath.Separator)) {
-		prefix += string(stdpath.Separator)
-	}
 	for _, target := range targets {
 		absTarget, err := stdpath.Abs(target)
 		if err != nil {
 			return false
 		}
-		if !equalPath(absTarget, absBase) && !hasPathPrefix(absTarget, prefix) {
+		if !contains(absBase, absTarget) {
 			return false
 		}
 	}
 	return true
+}
+
+// contains reports whether inner is equal to or nested under outer. Both must be
+// absolute, cleaned paths. The separator appended to the prefix stops "a" from
+// matching a sibling "ab".
+func contains(outer, inner string) bool {
+	if equalPath(inner, outer) {
+		return true
+	}
+	prefix := outer
+	if !strings.HasSuffix(prefix, string(stdpath.Separator)) {
+		prefix += string(stdpath.Separator)
+	}
+	return hasPathPrefix(inner, prefix)
+}
+
+// MergeOption configures [Merge].
+type MergeOption func(*mergeConfig)
+
+type mergeConfig struct {
+	resolveSymlinks bool
+}
+
+// WithResolveSymlinks makes [Merge] compare paths by their resolved physical
+// location (via [ResolveLenient]) rather than lexically, so two spellings that
+// reach the same target through a symlink are merged. It touches the filesystem;
+// without it Merge is pure and lexical.
+func WithResolveSymlinks() MergeOption {
+	return func(c *mergeConfig) { c.resolveSymlinks = true }
+}
+
+// Merge reduces paths to the minimal set covering the same locations: comparing
+// them as cleaned absolute paths, it drops any that duplicate or are nested
+// within another, so a later walk visits each file once. Survivors keep their
+// original form and first-seen order; a path whose absolute form cannot be
+// computed is compared by its cleaned form.
+//
+// The comparison is lexical by default; pass [WithResolveSymlinks] to compare
+// resolved physical locations instead.
+//
+// Example:
+//
+//	Merge([]string{"a", "a"})     // ["a"]
+//	Merge([]string{".", "./sub"}) // ["."]
+//	Merge([]string{"a/b", "a"})   // ["a"]
+//	Merge([]string{"a", "b"})     // ["a", "b"]
+func Merge(paths []string, opts ...MergeOption) []string {
+	var cfg mergeConfig
+	for _, opt := range opts {
+		opt(&cfg)
+	}
+
+	keys := make([]string, len(paths))
+	for i, path := range paths {
+		keys[i] = cfg.mergeKey(path)
+	}
+
+	merged := make([]string, 0, len(paths))
+	for i := range paths {
+		if !subsumed(keys, i) {
+			merged = append(merged, paths[i])
+		}
+	}
+	return merged
+}
+
+// mergeKey returns the comparison key for a path: its resolved physical location
+// when WithResolveSymlinks is set, otherwise its cleaned absolute (lexical) form,
+// falling back to the cleaned form when an absolute path cannot be computed.
+func (c mergeConfig) mergeKey(path string) string {
+	if c.resolveSymlinks {
+		resolved, _ := ResolveLenient(path)
+		return resolved
+	}
+	abs, err := stdpath.Abs(path)
+	if err != nil {
+		return stdpath.Clean(path)
+	}
+	return abs
+}
+
+// subsumed reports whether keys[i] is covered by another entry: a strict
+// ancestor, or - for an exact duplicate - an earlier occurrence (so the first of
+// a set of equal paths survives).
+func subsumed(keys []string, i int) bool {
+	for j := range keys {
+		if i == j || !contains(keys[j], keys[i]) {
+			continue
+		}
+		if equalPath(keys[i], keys[j]) {
+			if j < i {
+				return true
+			}
+			continue
+		}
+		return true
+	}
+	return false
 }
