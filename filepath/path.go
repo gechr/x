@@ -1,9 +1,31 @@
 package filepath
 
 import (
+	"os"
 	stdpath "path/filepath"
 	"strings"
 )
+
+// Expand expands a leading ~ to the user's home directory and resolves
+// environment variables via os.ExpandEnv. It is purely lexical: the result is
+// not checked for existence or resolved against the filesystem (use [Resolve]
+// or [ResolveLenient] for that).
+func Expand(path string) string {
+	if path == "" {
+		return path
+	}
+	if path == "~" {
+		if home, err := os.UserHomeDir(); err == nil {
+			return home
+		}
+	}
+	if rest, ok := strings.CutPrefix(path, "~/"); ok {
+		if home, err := os.UserHomeDir(); err == nil {
+			path = stdpath.Join(home, rest)
+		}
+	}
+	return os.ExpandEnv(path)
+}
 
 // Resolve recursively follows every symlink along path and returns the fully
 // resolved absolute path. On any error (missing component, cycle, permission)

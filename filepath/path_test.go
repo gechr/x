@@ -10,6 +10,33 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestExpand_Tilde(t *testing.T) {
+	home, err := stdos.UserHomeDir()
+	require.NoError(t, err)
+
+	require.Equal(t, stdpath.Join(home, "config.yaml"), xfilepath.Expand("~/config.yaml"))
+}
+
+func TestExpand_BareTilde(t *testing.T) {
+	home, err := stdos.UserHomeDir()
+	require.NoError(t, err)
+
+	require.Equal(t, home, xfilepath.Expand("~"))
+}
+
+func TestExpand_EnvVar(t *testing.T) {
+	t.Setenv("TEST_EXPAND_DIR", "/opt/data")
+	require.Equal(t, "/opt/data/file.txt", xfilepath.Expand("$TEST_EXPAND_DIR/file.txt"))
+}
+
+func TestExpand_Empty(t *testing.T) {
+	require.Empty(t, xfilepath.Expand(""))
+}
+
+func TestExpand_NoExpansion(t *testing.T) {
+	require.Equal(t, "/absolute/path", xfilepath.Expand("/absolute/path"))
+}
+
 func TestResolve(t *testing.T) {
 	t.Parallel()
 
