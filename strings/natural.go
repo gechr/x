@@ -35,6 +35,21 @@ func CompareNatural(a, b string) int {
 	}
 }
 
+// LessNatural reports whether a sorts before b in natural order, as decided by
+// [CompareNatural]. It reads cleanly at call sites that want a boolean rather
+// than a three-way result, such as sort predicates and conditionals.
+func LessNatural(a, b string) bool {
+	return CompareNatural(a, b) < 0
+}
+
+// EqualNatural reports whether a and b compare equal in natural order, as
+// decided by [CompareNatural]. This can differ from a == b, since a numeric run
+// followed by more to compare matches regardless of leading zeros (for example
+// "a00b00" and "a0b00").
+func EqualNatural(a, b string) bool {
+	return CompareNatural(a, b) == 0
+}
+
 // commonNonDigitPrefix returns the length of the shared leading run of a and b,
 // stopping at the first differing byte or the first digit on either side so the
 // numbers that follow are compared by value.

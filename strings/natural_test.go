@@ -63,6 +63,8 @@ func TestCompareNatural(t *testing.T) {
 				xstrings.CompareNatural(tc.b, tc.a),
 				"reversing the operands negates the result",
 			)
+			require.Equal(t, tc.want < 0, xstrings.LessNatural(tc.a, tc.b))
+			require.Equal(t, tc.want == 0, xstrings.EqualNatural(tc.a, tc.b))
 		})
 	}
 }
