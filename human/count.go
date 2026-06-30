@@ -66,6 +66,59 @@ func FormatNumber(n int64, sep string) string {
 	return b.String()
 }
 
+// compactBase is the scaling factor between successive compact-count units.
+const compactBase = 1000
+
+// compactUnits are the suffixes applied by [FormatNumberCompact], in ascending
+// order: thousand, million, billion, trillion.
+var compactUnits = []string{"K", "M", "B", "T"}
+
+// FormatNumberCompact renders n in a compact, abbreviated form using K, M, B,
+// and T suffixes (powers of 1000), with up to one decimal place and a trailing
+// ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim.
+// Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and
+// magnitudes beyond a trillion stay in "T".
+//
+//	FormatNumberCompact(950)      // "950"
+//	FormatNumberCompact(1234)     // "1.2K"
+//	FormatNumberCompact(1000000)  // "1M"
+//	FormatNumberCompact(9999999)  // "10M"
+//	FormatNumberCompact(-1500000) // "-1.5M"
+func FormatNumberCompact(n int64) string {
+	if n > -compactBase && n < compactBase {
+		return strconv.FormatInt(n, 10)
+	}
+
+	neg := n < 0
+	v := float64(n)
+	if neg {
+		v = -v
+	}
+
+	// Scale into the largest unit whose rounded value stays below the base,
+	// so a value just under a boundary promotes ("1M") instead of rendering
+	// as "1000K".
+	v /= compactBase
+	unit := compactUnits[0]
+	for i := range compactUnits[:len(compactUnits)-1] {
+		if rounded, _ := strconv.ParseFloat(
+			strconv.FormatFloat(v, 'f', 1, 64),
+			64,
+		); rounded < compactBase {
+			unit = compactUnits[i]
+			break
+		}
+		v /= compactBase
+		unit = compactUnits[i+1]
+	}
+
+	s := strings.TrimSuffix(strconv.FormatFloat(v, 'f', 1, 64), ".0")
+	if neg {
+		s = "-" + s
+	}
+	return s + unit
+}
+
 // FormatOrdinal returns n with its English ordinal suffix.
 //
 //	FormatOrdinal(1)   // "1st"

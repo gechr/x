@@ -82,6 +82,44 @@ func TestFormatNumber(t *testing.T) {
 	}
 }
 
+func TestFormatNumberCompact(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		in   int64
+		want string
+	}{
+		{0, "0"},
+		{42, "42"},
+		{999, "999"},
+		{-999, "-999"},
+		{1000, "1K"},
+		{1234, "1.2K"},
+		{1280, "1.3K"},
+		{9999, "10K"},
+		{12345, "12.3K"},
+		{999999, "1M"},
+		{1000000, "1M"},
+		{1234567, "1.2M"},
+		{9999999, "10M"},
+		{1000000000, "1B"},
+		{1500000000, "1.5B"},
+		{1000000000000, "1T"},
+		{2500000000000, "2.5T"},
+		{-1500000, "-1.5M"},
+		{-1234567, "-1.2M"},
+	}
+	for _, tc := range cases {
+		require.Equal(
+			t,
+			tc.want,
+			human.FormatNumberCompact(tc.in),
+			"FormatNumberCompact(%d)",
+			tc.in,
+		)
+	}
+}
+
 func TestFormatOrdinal(t *testing.T) {
 	t.Parallel()
 
