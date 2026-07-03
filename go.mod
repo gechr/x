@@ -3,7 +3,7 @@ module github.com/gechr/x
 go 1.26.2
 
 require (
-	charm.land/lipgloss/v2 v2.0.4
+	charm.land/lipgloss/v2 v2.0.5
 	github.com/charmbracelet/x/ansi v0.11.7
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sys v0.46.0

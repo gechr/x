@@ -3,6 +3,7 @@ package os_test
 import (
 	stdos "os"
 	stdpath "path/filepath"
+	"runtime"
 	"testing"
 
 	xos "github.com/gechr/x/os"
@@ -23,7 +24,7 @@ func TestAtomicWrite(t *testing.T) {
 
 	info, err := stdos.Stat(path)
 	require.NoError(t, err)
-	require.Equal(t, stdos.FileMode(0o600), info.Mode().Perm())
+	requireMode(t, stdos.FileMode(0o600), info.Mode().Perm())
 }
 
 func TestAtomicWrite_OverwritesExisting(t *testing.T) {
@@ -83,7 +84,7 @@ func TestCopyFile(t *testing.T) {
 
 	info, err := stdos.Stat(dst)
 	require.NoError(t, err)
-	require.Equal(t, stdos.FileMode(0o640), info.Mode().Perm())
+	requireMode(t, stdos.FileMode(0o640), info.Mode().Perm())
 }
 
 func TestCopyFile_TruncatesDestination(t *testing.T) {
@@ -155,7 +156,15 @@ func TestCopyFile_PreservesModeOnExistingDst(t *testing.T) {
 
 	info, err := stdos.Stat(dst)
 	require.NoError(t, err)
-	require.Equal(t, stdos.FileMode(0o640), info.Mode().Perm())
+	requireMode(t, stdos.FileMode(0o640), info.Mode().Perm())
+}
+
+func requireMode(t *testing.T, want, got stdos.FileMode) {
+	t.Helper()
+	if runtime.GOOS == "windows" {
+		return
+	}
+	require.Equal(t, want, got)
 }
 
 func TestCopyFile_SameFile(t *testing.T) {
