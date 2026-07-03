@@ -7,6 +7,7 @@
 | `ansi`     | ANSI-aware text wrapping, hyperlinks, and TTY fallback           |
 | `filepath` | Path helpers: symlink resolution and containment checks          |
 | `human`    | Human-readable bytes, durations, counts, numbers, ordinals       |
+| `maps`     | Map helpers: sorted iteration, grouping, inversion               |
 | `os`       | OS helpers: file probes, safe writes, copy, line I/O             |
 | `shell`    | Shell detection, path expansion, argument quoting, and splitting |
 | `slices`   | Slice helpers                                                    |
