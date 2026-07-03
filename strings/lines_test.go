@@ -34,3 +34,30 @@ func TestSplitLines(t *testing.T) {
 		})
 	}
 }
+
+func TestSplitLinesRaw(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		in   string
+		want []string
+	}{
+		{name: "empty", in: "", want: []string{""}},
+		{name: "single line", in: "alpha", want: []string{"alpha"}},
+		{name: "lf", in: "alpha\nbravo", want: []string{"alpha", "bravo"}},
+		{name: "crlf normalized", in: "alpha\r\nbravo", want: []string{"alpha", "bravo"}},
+		{name: "keeps whitespace", in: " alpha \n bravo ", want: []string{" alpha ", " bravo "}},
+		{name: "keeps trailing empty", in: "alpha\n", want: []string{"alpha", ""}},
+		{name: "keeps blank lines", in: "alpha\n\nbravo", want: []string{"alpha", "", "bravo"}},
+		{name: "bare cr survives", in: "alpha\rbravo", want: []string{"alpha\rbravo"}},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			require.Equal(t, tt.want, xstrings.SplitLinesRaw(tt.in))
+		})
+	}
+}
