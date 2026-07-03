@@ -3,6 +3,8 @@ package http
 import (
 	"net/http"
 	"strings"
+
+	xstrings "github.com/gechr/x/strings"
 )
 
 // NextLink returns the rel="next" target from an RFC 8288 Link header, or ""
@@ -14,12 +16,9 @@ func NextLink(h http.Header) string {
 	for _, value := range h.Values("Link") {
 		for _, link := range splitLinks(value) {
 			target, params, ok := strings.Cut(link, ";")
-			target = strings.TrimSpace(target)
-			if !ok || !strings.HasPrefix(target, "<") || !strings.HasSuffix(target, ">") {
-				continue
-			}
-			if hasRel(params, "next") {
-				return strings.Trim(target, "<>")
+			target, wrapped := xstrings.Unwrap(strings.TrimSpace(target), "<", ">")
+			if ok && wrapped && hasRel(params, "next") {
+				return target
 			}
 		}
 	}
