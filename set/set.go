@@ -1,7 +1,10 @@
 // Package set provides a generic set backed by a map.
 package set
 
-import "iter"
+import (
+	"iter"
+	"slices"
+)
 
 // Set is a set of comparable items backed by a map. Pointer types and
 // structs containing pointer fields are compared using shallow equality.
@@ -95,14 +98,7 @@ func (s Set[T]) Union(others ...Set[T]) Set[T] {
 func (s Set[T]) Intersect(others ...Set[T]) Set[T] {
 	intersection := make(Set[T])
 	for item := range s {
-		inAll := true
-		for _, other := range others {
-			if !other.Contains(item) {
-				inAll = false
-				break
-			}
-		}
-		if inAll {
+		if !slices.ContainsFunc(others, func(other Set[T]) bool { return !other.Contains(item) }) {
 			intersection[item] = struct{}{}
 		}
 	}
@@ -114,14 +110,7 @@ func (s Set[T]) Intersect(others ...Set[T]) Set[T] {
 func (s Set[T]) Difference(others ...Set[T]) Set[T] {
 	diff := make(Set[T])
 	for item := range s {
-		inAny := false
-		for _, other := range others {
-			if other.Contains(item) {
-				inAny = true
-				break
-			}
-		}
-		if !inAny {
+		if !slices.ContainsFunc(others, func(other Set[T]) bool { return other.Contains(item) }) {
 			diff[item] = struct{}{}
 		}
 	}
