@@ -60,12 +60,19 @@ func TestSetOperations(t *testing.T) {
 
 	a := set.New(1, 2, 3)
 	b := set.New(3, 4)
+	c := set.New(5)
 
 	require.True(t, a.Union(b).Equal(set.New(1, 2, 3, 4)))
+	require.True(t, a.Union(b, c).Equal(set.New(1, 2, 3, 4, 5)))
+	require.True(t, a.Union().Equal(a))
 	require.True(t, a.Intersect(b).Equal(set.New(3)))
 	require.True(t, b.Intersect(a).Equal(set.New(3)))
+	require.True(t, a.Intersect(b, c).Equal(set.New[int]()))
+	require.True(t, a.Intersect().Equal(a))
 	require.True(t, a.Difference(b).Equal(set.New(1, 2)))
 	require.True(t, b.Difference(a).Equal(set.New(4)))
+	require.True(t, a.Difference(b, c).Equal(set.New(1, 2)))
+	require.True(t, a.Difference().Equal(a))
 
 	// Operands are not modified.
 	require.Equal(t, 3, a.Len())

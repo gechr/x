@@ -76,40 +76,52 @@ func (s Set[T]) SubsetOf(other Set[T]) bool {
 	return true
 }
 
-// Union returns a new Set containing the items of both s and other.
-func (s Set[T]) Union(other Set[T]) Set[T] {
-	union := make(Set[T], max(len(s), len(other)))
+// Union returns a new Set containing the items of s and all others.
+func (s Set[T]) Union(others ...Set[T]) Set[T] {
+	union := make(Set[T], len(s))
 	for item := range s {
 		union[item] = struct{}{}
 	}
-	for item := range other {
-		union[item] = struct{}{}
+	for _, other := range others {
+		for item := range other {
+			union[item] = struct{}{}
+		}
 	}
 	return union
 }
 
-// Intersect returns a new Set containing the items present in both s and
-// other.
-func (s Set[T]) Intersect(other Set[T]) Set[T] {
-	small, large := s, other
-	if len(small) > len(large) {
-		small, large = large, small
-	}
+// Intersect returns a new Set containing the items of s present in every one
+// of others.
+func (s Set[T]) Intersect(others ...Set[T]) Set[T] {
 	intersection := make(Set[T])
-	for item := range small {
-		if large.Contains(item) {
+	for item := range s {
+		inAll := true
+		for _, other := range others {
+			if !other.Contains(item) {
+				inAll = false
+				break
+			}
+		}
+		if inAll {
 			intersection[item] = struct{}{}
 		}
 	}
 	return intersection
 }
 
-// Difference returns a new Set containing the items of s not present in
-// other.
-func (s Set[T]) Difference(other Set[T]) Set[T] {
+// Difference returns a new Set containing the items of s not present in any
+// of others.
+func (s Set[T]) Difference(others ...Set[T]) Set[T] {
 	diff := make(Set[T])
 	for item := range s {
-		if !other.Contains(item) {
+		inAny := false
+		for _, other := range others {
+			if other.Contains(item) {
+				inAny = true
+				break
+			}
+		}
+		if !inAny {
 			diff[item] = struct{}{}
 		}
 	}
