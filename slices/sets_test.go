@@ -17,6 +17,13 @@ func TestDifference(t *testing.T) {
 	require.Equal(t, []int{1, 1, 3},
 		xslices.Difference([]int{1, 1, 2, 3}, []int{2}))
 
+	// Variadic: excludes elements present in any of the given slices.
+	require.Equal(t, []int{1},
+		xslices.Difference([]int{1, 2, 3}, []int{2}, []int{3}))
+
+	// No exclusion slices returns items unchanged.
+	require.Equal(t, []int{1, 2}, xslices.Difference([]int{1, 2}))
+
 	// Empty and nil inputs.
 	require.Empty(t, xslices.Difference([]int(nil), []int{1}))
 	require.Equal(t, []int{1}, xslices.Difference([]int{1}, nil))
@@ -31,6 +38,13 @@ func TestIntersect(t *testing.T) {
 	// Order and duplicates follow the first slice.
 	require.Equal(t, []int{2, 2},
 		xslices.Intersect([]int{2, 1, 2}, []int{2, 3}))
+
+	// Variadic: keeps elements present in every one of the given slices.
+	require.Equal(t, []int{2},
+		xslices.Intersect([]int{1, 2, 3}, []int{2, 3}, []int{2}))
+
+	// No slices to intersect against returns items unchanged.
+	require.Equal(t, []int{1, 2}, xslices.Intersect([]int{1, 2}))
 
 	require.Empty(t, xslices.Intersect([]int{1, 2}, []int{3}))
 	require.Empty(t, xslices.Intersect([]int(nil), []int{1}))

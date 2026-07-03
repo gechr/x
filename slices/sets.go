@@ -1,9 +1,14 @@
 package slices
 
-// Difference returns the elements of items not present in exclude, preserving
-// order and duplicates from items.
-func Difference[S ~[]E, E comparable](items, exclude S) S {
-	drop := toSet(exclude)
+// Difference returns the elements of items not present in any of others,
+// preserving order and duplicates from items.
+func Difference[S ~[]E, E comparable](items S, others ...S) S {
+	drop := make(map[E]struct{})
+	for _, other := range others {
+		for item := range toSet(other) {
+			drop[item] = struct{}{}
+		}
+	}
 	diff := make(S, 0, len(items))
 	for _, item := range items {
 		if _, ok := drop[item]; !ok {
@@ -13,13 +18,23 @@ func Difference[S ~[]E, E comparable](items, exclude S) S {
 	return diff
 }
 
-// Intersect returns the elements of items also present in other, preserving
-// order and duplicates from items.
-func Intersect[S ~[]E, E comparable](items, other S) S {
-	keep := toSet(other)
+// Intersect returns the elements of items also present in every one of
+// others, preserving order and duplicates from items.
+func Intersect[S ~[]E, E comparable](items S, others ...S) S {
+	sets := make([]map[E]struct{}, len(others))
+	for i, other := range others {
+		sets[i] = toSet(other)
+	}
 	both := make(S, 0, len(items))
 	for _, item := range items {
-		if _, ok := keep[item]; ok {
+		inAll := true
+		for _, set := range sets {
+			if _, ok := set[item]; !ok {
+				inAll = false
+				break
+			}
+		}
+		if inAll {
 			both = append(both, item)
 		}
 	}
