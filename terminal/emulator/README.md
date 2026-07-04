@@ -12,6 +12,7 @@ Package emulator identifies the terminal emulator hosting the process.
 - [func Detect() string](<#Detect>)
 - [func IsKnown(name string) bool](<#IsKnown>)
 - [func Known() \[\]string](<#Known>)
+- [func SupportsGraphemes() bool](<#SupportsGraphemes>)
 
 ## Constants
 
@@ -86,3 +87,13 @@ func Known() []string
 ```
 
 **Known** returns the set of recognized terminal emulator names.
+
+<a name="SupportsGraphemes"></a>
+
+## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L17>)
+
+```go
+func SupportsGraphemes() bool
+```
+
+**SupportsGraphemes** reports whether the detected terminal emulator is known to measure text in grapheme clusters rather than per-codepoint wcwidth. It returns false when the emulator cannot be determined.
