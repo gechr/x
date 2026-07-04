@@ -1,3 +1,4 @@
+// Package human formats bytes, durations, counts, numbers, and ordinals for human-readable output.
 package human
 
 import (

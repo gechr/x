@@ -1,3 +1,4 @@
+// Package strings provides string helpers: split, contains, indent/dedent, truncate, and blank checks.
 package strings
 
 import (

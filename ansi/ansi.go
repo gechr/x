@@ -1,3 +1,4 @@
+// Package ansi provides ANSI-aware text wrapping, hyperlinks, and TTY fallback.
 package ansi
 
 import (

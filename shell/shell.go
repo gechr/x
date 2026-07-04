@@ -1,3 +1,4 @@
+// Package shell provides shell detection, path expansion, argument quoting, and splitting.
 package shell
 
 import (
@@ -5,6 +6,7 @@ import (
 	"path/filepath"
 )
 
+// EnvShell is the environment variable consulted by DetectFromEnv.
 const EnvShell = "SHELL"
 
 // DetectFromEnv returns the base name of env if it names a recognized shell.

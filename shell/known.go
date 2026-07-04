@@ -2,6 +2,7 @@ package shell
 
 import "slices"
 
+// Recognized shell names, as returned by Known.
 const (
 	Ash    = "ash"
 	Bash   = "bash"

@@ -1,3 +1,4 @@
+// Package terminal provides terminal detection and size queries.
 package terminal
 
 import (

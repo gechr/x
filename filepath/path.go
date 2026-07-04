@@ -1,3 +1,4 @@
+// Package filepath provides path helpers: symlink resolution and containment checks.
 package filepath
 
 import (

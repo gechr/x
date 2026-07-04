@@ -1,3 +1,4 @@
+// Package maps provides map helpers: sorted iteration, grouping, and inversion.
 package maps
 
 import "iter"
