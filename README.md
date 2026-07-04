@@ -1,5 +1,11 @@
 # x
 
+## Install
+
+```text
+go get github.com/gechr/x@latest
+```
+
 ## Packages
 
 | Package                                    | Description                                                      |
@@ -17,9 +23,3 @@
 | [`strings`](./strings)                     | String helpers: split, contains, indent/dedent, truncate, blank  |
 | [`terminal`](./terminal)                   | Terminal detection and size queries                              |
 | [`terminal/emulator`](./terminal/emulator) | Terminal emulator detection (iTerm2, Ghostty, kitty, …)          |
-
-## Install
-
-```text
-go get github.com/gechr/x@latest
-```
