@@ -4,63 +4,63 @@
 import "github.com/gechr/x/ansi"
 ```
 
-Package ansi provides ANSI\-aware text wrapping, hyperlinks, and TTY fallback.
+Package ansi provides ANSI-aware text wrapping, hyperlinks, and TTY fallback.
 
 ## Index
 
 - [Constants](<#constants>)
-- [func CursorBackward\(n int\) string](<#CursorBackward>)
-- [func CursorDown\(n int\) string](<#CursorDown>)
-- [func CursorForward\(n int\) string](<#CursorForward>)
-- [func CursorHorizontalAbsolute\(col int\) string](<#CursorHorizontalAbsolute>)
-- [func CursorNextLine\(n int\) string](<#CursorNextLine>)
-- [func CursorPosition\(col, row int\) string](<#CursorPosition>)
-- [func CursorPreviousLine\(n int\) string](<#CursorPreviousLine>)
-- [func CursorUp\(n int\) string](<#CursorUp>)
-- [func DeleteCharacter\(n int\) string](<#DeleteCharacter>)
-- [func DeleteLine\(n int\) string](<#DeleteLine>)
-- [func EraseCharacter\(n int\) string](<#EraseCharacter>)
-- [func EraseDisplay\(n int\) string](<#EraseDisplay>)
-- [func EraseLine\(n int\) string](<#EraseLine>)
-- [func InsertCharacter\(n int\) string](<#InsertCharacter>)
-- [func InsertLine\(n int\) string](<#InsertLine>)
-- [func ScrollDown\(n int\) string](<#ScrollDown>)
-- [func ScrollUp\(n int\) string](<#ScrollUp>)
-- [func SetCursorStyle\(style int\) string](<#SetCursorStyle>)
-- [func SetIconName\(s string\) string](<#SetIconName>)
-- [func SetIconNameWindowTitle\(s string\) string](<#SetIconNameWindowTitle>)
-- [func SetWindowTitle\(s string\) string](<#SetWindowTitle>)
-- [func StringWidth\(s string\) int](<#StringWidth>)
-- [func Strip\(s string\) string](<#Strip>)
-- [func Truncate\(s string, length int, tail string\) string](<#Truncate>)
-- [func WrapHard\(s string, width int\) string](<#WrapHard>)
-- [func WrapSoft\(s string, width int\) string](<#WrapSoft>)
+- [func CursorBackward(n int) string](<#CursorBackward>)
+- [func CursorDown(n int) string](<#CursorDown>)
+- [func CursorForward(n int) string](<#CursorForward>)
+- [func CursorHorizontalAbsolute(col int) string](<#CursorHorizontalAbsolute>)
+- [func CursorNextLine(n int) string](<#CursorNextLine>)
+- [func CursorPosition(col, row int) string](<#CursorPosition>)
+- [func CursorPreviousLine(n int) string](<#CursorPreviousLine>)
+- [func CursorUp(n int) string](<#CursorUp>)
+- [func DeleteCharacter(n int) string](<#DeleteCharacter>)
+- [func DeleteLine(n int) string](<#DeleteLine>)
+- [func EraseCharacter(n int) string](<#EraseCharacter>)
+- [func EraseDisplay(n int) string](<#EraseDisplay>)
+- [func EraseLine(n int) string](<#EraseLine>)
+- [func InsertCharacter(n int) string](<#InsertCharacter>)
+- [func InsertLine(n int) string](<#InsertLine>)
+- [func ScrollDown(n int) string](<#ScrollDown>)
+- [func ScrollUp(n int) string](<#ScrollUp>)
+- [func SetCursorStyle(style int) string](<#SetCursorStyle>)
+- [func SetIconName(s string) string](<#SetIconName>)
+- [func SetIconNameWindowTitle(s string) string](<#SetIconNameWindowTitle>)
+- [func SetWindowTitle(s string) string](<#SetWindowTitle>)
+- [func StringWidth(s string) int](<#StringWidth>)
+- [func Strip(s string) string](<#Strip>)
+- [func Truncate(s string, length int, tail string) string](<#Truncate>)
+- [func WrapHard(s string, width int) string](<#WrapHard>)
+- [func WrapSoft(s string, width int) string](<#WrapSoft>)
 - [type ANSI](<#ANSI>)
-  - [func Auto\(files ...\*os.File\) \*ANSI](<#Auto>)
-  - [func Force\(\) \*ANSI](<#Force>)
-  - [func Never\(\) \*ANSI](<#Never>)
-  - [func New\(opts ...Option\) \*ANSI](<#New>)
-  - [func \(w \*ANSI\) Hyperlink\(url, text string\) string](<#ANSI.Hyperlink>)
-  - [func \(w \*ANSI\) Terminal\(\) bool](<#ANSI.Terminal>)
+  - [func Auto(files ...\*os.File) \*ANSI](<#Auto>)
+  - [func Force() \*ANSI](<#Force>)
+  - [func Never() \*ANSI](<#Never>)
+  - [func New(opts ...Option) \*ANSI](<#New>)
+  - [func (w \*ANSI) Hyperlink(url, text string) string](<#ANSI.Hyperlink>)
+  - [func (w \*ANSI) Terminal() bool](<#ANSI.Terminal>)
 - [type HyperlinkFallback](<#HyperlinkFallback>)
 - [type Method](<#Method>)
 - [type Option](<#Option>)
-  - [func WithHyperlinkFallback\(fallback HyperlinkFallback\) Option](<#WithHyperlinkFallback>)
-  - [func WithTerminal\(v bool\) Option](<#WithTerminal>)
+  - [func WithHyperlinkFallback(fallback HyperlinkFallback) Option](<#WithHyperlinkFallback>)
+  - [func WithTerminal(v bool) Option](<#WithTerminal>)
 - [type WrapOption](<#WrapOption>)
-  - [func WithBreakpoints\(chars string\) WrapOption](<#WithBreakpoints>)
-  - [func WithPreserveStyle\(preserve bool\) WrapOption](<#WithPreserveStyle>)
-  - [func WithWidth\(width int\) WrapOption](<#WithWidth>)
-  - [func WithWidthFunc\(fn func\(\) int\) WrapOption](<#WithWidthFunc>)
-  - [func WithWrapHard\(\) WrapOption](<#WithWrapHard>)
-  - [func WithWrapSoft\(\) WrapOption](<#WithWrapSoft>)
+  - [func WithBreakpoints(chars string) WrapOption](<#WithBreakpoints>)
+  - [func WithPreserveStyle(preserve bool) WrapOption](<#WithPreserveStyle>)
+  - [func WithWidth(width int) WrapOption](<#WithWidth>)
+  - [func WithWidthFunc(fn func() int) WrapOption](<#WithWidthFunc>)
+  - [func WithWrapHard() WrapOption](<#WithWrapHard>)
+  - [func WithWrapSoft() WrapOption](<#WithWrapSoft>)
 - [type Wrapper](<#Wrapper>)
-  - [func NewWrapper\(opts ...WrapOption\) \*Wrapper](<#NewWrapper>)
-  - [func \(w \*Wrapper\) Wrap\(s string\) string](<#Wrapper.Wrap>)
+  - [func NewWrapper(opts ...WrapOption) \*Wrapper](<#NewWrapper>)
+  - [func (w \*Wrapper) Wrap(s string) string](<#Wrapper.Wrap>)
 
 ## Constants
 
-<a name="EraseLineRight"></a>Erase constants \(delegated\).
+<a name="EraseLineRight"></a>Erase constants (delegated).
 
 ```go
 const (
@@ -73,7 +73,7 @@ const (
 )
 ```
 
-<a name="CursorUp1"></a>Cursor movement \- single\-step constants. Upstream's preferred names are the opaque CUU1/CUD1/CUF1/CUB1 spellings; we keep the readable aliases here and forward to the non\-deprecated upstream symbols.
+<a name="CursorUp1"></a>Cursor movement - single-step constants. Upstream's preferred names are the opaque CUU1/CUD1/CUF1/CUB1 spellings; we keep the readable aliases here and forward to the non-deprecated upstream symbols.
 
 ```go
 const (
@@ -84,7 +84,7 @@ const (
 )
 ```
 
-<a name="ShowCursor"></a>Cursor visibility \(DECTCEM\).
+<a name="ShowCursor"></a>Cursor visibility (DECTCEM).
 
 ```go
 const (
@@ -93,7 +93,7 @@ const (
 )
 ```
 
-<a name="SaveCursorPosition"></a>Cursor save/restore \(SCOSC / SCORC\).
+<a name="SaveCursorPosition"></a>Cursor save/restore (SCOSC / SCORC).
 
 ```go
 const (
@@ -102,7 +102,7 @@ const (
 )
 ```
 
-<a name="Focus"></a>Focus reporting events \(terminal → app, when focus events are enabled\).
+<a name="Focus"></a>**Focus** reporting events (terminal → app, when focus events are enabled).
 
 ```go
 const (
@@ -111,7 +111,7 @@ const (
 )
 ```
 
-<a name="EnterAltScreen"></a>Alt\-screen buffer \(DEC 1049: also saves/restores cursor\).
+<a name="EnterAltScreen"></a>Alt-screen buffer (DEC 1049: also saves/restores cursor).
 
 ```go
 const (
@@ -120,7 +120,7 @@ const (
 )
 ```
 
-<a name="EnableBracketedPaste"></a>Bracketed paste mode \(DEC 2004\).
+<a name="EnableBracketedPaste"></a>Bracketed paste mode (DEC 2004).
 
 ```go
 const (
@@ -129,7 +129,7 @@ const (
 )
 ```
 
-<a name="EnableFocusEvents"></a>Focus event reporting mode \(DEC 1004\).
+<a name="EnableFocusEvents"></a>Focus event reporting mode (DEC 1004).
 
 ```go
 const (
@@ -138,7 +138,7 @@ const (
 )
 ```
 
-<a name="EnableSyncOutput"></a>Synchronized output mode \(DEC 2026\). Wrap a repaint in Enable/Disable so the terminal applies the whole frame atomically; terminals without support ignore both sequences.
+<a name="EnableSyncOutput"></a>Synchronized output mode (DEC 2026). Wrap a repaint in Enable/Disable so the terminal applies the whole frame atomically; terminals without support ignore both sequences.
 
 ```go
 const (
@@ -147,7 +147,7 @@ const (
 )
 ```
 
-<a name="RequestCursorPosition"></a>Terminal queries \- the terminal replies with a corresponding report.
+<a name="RequestCursorPosition"></a>Terminal queries - the terminal replies with a corresponding report.
 
 ```go
 const (
@@ -166,7 +166,7 @@ const (
 )
 ```
 
-<a name="KeypadApplicationMode"></a>Keypad modes \(DECKPAM / DECKPNM\). Application mode makes the numeric keypad emit escape sequences rather than raw digits; relevant when the host reads keys in raw mode.
+<a name="KeypadApplicationMode"></a>Keypad modes (DECKPAM / DECKPNM). Application mode makes the numeric keypad emit escape sequences rather than raw digits; relevant when the host reads keys in raw mode.
 
 ```go
 const (
@@ -175,7 +175,7 @@ const (
 )
 ```
 
-<a name="EnableMouseX10"></a>Mouse tracking modes. Each pair toggles a DEC private mode; the encoding mode \(SGR\) is usually enabled alongside one of the event modes:
+<a name="EnableMouseX10"></a>Mouse tracking modes. Each pair toggles a DEC private mode; the encoding mode (SGR) is usually enabled alongside one of the event modes:
 
 ```text
 X10         legacy, presses only (no release)
@@ -209,31 +209,31 @@ const (
 )
 ```
 
-<a name="CSI"></a>CSI is the Control Sequence Introducer prefix \(ESC \+ '\['\). Exported for callers that parse or construct their own CSI\-family sequences.
+<a name="CSI"></a>**CSI** is the Control Sequence Introducer prefix (ESC + `[`). Exported for callers that parse or construct their own CSI-family sequences.
 
 ```go
 const CSI = "\x1b["
 ```
 
-<a name="ClearLine"></a>ClearLine erases the entire current line \(EL 2\) and returns the cursor to column 0 \(CR\). This is a convenience composite not present in upstream; every other escape here delegates to [github.com/charmbracelet/x/ansi](<https://pkg.go.dev/github.com/charmbracelet/x/ansi/>).
+<a name="ClearLine"></a>**ClearLine** erases the entire current line (EL 2) and returns the cursor to column 0 (CR). This is a convenience composite not present in upstream; every other escape here delegates to [github.com/charmbracelet/x/ansi](<https://pkg.go.dev/github.com/charmbracelet/x/ansi>).
 
 ```go
 const ClearLine = xansi.EraseEntireLine + "\r"
 ```
 
-<a name="CursorHomePosition"></a>CursorHomePosition moves the cursor to row 1, column 1 \("\\x1b\[H"\).
+<a name="CursorHomePosition"></a>**CursorHomePosition** moves the cursor to row 1, column 1 (`"\x1b[H"`).
 
 ```go
 const CursorHomePosition = xansi.CursorHomePosition
 ```
 
-<a name="RequestNameVersion"></a>RequestNameVersion is the XTVERSION query \("\\x1b\[\>q"\): asks the terminal for its name and version. Complements the DA1 query.
+<a name="RequestNameVersion"></a>**RequestNameVersion** is the XTVERSION query (`"\x1b[>q"`): asks the terminal for its name and version. Complements the DA1 query.
 
 ```go
 const RequestNameVersion = xansi.RequestNameVersion
 ```
 
-<a name="ResetStyle"></a>ResetStyle is the SGR reset sequence \("\\x1b\[m"\): clears all text attributes and colours. Included because writing any styled output typically requires emitting this afterwards.
+<a name="ResetStyle"></a>**ResetStyle** is the SGR reset sequence (`"\x1b[m"`): clears all text attributes and colours. Included because writing any styled output typically requires emitting this afterwards.
 
 ```go
 const ResetStyle = xansi.ResetStyle
@@ -247,7 +247,7 @@ const ResetStyle = xansi.ResetStyle
 func CursorBackward(n int) string
 ```
 
-CursorBackward returns the CUB sequence: move cursor left n columns.
+**CursorBackward** returns the CUB sequence: move cursor left n columns.
 
 <a name="CursorDown"></a>
 
@@ -257,7 +257,7 @@ CursorBackward returns the CUB sequence: move cursor left n columns.
 func CursorDown(n int) string
 ```
 
-CursorDown returns the CUD sequence: move cursor down n lines.
+**CursorDown** returns the CUD sequence: move cursor down n lines.
 
 <a name="CursorForward"></a>
 
@@ -267,7 +267,7 @@ CursorDown returns the CUD sequence: move cursor down n lines.
 func CursorForward(n int) string
 ```
 
-CursorForward returns the CUF sequence: move cursor right n columns.
+**CursorForward** returns the CUF sequence: move cursor right n columns.
 
 <a name="CursorHorizontalAbsolute"></a>
 
@@ -277,7 +277,7 @@ CursorForward returns the CUF sequence: move cursor right n columns.
 func CursorHorizontalAbsolute(col int) string
 ```
 
-CursorHorizontalAbsolute returns the CHA sequence: move to column col on the current line.
+**CursorHorizontalAbsolute** returns the CHA sequence: move to column col on the current line.
 
 <a name="CursorNextLine"></a>
 
@@ -287,7 +287,7 @@ CursorHorizontalAbsolute returns the CHA sequence: move to column col on the cur
 func CursorNextLine(n int) string
 ```
 
-CursorNextLine returns the CNL sequence: move down n lines and to column 1.
+**CursorNextLine** returns the CNL sequence: move down n lines and to column 1.
 
 <a name="CursorPosition"></a>
 
@@ -297,7 +297,7 @@ CursorNextLine returns the CNL sequence: move down n lines and to column 1.
 func CursorPosition(col, row int) string
 ```
 
-CursorPosition returns the CUP sequence: move to \(col, row\). Coordinates are 1\-based.
+**CursorPosition** returns the CUP sequence: move to (col, row). Coordinates are 1-based.
 
 <a name="CursorPreviousLine"></a>
 
@@ -307,7 +307,7 @@ CursorPosition returns the CUP sequence: move to \(col, row\). Coordinates are 1
 func CursorPreviousLine(n int) string
 ```
 
-CursorPreviousLine returns the CPL sequence: move up n lines and to column 1.
+**CursorPreviousLine** returns the CPL sequence: move up n lines and to column 1.
 
 <a name="CursorUp"></a>
 
@@ -317,7 +317,7 @@ CursorPreviousLine returns the CPL sequence: move up n lines and to column 1.
 func CursorUp(n int) string
 ```
 
-CursorUp returns the CUU sequence: move cursor up n lines.
+**CursorUp** returns the CUU sequence: move cursor up n lines.
 
 <a name="DeleteCharacter"></a>
 
@@ -327,7 +327,7 @@ CursorUp returns the CUU sequence: move cursor up n lines.
 func DeleteCharacter(n int) string
 ```
 
-DeleteCharacter returns the DCH sequence: delete n characters at the cursor, pulling subsequent characters left.
+**DeleteCharacter** returns the DCH sequence: delete n characters at the cursor, pulling subsequent characters left.
 
 <a name="DeleteLine"></a>
 
@@ -337,7 +337,7 @@ DeleteCharacter returns the DCH sequence: delete n characters at the cursor, pul
 func DeleteLine(n int) string
 ```
 
-DeleteLine returns the DL sequence: delete n lines starting at the cursor, pulling subsequent lines up.
+**DeleteLine** returns the DL sequence: delete n lines starting at the cursor, pulling subsequent lines up.
 
 <a name="EraseCharacter"></a>
 
@@ -347,7 +347,7 @@ DeleteLine returns the DL sequence: delete n lines starting at the cursor, pulli
 func EraseCharacter(n int) string
 ```
 
-EraseCharacter returns the ECH sequence: erase n characters from the cursor position \(no cursor movement\).
+**EraseCharacter** returns the ECH sequence: erase n characters from the cursor position (no cursor movement).
 
 <a name="EraseDisplay"></a>
 
@@ -357,7 +357,7 @@ EraseCharacter returns the ECH sequence: erase n characters from the cursor posi
 func EraseDisplay(n int) string
 ```
 
-EraseDisplay returns the ED sequence. n selects the variant: 0 = below cursor, 1 = above cursor, 2 = entire screen.
+**EraseDisplay** returns the ED sequence. n selects the variant: 0 = below cursor, 1 = above cursor, 2 = entire screen.
 
 <a name="EraseLine"></a>
 
@@ -367,7 +367,7 @@ EraseDisplay returns the ED sequence. n selects the variant: 0 = below cursor, 1
 func EraseLine(n int) string
 ```
 
-EraseLine returns the EL sequence. n selects the variant: 0 = right of cursor, 1 = left of cursor, 2 = entire line.
+**EraseLine** returns the EL sequence. n selects the variant: 0 = right of cursor, 1 = left of cursor, 2 = entire line.
 
 <a name="InsertCharacter"></a>
 
@@ -377,7 +377,7 @@ EraseLine returns the EL sequence. n selects the variant: 0 = right of cursor, 1
 func InsertCharacter(n int) string
 ```
 
-InsertCharacter returns the ICH sequence: insert n blank characters at the cursor, shifting existing characters right.
+**InsertCharacter** returns the ICH sequence: insert n blank characters at the cursor, shifting existing characters right.
 
 <a name="InsertLine"></a>
 
@@ -387,7 +387,7 @@ InsertCharacter returns the ICH sequence: insert n blank characters at the curso
 func InsertLine(n int) string
 ```
 
-InsertLine returns the IL sequence: insert n blank lines at the cursor, pushing existing lines down.
+**InsertLine** returns the IL sequence: insert n blank lines at the cursor, pushing existing lines down.
 
 <a name="ScrollDown"></a>
 
@@ -397,7 +397,7 @@ InsertLine returns the IL sequence: insert n blank lines at the cursor, pushing 
 func ScrollDown(n int) string
 ```
 
-ScrollDown returns the SD sequence: scroll viewport down n lines \(content moves down; new blank lines appear at the top\).
+**ScrollDown** returns the SD sequence: scroll viewport down n lines (content moves down; new blank lines appear at the top).
 
 <a name="ScrollUp"></a>
 
@@ -407,7 +407,7 @@ ScrollDown returns the SD sequence: scroll viewport down n lines \(content moves
 func ScrollUp(n int) string
 ```
 
-ScrollUp returns the SU sequence: scroll viewport up n lines \(content moves up; new blank lines appear at the bottom\).
+**ScrollUp** returns the SU sequence: scroll viewport up n lines (content moves up; new blank lines appear at the bottom).
 
 <a name="SetCursorStyle"></a>
 
@@ -417,7 +417,7 @@ ScrollUp returns the SU sequence: scroll viewport up n lines \(content moves up;
 func SetCursorStyle(style int) string
 ```
 
-SetCursorStyle returns the DECSCUSR sequence. Style selects shape and blink state:
+**SetCursorStyle** returns the DECSCUSR sequence. Style selects shape and blink state:
 
 ```text
 0: default         1: blinking block    2: steady block
@@ -432,7 +432,7 @@ SetCursorStyle returns the DECSCUSR sequence. Style selects shape and blink stat
 func SetIconName(s string) string
 ```
 
-SetIconName sets the icon/tab name only \(OSC 1\).
+**SetIconName** sets the icon/tab name only (OSC 1).
 
 <a name="SetIconNameWindowTitle"></a>
 
@@ -442,7 +442,7 @@ SetIconName sets the icon/tab name only \(OSC 1\).
 func SetIconNameWindowTitle(s string) string
 ```
 
-SetIconNameWindowTitle sets both the icon name and window title in a single sequence \(OSC 0\).
+**SetIconNameWindowTitle** sets both the icon name and window title in a single sequence (OSC 0).
 
 <a name="SetWindowTitle"></a>
 
@@ -452,7 +452,7 @@ SetIconNameWindowTitle sets both the icon name and window title in a single sequ
 func SetWindowTitle(s string) string
 ```
 
-SetWindowTitle sets the terminal window title only \(OSC 2\).
+**SetWindowTitle** sets the terminal window title only (OSC 2).
 
 <a name="StringWidth"></a>
 
@@ -462,7 +462,7 @@ SetWindowTitle sets the terminal window title only \(OSC 2\).
 func StringWidth(s string) int
 ```
 
-StringWidth returns the display width of a string in cells, ignoring ANSI escape codes and accounting for wide characters. Uses grapheme clustering.
+**StringWidth** returns the display width of a string in cells, ignoring ANSI escape codes and accounting for wide characters. Uses grapheme clustering.
 
 <a name="Strip"></a>
 
@@ -472,7 +472,7 @@ StringWidth returns the display width of a string in cells, ignoring ANSI escape
 func Strip(s string) string
 ```
 
-Strip removes ANSI escape codes from a string.
+**Strip** removes ANSI escape codes from a string.
 
 <a name="Truncate"></a>
 
@@ -482,7 +482,7 @@ Strip removes ANSI escape codes from a string.
 func Truncate(s string, length int, tail string) string
 ```
 
-Truncate truncates a string to a given cell width, appending tail if the string was truncated. ANSI escape codes are preserved.
+**Truncate** truncates a string to a given cell width, appending tail if the string was truncated. ANSI escape codes are preserved.
 
 <a name="WrapHard"></a>
 
@@ -492,7 +492,7 @@ Truncate truncates a string to a given cell width, appending tail if the string 
 func WrapHard(s string, width int) string
 ```
 
-WrapHard wraps s at exactly width columns, breaking mid\-word if needed. ANSI styles are preserved.
+**WrapHard** wraps s at exactly width columns, breaking mid-word if needed. ANSI styles are preserved.
 
 <a name="WrapSoft"></a>
 
@@ -502,13 +502,13 @@ WrapHard wraps s at exactly width columns, breaking mid\-word if needed. ANSI st
 func WrapSoft(s string, width int) string
 ```
 
-WrapSoft wraps s to fit within width columns, breaking at space boundaries. Words longer than width are hard\-wrapped. ANSI styles are preserved.
+**WrapSoft** wraps s to fit within width columns, breaking at space boundaries. Words longer than width are hard-wrapped. ANSI styles are preserved.
 
 <a name="ANSI"></a>
 
 ## type [ANSI](<https://github.com/gechr/x/blob/main/ansi/ansi.go#L12-L15>)
 
-ANSI produces ANSI\-aware output, falling back to plain text when the output is not a terminal.
+**ANSI** produces ANSI-aware output, falling back to plain text when the output is not a terminal.
 
 ```go
 type ANSI struct {
@@ -524,7 +524,7 @@ type ANSI struct {
 func Auto(files ...*os.File) *ANSI
 ```
 
-Auto creates an ANSI that auto\-detects whether the output is a terminal. All provided files must be terminals for ANSI output to be enabled. Defaults to os.Stdout if no files are provided.
+**Auto** creates an ANSI that auto-detects whether the output is a terminal. All provided files must be terminals for ANSI output to be enabled. Defaults to os.Stdout if no files are provided.
 
 <a name="Force"></a>
 
@@ -534,7 +534,7 @@ Auto creates an ANSI that auto\-detects whether the output is a terminal. All pr
 func Force() *ANSI
 ```
 
-Force creates an ANSI with ANSI output unconditionally enabled.
+**Force** creates an ANSI with ANSI output unconditionally enabled.
 
 <a name="Never"></a>
 
@@ -544,7 +544,7 @@ Force creates an ANSI with ANSI output unconditionally enabled.
 func Never() *ANSI
 ```
 
-Never creates an ANSI with ANSI output unconditionally disabled.
+**Never** creates an ANSI with ANSI output unconditionally disabled.
 
 <a name="New"></a>
 
@@ -554,33 +554,33 @@ Never creates an ANSI with ANSI output unconditionally disabled.
 func New(opts ...Option) *ANSI
 ```
 
-New creates an ANSI with the given options.
+**New** creates an ANSI with the given options.
 
 <a name="ANSI.Hyperlink"></a>
 
-### func \(\*ANSI\) [Hyperlink](<https://github.com/gechr/x/blob/main/ansi/hyperlink.go#L29>)
+### func (\*ANSI) [Hyperlink](<https://github.com/gechr/x/blob/main/ansi/hyperlink.go#L29>)
 
 ```go
 func (w *ANSI) Hyperlink(url, text string) string
 ```
 
-Hyperlink creates an OSC 8 terminal hyperlink. When the output is not a terminal, the HyperlinkFallback mode controls how the link is rendered in plain text.
+**Hyperlink** creates an OSC 8 terminal hyperlink. When the output is not a terminal, the HyperlinkFallback mode controls how the link is rendered in plain text.
 
 <a name="ANSI.Terminal"></a>
 
-### func \(\*ANSI\) [Terminal](<https://github.com/gechr/x/blob/main/ansi/ansi.go#L52>)
+### func (\*ANSI) [Terminal](<https://github.com/gechr/x/blob/main/ansi/ansi.go#L52>)
 
 ```go
 func (w *ANSI) Terminal() bool
 ```
 
-Terminal reports whether the output target is a terminal.
+**Terminal** reports whether the output target is a terminal.
 
 <a name="HyperlinkFallback"></a>
 
 ## type [HyperlinkFallback](<https://github.com/gechr/x/blob/main/ansi/hyperlink.go#L6>)
 
-HyperlinkFallback controls how hyperlinks render when the output is not a terminal.
+**HyperlinkFallback** controls how hyperlinks render when the output is not a terminal.
 
 ```go
 type HyperlinkFallback int
@@ -605,7 +605,7 @@ const (
 
 ## type [Method](<https://github.com/gechr/x/blob/main/ansi/text.go#L6>)
 
-Method controls how display width is calculated.
+**Method** controls how display width is calculated.
 
 ```go
 type Method = xansi.Method
@@ -615,7 +615,7 @@ type Method = xansi.Method
 
 ## type [Option](<https://github.com/gechr/x/blob/main/ansi/options.go#L4>)
 
-Option configures an ANSI.
+**Option** configures an ANSI.
 
 ```go
 type Option func(*ANSI)
@@ -629,7 +629,7 @@ type Option func(*ANSI)
 func WithHyperlinkFallback(fallback HyperlinkFallback) Option
 ```
 
-WithHyperlinkFallback sets how hyperlinks render when the output is not a terminal.
+**WithHyperlinkFallback** sets how hyperlinks render when the output is not a terminal.
 
 <a name="WithTerminal"></a>
 
@@ -639,13 +639,13 @@ WithHyperlinkFallback sets how hyperlinks render when the output is not a termin
 func WithTerminal(v bool) Option
 ```
 
-WithTerminal sets whether the output target is a terminal.
+**WithTerminal** sets whether the output target is a terminal.
 
 <a name="WrapOption"></a>
 
 ## type [WrapOption](<https://github.com/gechr/x/blob/main/ansi/wrap.go#L84>)
 
-WrapOption configures a [Wrapper](<#Wrapper>).
+**WrapOption** configures a [Wrapper](<#Wrapper>).
 
 ```go
 type WrapOption func(*Wrapper)
@@ -659,7 +659,7 @@ type WrapOption func(*Wrapper)
 func WithBreakpoints(chars string) WrapOption
 ```
 
-WithBreakpoints adds characters \(beyond spaces\) that are treated as word break opportunities during soft wrapping. Has no effect in hard wrap mode.
+**WithBreakpoints** adds characters (beyond spaces) that are treated as word break opportunities during soft wrapping. Has no effect in hard wrap mode.
 
 <a name="WithPreserveStyle"></a>
 
@@ -669,7 +669,7 @@ WithBreakpoints adds characters \(beyond spaces\) that are treated as word break
 func WithPreserveStyle(preserve bool) WrapOption
 ```
 
-WithPreserveStyle controls whether ANSI styles and hyperlinks are reset and reapplied across line breaks. Default: true.
+**WithPreserveStyle** controls whether ANSI styles and hyperlinks are reset and reapplied across line breaks. Default: true.
 
 <a name="WithWidth"></a>
 
@@ -679,7 +679,7 @@ WithPreserveStyle controls whether ANSI styles and hyperlinks are reset and reap
 func WithWidth(width int) WrapOption
 ```
 
-WithWidth sets a static wrap width. A width \< 1 disables wrapping.
+**WithWidth** sets a static wrap width. A width \< 1 disables wrapping.
 
 <a name="WithWidthFunc"></a>
 
@@ -689,7 +689,7 @@ WithWidth sets a static wrap width. A width \< 1 disables wrapping.
 func WithWidthFunc(fn func() int) WrapOption
 ```
 
-WithWidthFunc sets a dynamic width function, called on each [Wrapper.Wrap](<#Wrapper.Wrap>) invocation. Takes precedence over [WithWidth](<#WithWidth>).
+**WithWidthFunc** sets a dynamic width function, called on each [Wrapper.Wrap](<#Wrapper.Wrap>) invocation. Takes precedence over [WithWidth](<#WithWidth>).
 
 <a name="WithWrapHard"></a>
 
@@ -699,7 +699,7 @@ WithWidthFunc sets a dynamic width function, called on each [Wrapper.Wrap](<#Wra
 func WithWrapHard() WrapOption
 ```
 
-WithWrapHard selects hard wrapping: break at the exact column width, even mid\-word.
+**WithWrapHard** selects hard wrapping: break at the exact column width, even mid-word.
 
 <a name="WithWrapSoft"></a>
 
@@ -709,13 +709,13 @@ WithWrapHard selects hard wrapping: break at the exact column width, even mid\-w
 func WithWrapSoft() WrapOption
 ```
 
-WithWrapSoft selects soft wrapping: break at space boundaries, with hard\-wrap fallback for words longer than the width. This is the default.
+**WithWrapSoft** selects soft wrapping: break at space boundaries, with hard-wrap fallback for words longer than the width. This is the default.
 
 <a name="Wrapper"></a>
 
 ## type [Wrapper](<https://github.com/gechr/x/blob/main/ansi/wrap.go#L26-L33>)
 
-Wrapper wraps text to a configured width, preserving ANSI escape sequences.
+**Wrapper** wraps text to a configured width, preserving ANSI escape sequences.
 
 ```go
 type Wrapper struct {
@@ -731,14 +731,14 @@ type Wrapper struct {
 func NewWrapper(opts ...WrapOption) *Wrapper
 ```
 
-NewWrapper creates a [Wrapper](<#Wrapper>) with the given options. Defaults: soft wrap, no additional breakpoints, ANSI style preservation enabled.
+**NewWrapper** creates a [Wrapper](<#Wrapper>) with the given options. Defaults: soft wrap, no additional breakpoints, ANSI style preservation enabled.
 
 <a name="Wrapper.Wrap"></a>
 
-### func \(\*Wrapper\) [Wrap](<https://github.com/gechr/x/blob/main/ansi/wrap.go#L50>)
+### func (\*Wrapper) [Wrap](<https://github.com/gechr/x/blob/main/ansi/wrap.go#L50>)
 
 ```go
 func (w *Wrapper) Wrap(s string) string
 ```
 
-Wrap wraps s according to the configured mode and width. Returns s unchanged if the effective width is \< 1.
+**Wrap** wraps s according to the configured mode and width. Returns s unchanged if the effective width is \< 1.

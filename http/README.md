@@ -8,9 +8,9 @@ Package http provides HTTP helpers: retryable status codes, status text, and Lin
 
 ## Index
 
-- [func IsRetryableStatus\(code int\) bool](<#IsRetryableStatus>)
-- [func NextLink\(h http.Header\) string](<#NextLink>)
-- [func Status\(code int\) string](<#Status>)
+- [func IsRetryableStatus(code int) bool](<#IsRetryableStatus>)
+- [func NextLink(h http.Header) string](<#NextLink>)
+- [func Status(code int) string](<#Status>)
 
 <a name="IsRetryableStatus"></a>
 
@@ -20,7 +20,7 @@ Package http provides HTTP helpers: retryable status codes, status text, and Lin
 func IsRetryableStatus(code int) bool
 ```
 
-IsRetryableStatus reports whether an HTTP status code represents a transient failure worth retrying: a request timeout \(408\), rate limiting \(429\), or any server error \(5xx\).
+**IsRetryableStatus** reports whether an HTTP status code represents a transient failure worth retrying: a request timeout (408), rate limiting (429), or any server error (5xx).
 
 <a name="NextLink"></a>
 
@@ -30,7 +30,7 @@ IsRetryableStatus reports whether an HTTP status code represents a transient fai
 func NextLink(h http.Header) string
 ```
 
-NextLink returns the rel="next" target from an RFC 8288 Link header, or "" when none. The target is returned as written \- possibly relative \- so a caller that needs an absolute URL resolves it against the request URL. All Link header lines are searched, an unquoted rel token is tolerated, and a quoted rel list \(e.g. rel="next last"\) matches on any member.
+**NextLink** returns the rel="next" target from an RFC 8288 Link header, or "" when none. The target is returned as written - possibly relative - so a caller that needs an absolute URL resolves it against the request URL. All Link header lines are searched, an unquoted rel token is tolerated, and a quoted rel list (e.g. rel="next last") matches on any member.
 
 <a name="Status"></a>
 
@@ -40,4 +40,4 @@ NextLink returns the rel="next" target from an RFC 8288 Link header, or "" when 
 func Status(code int) string
 ```
 
-Status returns a human\-readable form of an HTTP status code, pairing the numeric code with its canonical reason phrase, e.g. "404 Not Found".
+**Status** returns a human-readable form of an HTTP status code, pairing the numeric code with its canonical reason phrase, e.g. "404 Not Found".

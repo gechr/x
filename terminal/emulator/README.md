@@ -9,9 +9,9 @@ Package emulator identifies the terminal emulator hosting the process.
 ## Index
 
 - [Constants](<#constants>)
-- [func Detect\(\) string](<#Detect>)
-- [func IsKnown\(name string\) bool](<#IsKnown>)
-- [func Known\(\) \[\]string](<#Known>)
+- [func Detect() string](<#Detect>)
+- [func IsKnown(name string) bool](<#IsKnown>)
+- [func Known() \[\]string](<#Known>)
 
 ## Constants
 
@@ -65,7 +65,7 @@ const (
 func Detect() string
 ```
 
-Detect returns the terminal emulator hosting the process, or empty if it cannot be determined. Detection is best\-effort, based on environment variables inherited from the emulator. Priority: TERM\_PROGRAM, TERMINAL\_EMULATOR, emulator\-specific variables, TERM.
+**Detect** returns the terminal emulator hosting the process, or empty if it cannot be determined. Detection is best-effort, based on environment variables inherited from the emulator. Priority: `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables, `TERM`.
 
 <a name="IsKnown"></a>
 
@@ -75,7 +75,7 @@ Detect returns the terminal emulator hosting the process, or empty if it cannot 
 func IsKnown(name string) bool
 ```
 
-IsKnown reports whether name matches a known terminal emulator.
+**IsKnown** reports whether name matches a known terminal emulator.
 
 <a name="Known"></a>
 
@@ -85,4 +85,4 @@ IsKnown reports whether name matches a known terminal emulator.
 func Known() []string
 ```
 
-Known returns the set of recognized terminal emulator names.
+**Known** returns the set of recognized terminal emulator names.

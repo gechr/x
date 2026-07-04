@@ -33,7 +33,7 @@ func DetectFromProcess() string {
 }
 
 // Detect returns the shell to use for completions.
-// Priority: COMPLETE_SHELL env var, parent process name, SHELL env var.
+// Priority: `COMPLETE_SHELL` env var, parent process name, `SHELL` env var.
 func Detect() string {
 	if shell := DetectFromEnv("COMPLETE_SHELL"); shell != "" {
 		return shell

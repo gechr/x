@@ -8,18 +8,18 @@ Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
 
 ## Index
 
-- [func AtomicWrite\(path string, data \[\]byte, perm stdos.FileMode\) error](<#AtomicWrite>)
-- [func CopyFile\(src, dst string\) error](<#CopyFile>)
-- [func EnsureDir\(dir string, perm stdos.FileMode\) error](<#EnsureDir>)
-- [func Exists\(path string\) \(bool, error\)](<#Exists>)
-- [func IsDir\(path string\) \(bool, error\)](<#IsDir>)
-- [func IsFile\(path string\) \(bool, error\)](<#IsFile>)
-- [func IsSymlink\(path string\) \(bool, error\)](<#IsSymlink>)
-- [func IsWritableDir\(dir string\) bool](<#IsWritableDir>)
-- [func ReadLines\(path string\) \(\[\]string, error\)](<#ReadLines>)
-- [func SameFile\(a, b string\) \(bool, error\)](<#SameFile>)
-- [func Trash\(path string\) error](<#Trash>)
-- [func WriteLines\(path string, lines \[\]string, perm stdos.FileMode\) error](<#WriteLines>)
+- [func AtomicWrite(path string, data \[\]byte, perm stdos.FileMode) error](<#AtomicWrite>)
+- [func CopyFile(src, dst string) error](<#CopyFile>)
+- [func EnsureDir(dir string, perm stdos.FileMode) error](<#EnsureDir>)
+- [func Exists(path string) (bool, error)](<#Exists>)
+- [func IsDir(path string) (bool, error)](<#IsDir>)
+- [func IsFile(path string) (bool, error)](<#IsFile>)
+- [func IsSymlink(path string) (bool, error)](<#IsSymlink>)
+- [func IsWritableDir(dir string) bool](<#IsWritableDir>)
+- [func ReadLines(path string) (\[\]string, error)](<#ReadLines>)
+- [func SameFile(a, b string) (bool, error)](<#SameFile>)
+- [func Trash(path string) error](<#Trash>)
+- [func WriteLines(path string, lines \[\]string, perm stdos.FileMode) error](<#WriteLines>)
 
 <a name="AtomicWrite"></a>
 
@@ -29,7 +29,7 @@ Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
 func AtomicWrite(path string, data []byte, perm stdos.FileMode) error
 ```
 
-AtomicWrite writes data to path via a temp\-file\-and\-rename in the same directory. The temp file is removed on any failure.
+**AtomicWrite** writes data to path via a temp-file-and-rename in the same directory. The temp file is removed on any failure.
 
 <a name="CopyFile"></a>
 
@@ -39,7 +39,7 @@ AtomicWrite writes data to path via a temp\-file\-and\-rename in the same direct
 func CopyFile(src, dst string) error
 ```
 
-CopyFile copies src to dst, preserving src's mode bits. dst is fsynced before close. When src and dst are the same file \(including via hard link\) CopyFile is a no\-op.
+**CopyFile** copies src to dst, preserving src's mode bits. dst is fsynced before close. When src and dst are the same file (including via hard link) CopyFile is a no-op.
 
 <a name="EnsureDir"></a>
 
@@ -49,7 +49,7 @@ CopyFile copies src to dst, preserving src's mode bits. dst is fsynced before cl
 func EnsureDir(dir string, perm stdos.FileMode) error
 ```
 
-EnsureDir creates dir and any parents with the given permissions.
+**EnsureDir** creates dir and any parents with the given permissions.
 
 <a name="Exists"></a>
 
@@ -59,7 +59,7 @@ EnsureDir creates dir and any parents with the given permissions.
 func Exists(path string) (bool, error)
 ```
 
-Exists reports whether path exists.
+**Exists** reports whether path exists.
 
 <a name="IsDir"></a>
 
@@ -69,7 +69,7 @@ Exists reports whether path exists.
 func IsDir(path string) (bool, error)
 ```
 
-IsDir reports whether path is a directory.
+**IsDir** reports whether path is a directory.
 
 <a name="IsFile"></a>
 
@@ -79,7 +79,7 @@ IsDir reports whether path is a directory.
 func IsFile(path string) (bool, error)
 ```
 
-IsFile reports whether path is a regular file.
+**IsFile** reports whether path is a regular file.
 
 <a name="IsSymlink"></a>
 
@@ -89,7 +89,7 @@ IsFile reports whether path is a regular file.
 func IsSymlink(path string) (bool, error)
 ```
 
-IsSymlink reports whether path is a symbolic link.
+**IsSymlink** reports whether path is a symbolic link.
 
 <a name="IsWritableDir"></a>
 
@@ -99,7 +99,7 @@ IsSymlink reports whether path is a symbolic link.
 func IsWritableDir(dir string) bool
 ```
 
-IsWritableDir reports whether dir exists and the current process can create files in it. Uses a probe file rather than permission\-bit inspection so that ACLs and immutable mounts are handled correctly.
+**IsWritableDir** reports whether dir exists and the current process can create files in it. Uses a probe file rather than permission-bit inspection so that ACLs and immutable mounts are handled correctly.
 
 <a name="ReadLines"></a>
 
@@ -109,7 +109,7 @@ IsWritableDir reports whether dir exists and the current process can create file
 func ReadLines(path string) ([]string, error)
 ```
 
-ReadLines reads path and returns its non\-empty, trimmed lines.
+**ReadLines** reads path and returns its non-empty, trimmed lines.
 
 <a name="SameFile"></a>
 
@@ -119,7 +119,7 @@ ReadLines reads path and returns its non\-empty, trimmed lines.
 func SameFile(a, b string) (bool, error)
 ```
 
-SameFile reports whether a and b identify the same file. Missing leaf paths are compared after resolving their parent directories, and existing files are compared with os.SameFile to detect hard links.
+**SameFile** reports whether a and b identify the same file. Missing leaf paths are compared after resolving their parent directories, and existing files are compared with os.SameFile to detect hard links.
 
 <a name="Trash"></a>
 
@@ -129,11 +129,11 @@ SameFile reports whether a and b identify the same file. Missing leaf paths are 
 func Trash(path string) error
 ```
 
-Trash asks the operating system to move path to its trash \(or recycle bin\) rather than removing it permanently like os.Remove, so it can typically be recovered. The path is resolved to an absolute path first, so a relative path trashes the intended file regardless of the working directory.
+**Trash** asks the operating system to move path to its trash (or recycle bin) rather than removing it permanently like os.Remove, so it can typically be recovered. The path is resolved to an absolute path first, so a relative path trashes the intended file regardless of the working directory.
 
-The mechanism is platform\-specific: the system trash tool on macOS \(so the Finder's "Put Back" works\), the FreeDesktop.org trash specification on Linux and other Unix systems, and the shell file operation that targets the Recycle Bin on Windows. Recoverability is the OS's to honor, not a guarantee: an environment with the Recycle Bin disabled, for instance, may delete outright.
+The mechanism is platform-specific: the system trash tool on macOS (so the Finder's "Put Back" works), the FreeDesktop.org trash specification on Linux and other Unix systems, and the shell file operation that targets the Recycle Bin on Windows. Recoverability is the OS's to honor, not a guarantee: an environment with the Recycle Bin disabled, for instance, may delete outright.
 
-Where the platform cannot trash, it returns an error wrapping [errors.ErrUnsupported](<https://pkg.go.dev/errors/#ErrUnsupported>), so a caller can detect the case and decide what to do \(e.g. fall back to os.Remove\). This covers a macOS older than 15 \(which lacks the system trash tool\) and a Unix file with no usable same\-device trash.
+Where the platform cannot trash, it returns an error wrapping [errors.ErrUnsupported](<https://pkg.go.dev/errors#ErrUnsupported>), so a caller can detect the case and decide what to do (e.g. fall back to os.Remove). This covers a macOS older than 15 (which lacks the system trash tool) and a Unix file with no usable same-device trash.
 
 <a name="WriteLines"></a>
 
@@ -143,4 +143,4 @@ Where the platform cannot trash, it returns an error wrapping [errors.ErrUnsuppo
 func WriteLines(path string, lines []string, perm stdos.FileMode) error
 ```
 
-WriteLines atomically writes lines to path, one per line, with a trailing newline.
+**WriteLines** atomically writes lines to path, one per line, with a trailing newline.

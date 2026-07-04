@@ -74,8 +74,8 @@ var termValues = map[string]string{
 // Detect returns the terminal emulator hosting the process, or empty if it
 // cannot be determined. Detection is best-effort, based on environment
 // variables inherited from the emulator.
-// Priority: TERM_PROGRAM, TERMINAL_EMULATOR, emulator-specific variables,
-// TERM.
+// Priority: `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables,
+// `TERM`.
 func Detect() string {
 	program := strings.ToLower(strings.TrimSpace(os.Getenv(EnvTermProgram)))
 	if name, ok := termPrograms[program]; ok {

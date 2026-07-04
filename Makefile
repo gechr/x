@@ -6,7 +6,7 @@ all: fmt lint test
 
 .PHONY: doc
 doc:
-	@$(GO) tool gomarkdoc -t 'file={{if .Header -}}{{- .Header -}}{{- spacer -}}{{- end -}}{{- range .Packages -}}{{- template "package" . -}}{{- spacer -}}{{- end -}}{{- if .Footer -}}{{- .Footer -}}{{- end -}}' -o '{{.Dir}}/README.md' ./...
+	@$(GO) tool coauthor ./...
 	@rumdl fmt --quiet
 
 .PHONY: fmt

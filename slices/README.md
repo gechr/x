@@ -8,21 +8,21 @@ Package slices provides slice helpers.
 
 ## Index
 
-- [func ContainsFold\[S \~\[\]E, E \~string\]\(items S, target E\) bool](<#ContainsFold>)
-- [func Count\[S \~\[\]E, E comparable\]\(items S, target E\) int](<#Count>)
-- [func CountFunc\[S \~\[\]E, E any\]\(items S, match func\(E\) bool\) int](<#CountFunc>)
-- [func Difference\[S \~\[\]E, E comparable\]\(items S, others ...S\) S](<#Difference>)
-- [func Intersect\[S \~\[\]E, E comparable\]\(items S, others ...S\) S](<#Intersect>)
-- [func LastIndex\[S \~\[\]E, E comparable\]\(items S, target E\) int](<#LastIndex>)
-- [func LastIndexFunc\[S \~\[\]E, E any\]\(items S, match func\(E\) bool\) int](<#LastIndexFunc>)
-- [func Partition\[S \~\[\]E, E any\]\(items S, match func\(E\) bool\) \(S, S\)](<#Partition>)
-- [func SortNatural\[S \~\[\]E, E \~string\]\(s S\)](<#SortNatural>)
-- [func Trim\[S \~\[\]E, E comparable\]\(items, cutset S\) S](<#Trim>)
-- [func TrimLeft\[S \~\[\]E, E comparable\]\(items, cutset S\) S](<#TrimLeft>)
-- [func TrimRight\[S \~\[\]E, E comparable\]\(items, cutset S\) S](<#TrimRight>)
-- [func Union\[S \~\[\]E, E comparable\]\(items S, others ...S\) S](<#Union>)
-- [func Unique\[S \~\[\]E, E comparable\]\(items S\) S](<#Unique>)
-- [func UniqueFold\[S \~\[\]E, E \~string\]\(items S\) S](<#UniqueFold>)
+- [func ContainsFold\[S ~\[\]E, E ~string\](items S, target E) bool](<#ContainsFold>)
+- [func Count\[S ~\[\]E, E comparable\](items S, target E) int](<#Count>)
+- [func CountFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#CountFunc>)
+- [func Difference\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Difference>)
+- [func Intersect\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Intersect>)
+- [func LastIndex\[S ~\[\]E, E comparable\](items S, target E) int](<#LastIndex>)
+- [func LastIndexFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#LastIndexFunc>)
+- [func Partition\[S ~\[\]E, E any\](items S, match func(E) bool) (S, S)](<#Partition>)
+- [func SortNatural\[S ~\[\]E, E ~string\](s S)](<#SortNatural>)
+- [func Trim\[S ~\[\]E, E comparable\](items, cutset S) S](<#Trim>)
+- [func TrimLeft\[S ~\[\]E, E comparable\](items, cutset S) S](<#TrimLeft>)
+- [func TrimRight\[S ~\[\]E, E comparable\](items, cutset S) S](<#TrimRight>)
+- [func Union\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Union>)
+- [func Unique\[S ~\[\]E, E comparable\](items S) S](<#Unique>)
+- [func UniqueFold\[S ~\[\]E, E ~string\](items S) S](<#UniqueFold>)
 
 <a name="ContainsFold"></a>
 
@@ -32,7 +32,7 @@ Package slices provides slice helpers.
 func ContainsFold[S ~[]E, E ~string](items S, target E) bool
 ```
 
-ContainsFold reports whether items contains target case\-insensitively, using the same simple case\-folding as [strings.EqualFold](<https://pkg.go.dev/strings/#EqualFold>).
+**ContainsFold** reports whether items contains target case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
 
 <a name="Count"></a>
 
@@ -42,7 +42,7 @@ ContainsFold reports whether items contains target case\-insensitively, using th
 func Count[S ~[]E, E comparable](items S, target E) int
 ```
 
-Count returns the number of elements in items equal to target.
+**Count** returns the number of elements in items equal to target.
 
 <a name="CountFunc"></a>
 
@@ -52,7 +52,7 @@ Count returns the number of elements in items equal to target.
 func CountFunc[S ~[]E, E any](items S, match func(E) bool) int
 ```
 
-CountFunc returns the number of elements in items satisfying match.
+**CountFunc** returns the number of elements in items satisfying match.
 
 <a name="Difference"></a>
 
@@ -62,7 +62,7 @@ CountFunc returns the number of elements in items satisfying match.
 func Difference[S ~[]E, E comparable](items S, others ...S) S
 ```
 
-Difference returns the elements of items not present in any of others, preserving order and duplicates from items.
+**Difference** returns the elements of items not present in any of others, preserving order and duplicates from items.
 
 <a name="Intersect"></a>
 
@@ -72,7 +72,7 @@ Difference returns the elements of items not present in any of others, preservin
 func Intersect[S ~[]E, E comparable](items S, others ...S) S
 ```
 
-Intersect returns the elements of items also present in every one of others, preserving order and duplicates from items.
+**Intersect** returns the elements of items also present in every one of others, preserving order and duplicates from items.
 
 <a name="LastIndex"></a>
 
@@ -82,7 +82,7 @@ Intersect returns the elements of items also present in every one of others, pre
 func LastIndex[S ~[]E, E comparable](items S, target E) int
 ```
 
-LastIndex returns the index of the last occurrence of target in items, or \-1 if not present.
+**LastIndex** returns the index of the last occurrence of target in items, or -1 if not present.
 
 <a name="LastIndexFunc"></a>
 
@@ -92,7 +92,7 @@ LastIndex returns the index of the last occurrence of target in items, or \-1 if
 func LastIndexFunc[S ~[]E, E any](items S, match func(E) bool) int
 ```
 
-LastIndexFunc returns the index of the last element of items satisfying match, or \-1 if none do.
+**LastIndexFunc** returns the index of the last element of items satisfying match, or -1 if none do.
 
 <a name="Partition"></a>
 
@@ -102,7 +102,7 @@ LastIndexFunc returns the index of the last element of items satisfying match, o
 func Partition[S ~[]E, E any](items S, match func(E) bool) (S, S)
 ```
 
-Partition splits items into two slices: elements satisfying match, and elements that do not, preserving the original relative order in both.
+**Partition** splits items into two slices: elements satisfying match, and elements that do not, preserving the original relative order in both.
 
 <a name="SortNatural"></a>
 
@@ -112,7 +112,7 @@ Partition splits items into two slices: elements satisfying match, and elements 
 func SortNatural[S ~[]E, E ~string](s S)
 ```
 
-SortNatural sorts a string slice in place in natural order, so embedded numbers compare by value \("item2" before "item10"\) rather than lexically. See \[xstrings.CompareNatural\].
+**SortNatural** sorts a string slice in place in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [xstrings.CompareNatural](<https://pkg.go.dev/github.com/gechr/x/strings#CompareNatural>).
 
 <a name="Trim"></a>
 
@@ -122,7 +122,7 @@ SortNatural sorts a string slice in place in natural order, so embedded numbers 
 func Trim[S ~[]E, E comparable](items, cutset S) S
 ```
 
-Trim returns items with all leading and trailing elements contained in cutset removed. The result is a subslice of items, sharing its backing array.
+**Trim** returns items with all leading and trailing elements contained in cutset removed. The result is a subslice of items, sharing its backing array.
 
 <a name="TrimLeft"></a>
 
@@ -132,7 +132,7 @@ Trim returns items with all leading and trailing elements contained in cutset re
 func TrimLeft[S ~[]E, E comparable](items, cutset S) S
 ```
 
-TrimLeft returns items with all leading elements contained in cutset removed. The result is a subslice of items, sharing its backing array.
+**TrimLeft** returns items with all leading elements contained in cutset removed. The result is a subslice of items, sharing its backing array.
 
 <a name="TrimRight"></a>
 
@@ -142,7 +142,7 @@ TrimLeft returns items with all leading elements contained in cutset removed. Th
 func TrimRight[S ~[]E, E comparable](items, cutset S) S
 ```
 
-TrimRight returns items with all trailing elements contained in cutset removed. The result is a subslice of items, sharing its backing array.
+**TrimRight** returns items with all trailing elements contained in cutset removed. The result is a subslice of items, sharing its backing array.
 
 <a name="Union"></a>
 
@@ -152,7 +152,7 @@ TrimRight returns items with all trailing elements contained in cutset removed. 
 func Union[S ~[]E, E comparable](items S, others ...S) S
 ```
 
-Union returns the elements of items followed by the elements of others, in first\-seen order with duplicates removed.
+**Union** returns the elements of items followed by the elements of others, in first-seen order with duplicates removed.
 
 <a name="Unique"></a>
 
@@ -162,7 +162,7 @@ Union returns the elements of items followed by the elements of others, in first
 func Unique[S ~[]E, E comparable](items S) S
 ```
 
-Unique returns items in first\-seen order with duplicates removed.
+**Unique** returns items in first-seen order with duplicates removed.
 
 <a name="UniqueFold"></a>
 
@@ -172,4 +172,4 @@ Unique returns items in first\-seen order with duplicates removed.
 func UniqueFold[S ~[]E, E ~string](items S) S
 ```
 
-UniqueFold returns strings in first\-seen order with duplicates removed case\-insensitively, using the same simple case\-folding as [strings.EqualFold](<https://pkg.go.dev/strings/#EqualFold>).
+**UniqueFold** returns strings in first-seen order with duplicates removed case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).

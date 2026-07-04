@@ -2,7 +2,7 @@ package ansi
 
 import xansi "github.com/charmbracelet/x/ansi"
 
-// CSI is the Control Sequence Introducer prefix (ESC + '['). Exported for
+// CSI is the Control Sequence Introducer prefix (ESC + `[`). Exported for
 // callers that parse or construct their own CSI-family sequences.
 const CSI = "\x1b["
 
@@ -69,7 +69,7 @@ func CursorHorizontalAbsolute(col int) string { return xansi.CursorHorizontalAbs
 // are 1-based.
 func CursorPosition(col, row int) string { return xansi.CursorPosition(col, row) }
 
-// CursorHomePosition moves the cursor to row 1, column 1 ("\x1b[H").
+// CursorHomePosition moves the cursor to row 1, column 1 (`"\x1b[H"`).
 const CursorHomePosition = xansi.CursorHomePosition
 
 // Cursor visibility (DECTCEM).
@@ -160,7 +160,7 @@ func InsertCharacter(n int) string { return xansi.InsertCharacter(n) }
 // cursor, pulling subsequent characters left.
 func DeleteCharacter(n int) string { return xansi.DeleteCharacter(n) }
 
-// ResetStyle is the SGR reset sequence ("\x1b[m"): clears all text
+// ResetStyle is the SGR reset sequence (`"\x1b[m"`): clears all text
 // attributes and colours. Included because writing any styled output
 // typically requires emitting this afterwards.
 const ResetStyle = xansi.ResetStyle
@@ -192,7 +192,7 @@ const (
 	KeypadNumericMode     = xansi.KeypadNumericMode
 )
 
-// RequestNameVersion is the XTVERSION query ("\x1b[>q"): asks the terminal
+// RequestNameVersion is the XTVERSION query (`"\x1b[>q"`): asks the terminal
 // for its name and version. Complements the DA1 query.
 const RequestNameVersion = xansi.RequestNameVersion
 

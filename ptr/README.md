@@ -8,7 +8,7 @@ Package ptr provides pointer helpers.
 
 ## Index
 
-- [func Deref\[T any\]\(p \*T\) T](<#Deref>)
+- [func Deref\[T any\](p \*T) T](<#Deref>)
 
 <a name="Deref"></a>
 
@@ -18,4 +18,4 @@ Package ptr provides pointer helpers.
 func Deref[T any](p *T) T
 ```
 
-Deref returns the value p points to, or the zero value when p is nil.
+**Deref** returns the value p points to, or the zero value when p is nil.

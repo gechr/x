@@ -33,32 +33,32 @@ func searchDirs(env string, fallback []string) []string {
 	return dirs
 }
 
-// CacheDir returns the user cache directory: $XDG_CACHE_HOME when set to an
+// CacheDir returns the user cache directory: `$XDG_CACHE_HOME` when set to an
 // absolute path, otherwise an OS-specific default.
 func CacheDir() (string, error) {
 	return baseDir("XDG_CACHE_HOME", cacheDirDefault)
 }
 
-// ConfigDir returns the user config directory: $XDG_CONFIG_HOME when set to an
+// ConfigDir returns the user config directory: `$XDG_CONFIG_HOME` when set to an
 // absolute path, otherwise an OS-specific default.
 func ConfigDir() (string, error) {
 	return baseDir("XDG_CONFIG_HOME", configDirDefault)
 }
 
-// DataDir returns the user data directory: $XDG_DATA_HOME when set to an
+// DataDir returns the user data directory: `$XDG_DATA_HOME` when set to an
 // absolute path, otherwise an OS-specific default.
 func DataDir() (string, error) {
 	return baseDir("XDG_DATA_HOME", dataDirDefault)
 }
 
-// StateDir returns the user state directory: $XDG_STATE_HOME when set to an
+// StateDir returns the user state directory: `$XDG_STATE_HOME` when set to an
 // absolute path, otherwise an OS-specific default.
 func StateDir() (string, error) {
 	return baseDir("XDG_STATE_HOME", stateDirDefault)
 }
 
 // ConfigDirs returns the ordered, read-only config search directories:
-// $XDG_CONFIG_DIRS when it has absolute entries, otherwise OS-specific
+// `$XDG_CONFIG_DIRS` when it has absolute entries, otherwise OS-specific
 // defaults. These are searched after ConfigDir, so a user's config overrides
 // the system defaults.
 func ConfigDirs() []string {
@@ -66,7 +66,7 @@ func ConfigDirs() []string {
 }
 
 // DataDirs returns the ordered, read-only data search directories:
-// $XDG_DATA_DIRS when it has absolute entries, otherwise OS-specific defaults.
+// `$XDG_DATA_DIRS` when it has absolute entries, otherwise OS-specific defaults.
 // These are searched after DataDir, so a user's data overrides the system
 // defaults.
 func DataDirs() []string {
