@@ -7,10 +7,10 @@ import (
 )
 
 // SortedSet is a set of ordered items, kept in ascending sorted order at all
-// times: [SortedSet.Add] inserts in sorted position, and combining sets
+// times: Add inserts in sorted position, and combining sets
 // (Union/Intersect/Difference) always yields a sorted result. Unlike [Set],
-// [SortedSet.Slice] and [SortedSet.All] iterate in deterministic ascending
-// order rather than indeterminate map order.
+// Slice and All iterate in deterministic ascending order rather than
+// indeterminate map order.
 //
 // The zero value is an empty, usable SortedSet.
 type SortedSet[T cmp.Ordered] struct {

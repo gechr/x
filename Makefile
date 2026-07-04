@@ -4,6 +4,11 @@ GO_TOOLS ?= $(shell $(GO) tool | grep /)
 .PHONY: all
 all: fmt lint test
 
+.PHONY: doc
+doc:
+	@$(GO) tool gomarkdoc -t 'file={{if .Header -}}{{- .Header -}}{{- spacer -}}{{- end -}}{{- range .Packages -}}{{- template "package" . -}}{{- spacer -}}{{- end -}}{{- if .Footer -}}{{- .Footer -}}{{- end -}}' -o '{{.Dir}}/README.md' ./...
+	@rumdl fmt --quiet
+
 .PHONY: fmt
 fmt:
 	@rumdl fmt --quiet
