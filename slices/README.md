@@ -8,6 +8,8 @@ Package slices provides slice helpers.
 
 ## Index
 
+- [func ContainsAll\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainsAll>)
+- [func ContainsAny\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainsAny>)
 - [func ContainsFold\[S ~\[\]E, E ~string\](items S, target E) bool](<#ContainsFold>)
 - [func Count\[S ~\[\]E, E comparable\](items S, target E) int](<#Count>)
 - [func CountFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#CountFunc>)
@@ -24,9 +26,29 @@ Package slices provides slice helpers.
 - [func Unique\[S ~\[\]E, E comparable\](items S) S](<#Unique>)
 - [func UniqueFold\[S ~\[\]E, E ~string\](items S) S](<#UniqueFold>)
 
+<a name="ContainsAll"></a>
+
+## func [ContainsAll](<https://github.com/gechr/x/blob/main/slices/contains.go#L18>)
+
+```go
+func ContainsAll[S ~[]E, E comparable](target E, lists ...S) bool
+```
+
+**ContainsAll** reports whether every one of the given lists contains target. It returns true when no lists are given.
+
+<a name="ContainsAny"></a>
+
+## func [ContainsAny](<https://github.com/gechr/x/blob/main/slices/contains.go#L10>)
+
+```go
+func ContainsAny[S ~[]E, E comparable](target E, lists ...S) bool
+```
+
+**ContainsAny** reports whether any of the given lists contains target.
+
 <a name="ContainsFold"></a>
 
-## func [ContainsFold](<https://github.com/gechr/x/blob/main/slices/contains.go#L11>)
+## func [ContainsFold](<https://github.com/gechr/x/blob/main/slices/contains.go#L26>)
 
 ```go
 func ContainsFold[S ~[]E, E ~string](items S, target E) bool

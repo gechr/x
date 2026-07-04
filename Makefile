@@ -2,7 +2,7 @@ GO       ?= go
 GO_TOOLS ?= $(shell $(GO) tool | grep /)
 
 .PHONY: all
-all: fmt lint test
+all: doc fmt lint test
 
 .PHONY: doc
 doc:
