@@ -15,8 +15,10 @@ func Status(code int) string {
 }
 
 // IsRetryableStatus reports whether an HTTP status code represents a transient
-// failure worth retrying: a request timeout (408) or any server error (5xx).
+// failure worth retrying: a request timeout (408), rate limiting (429), or any
+// server error (5xx).
 func IsRetryableStatus(code int) bool {
 	return code == http.StatusRequestTimeout ||
+		code == http.StatusTooManyRequests ||
 		(code >= http.StatusInternalServerError && code <= maxServerErrorStatus)
 }

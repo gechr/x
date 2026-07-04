@@ -22,6 +22,7 @@ func TestIsRetryableStatus(t *testing.T) {
 	t.Parallel()
 
 	require.True(t, xhttp.IsRetryableStatus(http.StatusRequestTimeout))
+	require.True(t, xhttp.IsRetryableStatus(http.StatusTooManyRequests))
 	require.True(t, xhttp.IsRetryableStatus(http.StatusInternalServerError))
 	require.True(t, xhttp.IsRetryableStatus(http.StatusBadGateway))
 	require.True(t, xhttp.IsRetryableStatus(http.StatusGatewayTimeout))
@@ -29,5 +30,4 @@ func TestIsRetryableStatus(t *testing.T) {
 	require.False(t, xhttp.IsRetryableStatus(http.StatusOK))
 	require.False(t, xhttp.IsRetryableStatus(http.StatusNotFound))
 	require.False(t, xhttp.IsRetryableStatus(http.StatusBadRequest))
-	require.False(t, xhttp.IsRetryableStatus(http.StatusTooManyRequests))
 }
