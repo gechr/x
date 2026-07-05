@@ -12,7 +12,7 @@ Package time provides time helpers.
 
 ## Constants
 
-<a name="Day"></a>Calendar-scaled durations beyond what the standard time package names. A day is 24 hours, a week is 7 days, and a year is 365 days, matching [github.com/gechr/x/human.FormatDuration](<https://pkg.go.dev/github.com/gechr/x/human#FormatDuration>) and [github.com/gechr/x/human.ParseDuration](<https://pkg.go.dev/github.com/gechr/x/human#ParseDuration>).
+<a name="Day"></a>Calendar-scaled durations beyond what the standard time package names. A day is 24 hours, a week is 7 days, and a year is 365 days, matching [human.FormatDuration](<../human/README.md#FormatDuration>) and [human.ParseDuration](<../human/README.md#ParseDuration>).
 
 ```go
 const (

@@ -135,7 +135,7 @@ func Partition[S ~[]E, E any](items S, match func(E) bool) (S, S)
 func SortNatural[S ~[]E, E ~string](s S)
 ```
 
-**SortNatural** sorts a string slice in place in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [xstrings.CompareNatural](<https://pkg.go.dev/github.com/gechr/x/strings#CompareNatural>).
+**SortNatural** sorts a string slice in place in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
 <a name="Trim"></a>
 

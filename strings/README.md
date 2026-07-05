@@ -268,7 +268,7 @@ PadCenter("hi", 5) // " hi  "
 func PadLeft(s string, width int) string
 ```
 
-**PadLeft** pads `s` with spaces on the left to `width` runes, right-aligning it. Strings already `width` runes or longer are returned unchanged. Width is counted in runes; for display-width-aware handling of ANSI text use the [github.com/gechr/x/ansi](<https://pkg.go.dev/github.com/gechr/x/ansi>) package.
+**PadLeft** pads `s` with spaces on the left to `width` runes, right-aligning it. Strings already `width` runes or longer are returned unchanged. Width is counted in runes; for display-width-aware handling of ANSI text use the [ansi](<../ansi/README.md>) package.
 
 ```text
 PadLeft("hi", 5) // "   hi"
@@ -384,7 +384,7 @@ TruncateMiddle("0123456789abcdef", 7, "…") // "012…def"
 func TruncateRight(s string, n int, marker string) string
 ```
 
-**TruncateRight** shortens `s` to at most `n` runes (including `marker`) by removing characters from the right, appending `marker` when truncation occurs. The head is kept. For display-width-aware truncation of ANSI text use [github.com/gechr/x/ansi.Truncate](<https://pkg.go.dev/github.com/gechr/x/ansi#Truncate>).
+**TruncateRight** shortens `s` to at most `n` runes (including `marker`) by removing characters from the right, appending `marker` when truncation occurs. The head is kept. For display-width-aware truncation of ANSI text use [ansi.Truncate](<../ansi/README.md#Truncate>).
 
 ```text
 TruncateRight("hello world", 8, "…") // "hello w…"
