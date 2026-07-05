@@ -17,6 +17,7 @@ Package strings provides string helpers: split, contains, indent/dedent, truncat
 - [func ContainsAny(s string, substrings ...string) bool](<#ContainsAny>)
 - [func CountAny(s, chars string) int](<#CountAny>)
 - [func Dedent(s string) string](<#Dedent>)
+- [func EnsureTrailingNewline(s string) string](<#EnsureTrailingNewline>)
 - [func EqualNatural(a, b string) bool](<#EqualNatural>)
 - [func Indent(s, prefix string) string](<#Indent>)
 - [func IsBlank(s string) bool](<#IsBlank>)
@@ -138,6 +139,16 @@ func Dedent(s string) string
 ```text
 Dedent("    foo\n      bar\n    baz") // "foo\n  bar\nbaz"
 ```
+
+<a name="EnsureTrailingNewline"></a>
+
+## func [EnsureTrailingNewline](<https://github.com/gechr/x/blob/main/strings/newline.go#L8>)
+
+```go
+func EnsureTrailingNewline(s string) string
+```
+
+**EnsureTrailingNewline** trims any trailing newlines from s and appends exactly one, so the result always ends in a single "\\n". An empty string becomes "\\n".
 
 <a name="EqualNatural"></a>
 
