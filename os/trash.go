@@ -26,7 +26,8 @@ func Trash(path string) error {
 	if err != nil {
 		return fmt.Errorf("failed to resolve path: %w", err)
 	}
-	// Lstat, not Stat: a symlink is trashed as itself, never followed.
+	// [os.Lstat], not [os.Stat]: a symlink is trashed as itself, never
+	// followed.
 	if _, err := os.Lstat(abs); err != nil {
 		return err
 	}

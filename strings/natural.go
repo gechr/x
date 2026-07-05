@@ -43,9 +43,9 @@ func LessNatural(a, b string) bool {
 }
 
 // EqualNatural reports whether `a` and `b` compare equal in natural order, as
-// decided by [CompareNatural]. This can differ from a == b, since a numeric run
-// followed by more to compare matches regardless of leading zeros (for example
-// "a00b00" and "a0b00").
+// decided by [CompareNatural]. This can differ from `a == b`, since a numeric
+// run followed by more to compare matches regardless of leading zeros (for
+// example "a00b00" and "a0b00").
 func EqualNatural(a, b string) bool {
 	return CompareNatural(a, b) == 0
 }

@@ -7,7 +7,7 @@ import (
 
 const thousandsGroup = 3
 
-// Plural returns `singular` when `n` == 1, otherwise `plural`. Unlike
+// Plural returns `singular` when `n == 1`, otherwise `plural`. Unlike
 // [Pluralize], it omits the count.
 //
 //	Plural(1, "file", "files") // "file"

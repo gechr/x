@@ -17,7 +17,7 @@ const (
 
 // Windows fallbacks map the XDG roles onto the standard Windows locations.
 // They are only used when the corresponding XDG_* variable is unset or
-// relative; an absolute XDG_* value is always honored (see `baseDir`). The
+// relative; an absolute XDG_* value is always honored (see [baseDir]). The
 // locations match what [os.UserConfigDir] and [os.UserCacheDir] return, but those
 // stdlib helpers ignore the XDG_* variables entirely, so we resolve them here.
 //

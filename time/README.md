@@ -4,7 +4,7 @@
 import "github.com/gechr/x/time"
 ```
 
-Package time provides time helpers.
+Package `time` provides time helpers.
 
 <details><summary><b>Example</b></summary>
 

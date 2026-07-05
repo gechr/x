@@ -4,7 +4,7 @@
 import "github.com/gechr/x/math"
 ```
 
-Package math provides numeric helpers.
+Package `math` provides numeric helpers.
 
 ## Index
 
@@ -13,13 +13,13 @@ Package math provides numeric helpers.
 
 <a name="Clamp"></a>
 
-## func [Clamp](<https://github.com/gechr/x/blob/main/math/clamp.go#L8>)
+## func [Clamp](<https://github.com/gechr/x/blob/main/math/clamp.go#L9>)
 
 ```go
 func Clamp[T cmp.Ordered](v, lo, hi T) T
 ```
 
-**Clamp** restricts `v` to the \[`lo`, `hi`\] range. NaN clamps to `lo`; infinities clamp to the nearest bound. Unlike min(max(v, lo), hi), NaN does not propagate.
+**Clamp** restricts `v` to the \[`lo`, `hi`\] range. NaN clamps to `lo`; infinities clamp to the nearest bound. Unlike `min(max(v, lo), hi)`, NaN does not propagate.
 
 <details><summary><b>Example</b></summary>
 
@@ -79,7 +79,7 @@ d
 
 <a name="Clamp01"></a>
 
-## func [Clamp01](<https://github.com/gechr/x/blob/main/math/clamp.go#L16>)
+## func [Clamp01](<https://github.com/gechr/x/blob/main/math/clamp.go#L17>)
 
 ```go
 func Clamp01(v float64) float64

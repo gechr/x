@@ -4,7 +4,7 @@
 import "github.com/gechr/x/ptr"
 ```
 
-Package ptr provides pointer helpers.
+Package `ptr` provides pointer helpers.
 
 ## Index
 

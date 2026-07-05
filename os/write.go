@@ -67,7 +67,7 @@ func EnsureDir(dir string, perm os.FileMode) error {
 // exist, creating any missing parent directories. An existing file's contents,
 // mode, and timestamps are left untouched.
 func EnsureFile(path string, perm os.FileMode) error {
-	// Not EnsureDir: parents are incidental here, so a pre-existing parent's
+	// Not [EnsureDir]: parents are incidental here, so a pre-existing parent's
 	// mode must be left alone (e.g. a 0o700 ~/.ssh must not become 0o755).
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return fmt.Errorf("failed to create parent directories: %w", err)

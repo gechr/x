@@ -4,7 +4,7 @@
 import "github.com/gechr/x/terminal"
 ```
 
-Package terminal provides terminal detection and size queries.
+Package `terminal` provides terminal detection and size queries.
 
 ## Index
 

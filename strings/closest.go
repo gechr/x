@@ -36,13 +36,13 @@ func Closest(target string, candidates []string) string {
 // damerauLevenshtein returns the optimal-string-alignment distance between `a`
 // and `b`: the fewest single-character insertions, deletions, substitutions, or
 // adjacent transpositions to turn one into the other. It keeps three rows so a
-// transposition can reach two rows back, for O(len(a)*len(b)) time and O(len(b))
-// space.
+// transposition can reach two rows back, for O(`len(a)*len(b)`) time and
+// O(`len(b)`) space.
 func damerauLevenshtein(a, b []rune) int {
-	// Three rolling rows of the matrix: prev1 is the previous row (i-1), seeded
-	// as the base case - the cost of building b's prefixes from an empty a; prev2
-	// is the row before it (i-2), read only by a transposition; curr is the row
-	// being filled.
+	// Three rolling rows of the matrix: `prev1` is the previous row (`i-1`),
+	// seeded as the base case - the cost of building `b`'s prefixes from an
+	// empty `a`; `prev2` is the row before it (`i-2`), read only by a
+	// transposition; `curr` is the row being filled.
 	prev1 := make([]int, len(b)+1)
 	prev2 := make([]int, len(b)+1)
 	curr := make([]int, len(b)+1)

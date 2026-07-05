@@ -4,7 +4,7 @@
 import "github.com/gechr/x/human"
 ```
 
-Package human formats bytes, durations, counts, numbers, and ordinals for human-readable output.
+Package `human` formats bytes, durations, counts, numbers, and ordinals for human-readable output.
 
 ## Index
 
@@ -513,7 +513,7 @@ Output:
 func Plural(n int, singular, plural string) string
 ```
 
-**Plural** returns `singular` when `n` == 1, otherwise `plural`. Unlike [Pluralize](<#Pluralize>), it omits the count.
+**Plural** returns `singular` when `n == 1`, otherwise `plural`. Unlike [Pluralize](<#Pluralize>), it omits the count.
 
 ```go
 Plural(1, "file", "files") // "file"

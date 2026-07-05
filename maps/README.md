@@ -4,7 +4,7 @@
 import "github.com/gechr/x/maps"
 ```
 
-Package maps provides map helpers: sorted iteration, grouping, and inversion.
+Package `maps` provides map helpers: sorted iteration, grouping, and inversion.
 
 ## Index
 

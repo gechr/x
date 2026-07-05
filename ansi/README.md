@@ -4,7 +4,7 @@
 import "github.com/gechr/x/ansi"
 ```
 
-Package ansi provides ANSI-aware text wrapping, hyperlinks, and TTY fallback.
+Package `ansi` provides ANSI-aware text wrapping, hyperlinks, and TTY fallback.
 
 ## Index
 
@@ -431,7 +431,7 @@ func ScrollUp(n int) string
 func SetCursorStyle(style int) string
 ```
 
-**SetCursorStyle** returns the DECSCUSR sequence. Style selects shape and blink state:
+**SetCursorStyle** returns the DECSCUSR sequence. `style` selects shape and blink state:
 
 ```text
 0: default         1: blinking block    2: steady block
@@ -616,7 +616,7 @@ type ANSI struct {
 func Auto(files ...*os.File) *ANSI
 ```
 
-**Auto** creates an ANSI that auto-detects whether the output is a terminal. All provided `files` must be terminals for ANSI output to be enabled. Defaults to [os.Stdout](<https://pkg.go.dev/os#Stdout>) if no `files` are provided.
+**Auto** creates an [ANSI](<#ANSI>) that auto-detects whether the output is a terminal. All provided `files` must be terminals for ANSI output to be enabled. Defaults to [os.Stdout](<https://pkg.go.dev/os#Stdout>) if no `files` are provided.
 
 <a name="Force"></a>
 
@@ -626,7 +626,7 @@ func Auto(files ...*os.File) *ANSI
 func Force() *ANSI
 ```
 
-**Force** creates an ANSI with ANSI output unconditionally enabled.
+**Force** creates an [ANSI](<#ANSI>) with ANSI output unconditionally enabled.
 
 <a name="Never"></a>
 
@@ -636,7 +636,7 @@ func Force() *ANSI
 func Never() *ANSI
 ```
 
-**Never** creates an ANSI with ANSI output unconditionally disabled.
+**Never** creates an [ANSI](<#ANSI>) with ANSI output unconditionally disabled.
 
 <a name="New"></a>
 
@@ -646,7 +646,7 @@ func Never() *ANSI
 func New(opts ...Option) *ANSI
 ```
 
-**New** creates an ANSI with the given options.
+**New** creates an [ANSI](<#ANSI>) with the given options.
 
 <a name="ANSI.Hyperlink"></a>
 
@@ -728,7 +728,7 @@ type Method = xansi.Method
 
 ## type [Option](<https://github.com/gechr/x/blob/main/ansi/options.go#L4>)
 
-**Option** configures an ANSI.
+**Option** configures an [ANSI](<#ANSI>).
 
 ```go
 type Option func(*ANSI)

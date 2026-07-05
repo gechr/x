@@ -6,7 +6,7 @@ import (
 )
 
 // CompletionFile returns the standard completion file path for the given
-// command and shell.
+// `command` and shell.
 func CompletionFile(command, sh string) (string, error) {
 	switch sh {
 	case Bash:

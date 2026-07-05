@@ -94,7 +94,7 @@ func device(path string) (uint64, error) {
 	if !ok {
 		return 0, fmt.Errorf("cannot determine device for %q", path)
 	}
-	return uint64(st.Dev), nil //nolint:unconvert // Dev is int32 on some platforms
+	return uint64(st.Dev), nil //nolint:unconvert // `Dev` is int32 on some platforms
 }
 
 // topDirOf returns the mount point `path` is under: the highest ancestor still on
@@ -231,8 +231,9 @@ const maxTrashNameAttempts = 1 << 16
 
 // claimName reserves a name unique within a trash, appending _N on collision. It
 // skips a name whose files/ slot is already taken and atomically creates the
-// info/<name>.trashinfo (O_EXCL) to reserve the rest, so a reader never sees a
-// trashed file lacking its record and the move does not clobber another entry.
+// info/<name>.trashinfo ([os.O_EXCL]) to reserve the rest, so a reader never
+// sees a trashed file lacking its record and the move does not clobber another
+// entry.
 func claimName(infoDir, filesDir, base string) (string, string, error) {
 	for i := range maxTrashNameAttempts {
 		name := base

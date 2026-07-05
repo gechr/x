@@ -9,7 +9,7 @@ import (
 // baseDir returns `env` when it is set to an absolute path, otherwise the
 // result of `fallback`. Per the XDG Base Directory spec, a relative path in the
 // environment variable is invalid and ignored. The XDG_* variables are
-// honored on every platform; only the fallback is OS-specific.
+// honored on every platform; only the `fallback` is OS-specific.
 func baseDir(env string, fallback func() (string, error)) (string, error) {
 	if dir := os.Getenv(env); filepath.IsAbs(dir) {
 		return dir, nil

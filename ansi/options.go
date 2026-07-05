@@ -1,6 +1,6 @@
 package ansi
 
-// Option configures an ANSI.
+// Option configures an [ANSI].
 type Option func(*ANSI)
 
 // WithTerminal sets whether the output target is a terminal.

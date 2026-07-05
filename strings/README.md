@@ -4,7 +4,7 @@
 import "github.com/gechr/x/strings"
 ```
 
-Package strings provides string helpers: split, contains, indent/dedent, truncate, and blank checks.
+Package `strings` provides string helpers: split, contains, indent/dedent, truncate, and blank checks.
 
 ## Index
 
@@ -122,13 +122,13 @@ foo, bar
 
 <a name="CompareFold"></a>
 
-## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L12>)
+## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L13>)
 
 ```go
 func CompareFold(a, b string) int
 ```
 
-**CompareFold** compares `a` and `b` case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>), and returns -1, 0, or 1 following the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention. CompareFold(a, b) == 0 iff strings.EqualFold(a, b).
+**CompareFold** compares `a` and `b` case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>), and returns -1, 0, or 1 following the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention. `CompareFold(a, b) == 0` iff `strings.EqualFold(a, b)`.
 
 <details><summary><b>Example</b></summary>
 
@@ -314,7 +314,7 @@ Output:
 func EqualNatural(a, b string) bool
 ```
 
-**EqualNatural** reports whether `a` and `b` compare equal in natural order, as decided by [CompareNatural](<#CompareNatural>). This can differ from a == b, since a numeric run followed by more to compare matches regardless of leading zeros (for example "a00b00" and "a0b00").
+**EqualNatural** reports whether `a` and `b` compare equal in natural order, as decided by [CompareNatural](<#CompareNatural>). This can differ from `a == b`, since a numeric run followed by more to compare matches regardless of leading zeros (for example "a00b00" and "a0b00").
 
 <details><summary><b>Example</b></summary>
 
@@ -649,7 +649,7 @@ Output:
 func SplitAny(s, chars string) []string
 ```
 
-**SplitAny** splits `s` around each occurrence of any Unicode code point in `chars`, following the cutset convention of [strings.IndexAny](<https://pkg.go.dev/strings#IndexAny>). Empty segments between adjacent separators are preserved, matching [strings.Split](<https://pkg.go.dev/strings#Split>) semantics. If `chars` is empty, SplitAny returns a single-element slice containing `s`.
+**SplitAny** splits `s` around each occurrence of any Unicode code point in `chars`, following the cutset convention of [strings.IndexAny](<https://pkg.go.dev/strings#IndexAny>). Empty segments between adjacent separators are preserved, matching [strings.Split](<https://pkg.go.dev/strings#Split>) semantics. If `chars` is empty, [SplitAny](<#SplitAny>) returns a single-element slice containing `s`.
 
 <details><summary><b>Example</b></summary>
 

@@ -134,8 +134,9 @@ func WrapHard(s string, width int) string {
 	return NewWrapper(WithWidth(width), WithWrapHard()).Wrap(s)
 }
 
-// reapplyStyles pipes wrapped text through lipgloss's [WrapWriter] to
-// reset and reapply ANSI styles/links at each line break.
+// reapplyStyles pipes wrapped text through lipgloss's
+// [charm.land/lipgloss/v2.WrapWriter] to reset and reapply ANSI styles/links
+// at each line break.
 func reapplyStyles(s string) string {
 	var buf bytes.Buffer
 	w := lipgloss.NewWrapWriter(&buf)

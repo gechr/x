@@ -4,7 +4,7 @@
 import "github.com/gechr/x/set"
 ```
 
-Package set provides a generic set backed by a map.
+Package `set` provides a generic set backed by a map.
 
 ## Index
 
@@ -51,7 +51,7 @@ func Sorted[T cmp.Ordered](s Set[T]) []T
 
 **Sorted** returns the items of `s` as a slice in ascending order.
 
-Sorted is a function rather than a [Set](<#Set>) method because it requires T to be ordered, not just comparable.
+Sorted is a function rather than a [Set](<#Set>) method because it requires `T` to be ordered, not just comparable.
 
 <details><summary><b>Example</b></summary>
 
@@ -80,7 +80,7 @@ func SortedNatural[T ~string](s Set[T]) []T
 
 **SortedNatural** returns the items of `s` as a slice in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
-SortedNatural is a function rather than a [Set](<#Set>) method because it requires T to be string-like, not just comparable.
+SortedNatural is a function rather than a [Set](<#Set>) method because it requires `T` to be string-like, not just comparable.
 
 <details><summary><b>Example</b></summary>
 
@@ -105,7 +105,7 @@ Output:
 
 ## type [Set](<https://github.com/gechr/x/blob/main/set/set.go#L13>)
 
-**Set** is a set of comparable items backed by a map. Pointer types and structs containing pointer fields are compared using shallow equality. The zero value is nil: read operations work, but [Set.Add](<#Set.Add>) panics - use [New](<#New>) or [Collect](<#Collect>) to create a usable Set.
+**Set** is a set of comparable items backed by a map. Pointer types and structs containing pointer fields are compared using shallow equality. The zero value is nil: read operations work, but [Set.Add](<#Set.Add>) panics - use [New](<#New>) or [Collect](<#Collect>) to create a usable [Set](<#Set>).
 
 ```go
 type Set[T comparable] map[T]struct{}
@@ -119,7 +119,7 @@ type Set[T comparable] map[T]struct{}
 func Collect[T comparable](seq iter.Seq[T]) Set[T]
 ```
 
-**Collect** returns a Set containing the values of `seq`.
+**Collect** returns a [Set](<#Set>) containing the values of `seq`.
 
 <details><summary><b>Example</b></summary>
 
@@ -146,7 +146,7 @@ Output:
 func New[T comparable](items ...T) Set[T]
 ```
 
-**New** returns a Set containing `items`.
+**New** returns a [Set](<#Set>) containing `items`.
 
 <details><summary><b>Example</b></summary>
 
@@ -225,7 +225,7 @@ func (s Set[T]) Delete(items ...T)
 func (s Set[T]) Difference(others ...Set[T]) Set[T]
 ```
 
-**Difference** returns a new Set containing the items of `s` not present in any of `others`.
+**Difference** returns a new [Set](<#Set>) containing the items of `s` not present in any of `others`.
 
 <details><summary><b>Example</b></summary>
 
@@ -261,7 +261,7 @@ func (s Set[T]) Equal(other Set[T]) bool
 func (s Set[T]) Intersect(others ...Set[T]) Set[T]
 ```
 
-**Intersect** returns a new Set containing the items of `s` present in every one of `others`.
+**Intersect** returns a new [Set](<#Set>) containing the items of `s` present in every one of `others`.
 
 <details><summary><b>Example</b></summary>
 
@@ -335,7 +335,7 @@ false
 func (s Set[T]) Union(others ...Set[T]) Set[T]
 ```
 
-**Union** returns a new Set containing the items of `s` and all `others`.
+**Union** returns a new [Set](<#Set>) containing the items of `s` and all `others`.
 
 <details><summary><b>Example</b></summary>
 
@@ -359,7 +359,7 @@ Output:
 
 **SortedSet** is a set of ordered items, kept in ascending sorted order at all times: [SortedSet.Add](<#SortedSet.Add>) inserts in sorted position, and combining sets ([SortedSet.Union](<#SortedSet.Union>)/[SortedSet.Intersect](<#SortedSet.Intersect>)/[SortedSet.Difference](<#SortedSet.Difference>)) always yields a sorted result. Unlike [Set](<#Set>), [SortedSet.Slice](<#SortedSet.Slice>) and [SortedSet.All](<#SortedSet.All>) iterate in deterministic ascending order rather than indeterminate map order.
 
-The zero value is an empty, usable SortedSet.
+The zero value is an empty, usable [SortedSet](<#SortedSet>).
 
 ```go
 type SortedSet[T cmp.Ordered] struct {
@@ -375,7 +375,7 @@ type SortedSet[T cmp.Ordered] struct {
 func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T]
 ```
 
-**CollectSorted** returns a SortedSet containing the values of `seq`.
+**CollectSorted** returns a [SortedSet](<#SortedSet>) containing the values of `seq`.
 
 <details><summary><b>Example</b></summary>
 
@@ -402,7 +402,7 @@ Output:
 func NewSorted[T cmp.Ordered](items ...T) SortedSet[T]
 ```
 
-**NewSorted** returns a SortedSet containing `items`, sorted ascending with duplicates removed.
+**NewSorted** returns a [SortedSet](<#SortedSet>) containing `items`, sorted ascending with duplicates removed.
 
 <details><summary><b>Example</b></summary>
 
@@ -435,7 +435,7 @@ func (s *SortedSet[T]) Add(items ...T)
 
 <a name="SortedSet.All"></a>
 
-### func (SortedSet\[T\]) [All](<https://github.com/gechr/x/blob/main/set/sortedset.go#L126>)
+### func (SortedSet\[T\]) [All](<https://github.com/gechr/x/blob/main/set/sortedset.go#L128>)
 
 ```go
 func (s SortedSet[T]) All() iter.Seq[T]
@@ -464,7 +464,7 @@ cherry
 
 <a name="SortedSet.Clone"></a>
 
-### func (SortedSet\[T\]) [Clone](<https://github.com/gechr/x/blob/main/set/sortedset.go#L116>)
+### func (SortedSet\[T\]) [Clone](<https://github.com/gechr/x/blob/main/set/sortedset.go#L118>)
 
 ```go
 func (s SortedSet[T]) Clone() SortedSet[T]
@@ -494,13 +494,13 @@ func (s *SortedSet[T]) Delete(items ...T)
 
 <a name="SortedSet.Difference"></a>
 
-### func (SortedSet\[T\]) [Difference](<https://github.com/gechr/x/blob/main/set/sortedset.go#L92>)
+### func (SortedSet\[T\]) [Difference](<https://github.com/gechr/x/blob/main/set/sortedset.go#L93>)
 
 ```go
 func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T]
 ```
 
-**Difference** returns a new SortedSet containing the items of `s` not present in any of `others`.
+**Difference** returns a new [SortedSet](<#SortedSet>) containing the items of `s` not present in any of `others`.
 
 <a name="SortedSet.Equal"></a>
 
@@ -514,13 +514,13 @@ func (s SortedSet[T]) Equal(other SortedSet[T]) bool
 
 <a name="SortedSet.Intersect"></a>
 
-### func (SortedSet\[T\]) [Intersect](<https://github.com/gechr/x/blob/main/set/sortedset.go#L86>)
+### func (SortedSet\[T\]) [Intersect](<https://github.com/gechr/x/blob/main/set/sortedset.go#L87>)
 
 ```go
 func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T]
 ```
 
-**Intersect** returns a new SortedSet containing the items of `s` present in every one of `others`.
+**Intersect** returns a new [SortedSet](<#SortedSet>) containing the items of `s` present in every one of `others`.
 
 <a name="SortedSet.Len"></a>
 
@@ -534,7 +534,7 @@ func (s SortedSet[T]) Len() int
 
 <a name="SortedSet.Slice"></a>
 
-### func (SortedSet\[T\]) [Slice](<https://github.com/gechr/x/blob/main/set/sortedset.go#L121>)
+### func (SortedSet\[T\]) [Slice](<https://github.com/gechr/x/blob/main/set/sortedset.go#L123>)
 
 ```go
 func (s SortedSet[T]) Slice() []T
@@ -554,10 +554,10 @@ func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool
 
 <a name="SortedSet.Union"></a>
 
-### func (SortedSet\[T\]) [Union](<https://github.com/gechr/x/blob/main/set/sortedset.go#L80>)
+### func (SortedSet\[T\]) [Union](<https://github.com/gechr/x/blob/main/set/sortedset.go#L81>)
 
 ```go
 func (s SortedSet[T]) Union(others ...SortedSet[T]) SortedSet[T]
 ```
 
-**Union** returns a new SortedSet containing the items of `s` and all `others`.
+**Union** returns a new [SortedSet](<#SortedSet>) containing the items of `s` and all `others`.

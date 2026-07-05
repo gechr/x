@@ -4,7 +4,7 @@
 import "github.com/gechr/x/os"
 ```
 
-Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
+Package `os` provides OS helpers: file probes, safe writes, copy, and line I/O.
 
 ## Index
 
@@ -167,7 +167,7 @@ true
 
 <a name="Exists"></a>
 
-## func [Exists](<https://github.com/gechr/x/blob/main/os/stat.go#L25>)
+## func [Exists](<https://github.com/gechr/x/blob/main/os/stat.go#L26>)
 
 ```go
 func Exists(path string) (bool, error)
@@ -201,7 +201,7 @@ false
 
 <a name="IsDir"></a>
 
-## func [IsDir](<https://github.com/gechr/x/blob/main/os/stat.go#L37>)
+## func [IsDir](<https://github.com/gechr/x/blob/main/os/stat.go#L38>)
 
 ```go
 func IsDir(path string) (bool, error)
@@ -235,7 +235,7 @@ false
 
 <a name="IsFile"></a>
 
-## func [IsFile](<https://github.com/gechr/x/blob/main/os/stat.go#L31>)
+## func [IsFile](<https://github.com/gechr/x/blob/main/os/stat.go#L32>)
 
 ```go
 func IsFile(path string) (bool, error)
@@ -269,7 +269,7 @@ false
 
 <a name="IsSymlink"></a>
 
-## func [IsSymlink](<https://github.com/gechr/x/blob/main/os/stat.go#L43>)
+## func [IsSymlink](<https://github.com/gechr/x/blob/main/os/stat.go#L44>)
 
 ```go
 func IsSymlink(path string) (bool, error)
@@ -305,7 +305,7 @@ false
 
 <a name="IsWritableDir"></a>
 
-## func [IsWritableDir](<https://github.com/gechr/x/blob/main/os/stat.go#L58>)
+## func [IsWritableDir](<https://github.com/gechr/x/blob/main/os/stat.go#L59>)
 
 ```go
 func IsWritableDir(dir string) bool

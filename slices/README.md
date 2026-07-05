@@ -4,7 +4,7 @@
 import "github.com/gechr/x/slices"
 ```
 
-Package slices provides slice helpers.
+Package `slices` provides slice helpers.
 
 ## Index
 

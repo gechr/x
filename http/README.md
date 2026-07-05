@@ -4,7 +4,7 @@
 import "github.com/gechr/x/http"
 ```
 
-Package http provides HTTP helpers: retryable status codes, status text, and Link headers.
+Package `http` provides HTTP helpers: retryable status codes, status text, and Link headers.
 
 ## Index
 

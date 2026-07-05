@@ -54,8 +54,8 @@ func UniqueFold[S ~[]E, E ~string](items S) S {
 
 // foldKey maps each rune to the canonical (smallest) member of its case-fold
 // orbit, so two strings have equal keys iff [strings.EqualFold] reports them
-// equal. ToLower alone misses orbit members with distinct lowercase forms,
-// e.g. Greek final sigma 'ς' vs 'σ'.
+// equal. [strings.ToLower] alone misses orbit members with distinct lowercase
+// forms, e.g. Greek final sigma 'ς' vs 'σ'.
 func foldKey(s string) string {
 	return strings.Map(func(r rune) rune {
 		key := r

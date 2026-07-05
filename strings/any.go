@@ -9,7 +9,7 @@ import (
 // SplitAny splits `s` around each occurrence of any Unicode code point in
 // `chars`, following the cutset convention of [strings.IndexAny]. Empty
 // segments between adjacent separators are preserved, matching
-// [strings.Split] semantics. If `chars` is empty, SplitAny returns a
+// [strings.Split] semantics. If `chars` is empty, [SplitAny] returns a
 // single-element slice containing `s`.
 func SplitAny(s, chars string) []string {
 	if chars == "" {

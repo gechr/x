@@ -4,7 +4,7 @@
 import "github.com/gechr/x/terminal/emulator"
 ```
 
-Package emulator identifies the terminal emulator hosting the process.
+Package `emulator` identifies the terminal emulator hosting the process.
 
 ## Index
 

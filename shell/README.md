@@ -4,7 +4,7 @@
 import "github.com/gechr/x/shell"
 ```
 
-Package shell provides shell detection, path expansion, argument quoting, and splitting.
+Package `shell` provides shell detection, path expansion, argument quoting, and splitting.
 
 ## Index
 
@@ -68,7 +68,7 @@ func CacheDir() (string, error)
 func CompletionFile(command, sh string) (string, error)
 ```
 
-**CompletionFile** returns the standard completion file path for the given command and shell.
+**CompletionFile** returns the standard completion file path for the given `command` and shell.
 
 <a name="ConfigDir"></a>
 

@@ -13,12 +13,12 @@ import (
 // iterate in deterministic ascending order rather than indeterminate map
 // order.
 //
-// The zero value is an empty, usable SortedSet.
+// The zero value is an empty, usable [SortedSet].
 type SortedSet[T cmp.Ordered] struct {
 	items []T
 }
 
-// NewSorted returns a SortedSet containing `items`, sorted ascending with
+// NewSorted returns a [SortedSet] containing `items`, sorted ascending with
 // duplicates removed.
 func NewSorted[T cmp.Ordered](items ...T) SortedSet[T] {
 	var s SortedSet[T]
@@ -26,7 +26,7 @@ func NewSorted[T cmp.Ordered](items ...T) SortedSet[T] {
 	return s
 }
 
-// CollectSorted returns a SortedSet containing the values of `seq`.
+// CollectSorted returns a [SortedSet] containing the values of `seq`.
 func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T] {
 	var s SortedSet[T]
 	for item := range seq {
@@ -76,30 +76,32 @@ func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool {
 	return toSet(s).SubsetOf(toSet(other))
 }
 
-// Union returns a new SortedSet containing the items of `s` and all `others`.
+// Union returns a new [SortedSet] containing the items of `s` and all
+// `others`.
 func (s SortedSet[T]) Union(others ...SortedSet[T]) SortedSet[T] {
 	return combineSorted(Set[T].Union, s, others)
 }
 
-// Intersect returns a new SortedSet containing the items of `s` present in
+// Intersect returns a new [SortedSet] containing the items of `s` present in
 // every one of `others`.
 func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T] {
 	return combineSorted(Set[T].Intersect, s, others)
 }
 
-// Difference returns a new SortedSet containing the items of `s` not present
-// in any of `others`.
+// Difference returns a new [SortedSet] containing the items of `s` not
+// present in any of `others`.
 func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T] {
 	return combineSorted(Set[T].Difference, s, others)
 }
 
-// toSet converts a SortedSet to an (unordered) Set.
+// toSet converts a [SortedSet] to an (unordered) [Set].
 func toSet[T cmp.Ordered](s SortedSet[T]) Set[T] {
 	return New(s.items...)
 }
 
-// combineSorted applies a Set-combining method (Union/Intersect/Difference)
-// to `s` and `others`, converting to Set and back to SortedSet around the call.
+// combineSorted applies a [Set]-combining method
+// ([Set.Union]/[Set.Intersect]/[Set.Difference]) to `s` and `others`,
+// converting to [Set] and back to [SortedSet] around the call.
 func combineSorted[T cmp.Ordered](
 	method func(Set[T], ...Set[T]) Set[T],
 	s SortedSet[T],

@@ -4,7 +4,7 @@
 import "github.com/gechr/x/filepath"
 ```
 
-Package filepath provides path helpers: symlink resolution and containment checks.
+Package `filepath` provides path helpers: symlink resolution and containment checks.
 
 ## Index
 

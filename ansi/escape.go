@@ -165,7 +165,7 @@ func DeleteCharacter(n int) string { return xansi.DeleteCharacter(n) }
 // typically requires emitting this afterwards.
 const ResetStyle = xansi.ResetStyle
 
-// SetCursorStyle returns the DECSCUSR sequence. Style selects shape and
+// SetCursorStyle returns the DECSCUSR sequence. `style` selects shape and
 // blink state:
 //
 //	0: default         1: blinking block    2: steady block

@@ -9,17 +9,17 @@ import (
 // Set is a set of comparable items backed by a map. Pointer types and
 // structs containing pointer fields are compared using shallow equality.
 // The zero value is nil: read operations work, but [Set.Add] panics - use [New]
-// or [Collect] to create a usable Set.
+// or [Collect] to create a usable [Set].
 type Set[T comparable] map[T]struct{}
 
-// New returns a Set containing `items`.
+// New returns a [Set] containing `items`.
 func New[T comparable](items ...T) Set[T] {
 	s := make(Set[T], len(items))
 	s.Add(items...)
 	return s
 }
 
-// Collect returns a Set containing the values of `seq`.
+// Collect returns a [Set] containing the values of `seq`.
 func Collect[T comparable](seq iter.Seq[T]) Set[T] {
 	s := make(Set[T])
 	for item := range seq {
@@ -79,7 +79,7 @@ func (s Set[T]) SubsetOf(other Set[T]) bool {
 	return true
 }
 
-// Union returns a new Set containing the items of `s` and all `others`.
+// Union returns a new [Set] containing the items of `s` and all `others`.
 func (s Set[T]) Union(others ...Set[T]) Set[T] {
 	union := make(Set[T], len(s))
 	for item := range s {
@@ -93,8 +93,8 @@ func (s Set[T]) Union(others ...Set[T]) Set[T] {
 	return union
 }
 
-// Intersect returns a new Set containing the items of `s` present in every one
-// of `others`.
+// Intersect returns a new [Set] containing the items of `s` present in
+// every one of `others`.
 func (s Set[T]) Intersect(others ...Set[T]) Set[T] {
 	intersection := make(Set[T])
 	for item := range s {
@@ -105,8 +105,8 @@ func (s Set[T]) Intersect(others ...Set[T]) Set[T] {
 	return intersection
 }
 
-// Difference returns a new Set containing the items of `s` not present in any
-// of `others`.
+// Difference returns a new [Set] containing the items of `s` not present
+// in any of `others`.
 func (s Set[T]) Difference(others ...Set[T]) Set[T] {
 	diff := make(Set[T])
 	for item := range s {

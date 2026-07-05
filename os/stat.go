@@ -7,12 +7,13 @@ import (
 )
 
 // notExist reports whether `err` means the path does not exist, including
-// ENOTDIR (a non-directory component partway through the path).
+// [syscall.ENOTDIR] (a non-directory component partway through the path).
 func notExist(err error) bool {
 	return errors.Is(err, os.ErrNotExist) || errors.Is(err, syscall.ENOTDIR)
 }
 
-// stat returns the FileInfo for `path`, or (nil, nil) if it does not exist.
+// stat returns the [os.FileInfo] for `path`, or (nil, nil) if it does not
+// exist.
 func stat(path string) (os.FileInfo, error) {
 	info, err := os.Stat(path)
 	if notExist(err) {
