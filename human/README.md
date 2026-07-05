@@ -106,7 +106,7 @@ func ContractHome(path string) string
 
 <a name="FormatDuration"></a>
 
-## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L29>)
+## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L23>)
 
 ```go
 func FormatDuration(d time.Duration) string
@@ -245,7 +245,7 @@ func ParseByteSize(s string) float64
 
 <a name="ParseDuration"></a>
 
-## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L112>)
+## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L106>)
 
 ```go
 func ParseDuration(s string) (time.Duration, error)

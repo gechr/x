@@ -25,3 +25,4 @@ go get github.com/gechr/x@latest
 | [`sync`](./sync)                           | Concurrency helpers: bounded parallel-for                        |
 | [`terminal`](./terminal)                   | Terminal detection and size queries                              |
 | [`terminal/emulator`](./terminal/emulator) | Terminal emulator detection (iTerm2, Ghostty, kitty, …)          |
+| [`time`](./time)                           | Time helpers: calendar-scaled durations                          |

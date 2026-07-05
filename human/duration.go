@@ -7,14 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
-)
 
-// Calendar-scaled durations beyond what the time package names. A year is 365
-// days and a week is 7 days, matching FormatDuration and ParseDuration.
-const (
-	day  = HoursPerDay * time.Hour
-	week = DaysPerWeek * day
-	year = DaysPerYear * day
+	xtime "github.com/gechr/x/time"
 )
 
 // FormatDuration formats d as up to two adjacent units with no separator
@@ -46,23 +40,23 @@ func FormatDuration(d time.Duration) string {
 
 	var parts []string
 	switch {
-	case d >= year:
-		years := int(d / year)
-		d -= time.Duration(years) * year
+	case d >= xtime.Year:
+		years := int(d / xtime.Year)
+		d -= time.Duration(years) * xtime.Year
 		parts = append(parts, strconv.Itoa(years)+"y")
-		if weeks := int(d / week); weeks > 0 {
+		if weeks := int(d / xtime.Week); weeks > 0 {
 			parts = append(parts, strconv.Itoa(weeks)+"w")
 		}
-	case d >= week:
-		weeks := int(d / week)
-		d -= time.Duration(weeks) * week
+	case d >= xtime.Week:
+		weeks := int(d / xtime.Week)
+		d -= time.Duration(weeks) * xtime.Week
 		parts = append(parts, strconv.Itoa(weeks)+"w")
-		if days := int(d / day); days > 0 {
+		if days := int(d / xtime.Day); days > 0 {
 			parts = append(parts, strconv.Itoa(days)+"d")
 		}
-	case d >= day:
-		days := int(d / day)
-		d -= time.Duration(days) * day
+	case d >= xtime.Day:
+		days := int(d / xtime.Day)
+		d -= time.Duration(days) * xtime.Day
 		parts = append(parts, strconv.Itoa(days)+"d")
 		if hours := int(d / time.Hour); hours > 0 {
 			parts = append(parts, strconv.Itoa(hours)+"h")
@@ -183,11 +177,11 @@ func ParseDuration(s string) (time.Duration, error) {
 func unitSize(unit string) (time.Duration, bool) {
 	switch unit {
 	case "y":
-		return year, true
+		return xtime.Year, true
 	case "w":
-		return week, true
+		return xtime.Week, true
 	case "d":
-		return day, true
+		return xtime.Day, true
 	case "h":
 		return time.Hour, true
 	case "m":
