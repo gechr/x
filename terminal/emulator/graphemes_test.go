@@ -19,7 +19,7 @@ func TestSupportsGraphemes_Term(t *testing.T) {
 		{"st", false},
 		{"wezterm", true},
 		{"xterm-ghostty", true},
-		{"xterm-kitty", false},
+		{"xterm-kitty", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.term, func(t *testing.T) {
@@ -37,7 +37,7 @@ func TestSupportsGraphemes_MarkerVars(t *testing.T) {
 		want bool
 	}{
 		{"ITERM_SESSION_ID", false},
-		{"KITTY_WINDOW_ID", false},
+		{"KITTY_WINDOW_ID", true},
 		{"WEZTERM_PANE", true},
 		{"WT_SESSION", true},
 	}
