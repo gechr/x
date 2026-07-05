@@ -73,6 +73,50 @@ func TestDetect_MarkerVars(t *testing.T) {
 	}
 }
 
+func TestDetect_Multiplexers(t *testing.T) {
+	tests := []struct {
+		env  string
+		want string
+	}{
+		{"TMUX", emulator.Tmux},
+		{"STY", emulator.Screen},
+	}
+	for _, tt := range tests {
+		t.Run(tt.env, func(t *testing.T) {
+			clearDetectEnv(t)
+			t.Setenv(tt.env, "some-value")
+
+			require.Equal(t, tt.want, emulator.Detect())
+		})
+	}
+}
+
+// TestDetect_MultiplexerTakesPrecedence: a multiplexer owns the screen model
+// of everything inside it, so it must win over the hosting emulator's
+// variables - including a tmux config that sets TERM to "screen-256color".
+func TestDetect_MultiplexerTakesPrecedence(t *testing.T) {
+	clearDetectEnv(t)
+	t.Setenv("TMUX", "/private/tmp/tmux-501/default,4864,0")
+	t.Setenv(emulator.EnvTerm, "screen-256color")
+	t.Setenv(emulator.EnvTermProgram, "iTerm.app")
+	t.Setenv("KITTY_WINDOW_ID", "1")
+
+	require.Equal(t, emulator.Tmux, emulator.Detect())
+}
+
+// TestDetect_NestedMultiplexers: when multiplexers are nested, both markers
+// are present (neither scrubs the other's variable) and the environment
+// cannot identify the innermost one. tmux is reported as the more common
+// case; this pins the documented tie-break, not innermost-mux detection.
+func TestDetect_NestedMultiplexers(t *testing.T) {
+	clearDetectEnv(t)
+	t.Setenv("TMUX", "/private/tmp/tmux-501/default,4864,0")
+	t.Setenv("STY", "12345.pts-0.host")
+	t.Setenv(emulator.EnvTerm, "screen")
+
+	require.Equal(t, emulator.Tmux, emulator.Detect())
+}
+
 func TestDetect_Term(t *testing.T) {
 	tests := []struct {
 		term string
@@ -86,8 +130,12 @@ func TestDetect_Term(t *testing.T) {
 		{"foot-extra-direct", emulator.Foot},
 		{"rxvt-unicode", emulator.URxvt},
 		{"rxvt-unicode-256color", emulator.URxvt},
+		{"screen", emulator.Screen},
+		{"screen-256color", emulator.Screen},
 		{"st", emulator.ST},
 		{"st-256color", emulator.ST},
+		{"tmux", emulator.Tmux},
+		{"tmux-256color", emulator.Tmux},
 		{"wezterm", emulator.WezTerm},
 		{"xterm-ghostty", emulator.Ghostty},
 		{"xterm-kitty", emulator.Kitty},

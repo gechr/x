@@ -18,11 +18,13 @@ const (
 	Konsole         = "konsole"
 	Mintty          = "mintty"
 	Rio             = "rio"
+	Screen          = "screen"
 	ST              = "st"
 	Tabby           = "tabby"
 	Terminator      = "terminator"
 	Termux          = "termux"
 	Tilix           = "tilix"
+	Tmux            = "tmux"
 	URxvt           = "urxvt"
 	VSCode          = "vscode"
 	Warp            = "warp"
@@ -46,11 +48,13 @@ var knownEmulators = []string{
 	Konsole,
 	Mintty,
 	Rio,
+	Screen,
 	ST,
 	Tabby,
 	Terminator,
 	Termux,
 	Tilix,
+	Tmux,
 	URxvt,
 	VSCode,
 	Warp,
@@ -74,11 +78,13 @@ var knownEmulatorSet = map[string]struct{}{
 	Konsole:         {},
 	Mintty:          {},
 	Rio:             {},
+	Screen:          {},
 	ST:              {},
 	Tabby:           {},
 	Terminator:      {},
 	Termux:          {},
 	Tilix:           {},
+	Tmux:            {},
 	URxvt:           {},
 	VSCode:          {},
 	Warp:            {},

@@ -31,6 +31,23 @@ var termPrograms = map[string]string{
 	"zed":            Zed,
 }
 
+// muxVars lists multiplexer-specific environment variables. Multiplexers own
+// the screen model of everything running inside them, so they are checked
+// before anything else - including TERM, because tmux configs commonly set
+// TERM to "screen-256color".
+//
+// Neither tmux nor screen scrubs the other's variable, so when multiplexers
+// are nested both markers are present and the environment cannot identify
+// the innermost one; tmux is reported as the more common case. TERM cannot
+// break the tie either: both muxes commonly use "screen-256color".
+var muxVars = []struct {
+	env  string
+	name string
+}{
+	{"TMUX", Tmux},
+	{"STY", Screen},
+}
+
 // markerVars lists emulator-specific environment variables, checked in order.
 var markerVars = []struct {
 	env  string
@@ -65,7 +82,9 @@ var termValues = map[string]string{
 	"foot":           Foot,
 	"rio":            Rio,
 	"rxvt-unicode":   URxvt,
+	"screen":         Screen,
 	"st":             ST,
+	"tmux":           Tmux,
 	"wezterm":        WezTerm,
 	"xterm-ghostty":  Ghostty,
 	"xterm-kitty":    Kitty,
@@ -74,13 +93,20 @@ var termValues = map[string]string{
 // Detect returns the terminal emulator hosting the process, or empty if it
 // cannot be determined. Detection is best-effort, based on environment
 // variables inherited from the emulator.
-// Priority: `TERM`, `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific
-// variables. `TERM` wins because the innermost emulator always sets it fresh
-// for its own session, whereas `TERM_PROGRAM` and marker variables leak
-// through from an outer terminal when one emulator is launched from another
-// that does not scrub them (e.g. kitty launched from iTerm2 inherits both
+// Priority: multiplexer variables, `TERM`, `TERM_PROGRAM`,
+// `TERMINAL_EMULATOR`, emulator-specific variables. Multiplexers win because
+// they own the screen model of everything inside them; `TERM` beats
+// `TERM_PROGRAM` because the innermost emulator always sets it fresh for its
+// own session, whereas `TERM_PROGRAM` and marker variables leak through from
+// an outer terminal when one emulator is launched from another that does not
+// scrub them (e.g. kitty launched from iTerm2 inherits both
 // `TERM_PROGRAM=iTerm.app` and `ITERM_SESSION_ID`).
 func Detect() string {
+	for _, m := range muxVars {
+		if os.Getenv(m.env) != "" {
+			return m.name
+		}
+	}
 	if name, ok := termValues[normalizeTerm(os.Getenv(EnvTerm))]; ok {
 		return name
 	}

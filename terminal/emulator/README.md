@@ -44,11 +44,13 @@ const (
     Konsole         = "konsole"
     Mintty          = "mintty"
     Rio             = "rio"
+    Screen          = "screen"
     ST              = "st"
     Tabby           = "tabby"
     Terminator      = "terminator"
     Termux          = "termux"
     Tilix           = "tilix"
+    Tmux            = "tmux"
     URxvt           = "urxvt"
     VSCode          = "vscode"
     Warp            = "warp"
@@ -60,17 +62,17 @@ const (
 
 <a name="Detect"></a>
 
-## func [Detect](<https://github.com/gechr/x/blob/main/terminal/emulator/detect.go#L83>)
+## func [Detect](<https://github.com/gechr/x/blob/main/terminal/emulator/detect.go#L104>)
 
 ```go
 func Detect() string
 ```
 
-**Detect** returns the terminal emulator hosting the process, or empty if it cannot be determined. Detection is best-effort, based on environment variables inherited from the emulator. Priority: `TERM`, `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables. `TERM` wins because the innermost emulator always sets it fresh for its own session, whereas `TERM_PROGRAM` and marker variables leak through from an outer terminal when one emulator is launched from another that does not scrub them (e.g. kitty launched from iTerm2 inherits both `TERM_PROGRAM=iTerm.app` and `ITERM_SESSION_ID`).
+**Detect** returns the terminal emulator hosting the process, or empty if it cannot be determined. Detection is best-effort, based on environment variables inherited from the emulator. Priority: multiplexer variables, `TERM`, `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables. Multiplexers win because they own the screen model of everything inside them; `TERM` beats `TERM_PROGRAM` because the innermost emulator always sets it fresh for its own session, whereas `TERM_PROGRAM` and marker variables leak through from an outer terminal when one emulator is launched from another that does not scrub them (e.g. kitty launched from iTerm2 inherits both `TERM_PROGRAM=iTerm.app` and `ITERM_SESSION_ID`).
 
 <a name="IsKnown"></a>
 
-## func [IsKnown](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L96>)
+## func [IsKnown](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L102>)
 
 ```go
 func IsKnown(name string) bool
@@ -80,7 +82,7 @@ func IsKnown(name string) bool
 
 <a name="Known"></a>
 
-## func [Known](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L91>)
+## func [Known](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L97>)
 
 ```go
 func Known() []string

@@ -52,6 +52,17 @@ func TestSupportsGraphemes_MarkerVars(t *testing.T) {
 	}
 }
 
+// TestSupportsGraphemes_Tmux: inside tmux the multiplexer's own wcwidth-based
+// screen model governs, no matter how capable the outer terminal is.
+func TestSupportsGraphemes_Tmux(t *testing.T) {
+	clearDetectEnv(t)
+	t.Setenv("TMUX", "/private/tmp/tmux-501/default,4864,0")
+	t.Setenv(emulator.EnvTerm, "tmux-256color")
+	t.Setenv("KITTY_WINDOW_ID", "1")
+
+	require.False(t, emulator.SupportsGraphemes())
+}
+
 func TestSupportsGraphemes_Undetected(t *testing.T) {
 	clearDetectEnv(t)
 

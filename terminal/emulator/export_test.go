@@ -4,6 +4,9 @@ package emulator
 // Used by tests to isolate the environment.
 func EnvVars() []string {
 	vars := []string{EnvTerm, EnvTermProgram, EnvTerminalEmulator}
+	for _, m := range muxVars {
+		vars = append(vars, m.env)
+	}
 	for _, m := range markerVars {
 		vars = append(vars, m.env)
 	}
