@@ -20,11 +20,15 @@ Package strings provides string helpers: split, contains, indent/dedent, truncat
 - [func EqualNatural(a, b string) bool](<#EqualNatural>)
 - [func Indent(s, prefix string) string](<#Indent>)
 - [func IsBlank(s string) bool](<#IsBlank>)
+- [func IsDigits(s string) bool](<#IsDigits>)
 - [func IsGitCommit(s string) bool](<#IsGitCommit>)
 - [func IsHex(s string) bool](<#IsHex>)
 - [func IsHexChar(c rune) bool](<#IsHexChar>)
 - [func IsSHA256(s string) bool](<#IsSHA256>)
 - [func LessNatural(a, b string) bool](<#LessNatural>)
+- [func PadCenter(s string, width int) string](<#PadCenter>)
+- [func PadLeft(s string, width int) string](<#PadLeft>)
+- [func PadRight(s string, width int) string](<#PadRight>)
 - [func SplitAny(s, chars string) \[\]string](<#SplitAny>)
 - [func SplitBy(s, sep string) \[\]string](<#SplitBy>)
 - [func SplitCSV(s string) \[\]string](<#SplitCSV>)
@@ -171,6 +175,16 @@ func IsBlank(s string) bool
 
 **IsBlank** reports whether s is empty or consists only of whitespace.
 
+<a name="IsDigits"></a>
+
+## func [IsDigits](<https://github.com/gechr/x/blob/main/strings/digits.go#L5>)
+
+```go
+func IsDigits(s string) bool
+```
+
+**IsDigits** reports whether s is non-empty and consists entirely of ASCII digits (0-9). An empty string is not digits.
+
 <a name="IsGitCommit"></a>
 
 ## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L23>)
@@ -220,6 +234,48 @@ func LessNatural(a, b string) bool
 ```
 
 **LessNatural** reports whether a sorts before b in natural order, as decided by [CompareNatural](<#CompareNatural>). It reads cleanly at call sites that want a boolean rather than a three-way result, such as sort predicates and conditionals.
+
+<a name="PadCenter"></a>
+
+## func [PadCenter](<https://github.com/gechr/x/blob/main/strings/pad.go#L31>)
+
+```go
+func PadCenter(s string, width int) string
+```
+
+**PadCenter** pads s with spaces on both sides to width runes, centring it. An odd rune of padding goes on the right. Strings already width runes or longer are returned unchanged.
+
+```text
+PadCenter("hi", 5) // " hi  "
+```
+
+<a name="PadLeft"></a>
+
+## func [PadLeft](<https://github.com/gechr/x/blob/main/strings/pad.go#L14>)
+
+```go
+func PadLeft(s string, width int) string
+```
+
+**PadLeft** pads s with spaces on the left to width runes, right-aligning it. Strings already width runes or longer are returned unchanged. Width is counted in runes; for display-width-aware handling of ANSI text use the ansi package.
+
+```text
+PadLeft("hi", 5) // "   hi"
+```
+
+<a name="PadRight"></a>
+
+## func [PadRight](<https://github.com/gechr/x/blob/main/strings/pad.go#L22>)
+
+```go
+func PadRight(s string, width int) string
+```
+
+**PadRight** pads s with spaces on the right to width runes, left-aligning it. Strings already width runes or longer are returned unchanged.
+
+```text
+PadRight("hi", 5) // "hi   "
+```
 
 <a name="SplitAny"></a>
 
