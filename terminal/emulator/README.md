@@ -90,7 +90,7 @@ func Known() []string
 
 <a name="SupportsGraphemes"></a>
 
-## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L20>)
+## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L21>)
 
 ```go
 func SupportsGraphemes() bool

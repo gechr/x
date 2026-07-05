@@ -15,6 +15,7 @@ func TestSupportsGraphemes_Term(t *testing.T) {
 		{"alacritty", false},
 		{"contour", true},
 		{"foot", true},
+		{"rio", true},
 		{"rxvt-unicode", false},
 		{"st", false},
 		{"wezterm", true},

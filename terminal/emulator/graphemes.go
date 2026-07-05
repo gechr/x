@@ -10,6 +10,7 @@ var graphemeEmulators = map[string]struct{}{
 	Foot:            {},
 	Ghostty:         {},
 	Kitty:           {},
+	Rio:             {},
 	WezTerm:         {},
 	WindowsTerminal: {},
 }
