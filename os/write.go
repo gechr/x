@@ -63,6 +63,25 @@ func EnsureDir(dir string, perm os.FileMode) error {
 	return nil
 }
 
+// EnsureFile creates `path` as an empty file with mode `perm` if it does not
+// exist, creating any missing parent directories. An existing file's contents,
+// mode, and timestamps are left untouched.
+func EnsureFile(path string, perm os.FileMode) error {
+	// Not EnsureDir: parents are incidental here, so a pre-existing parent's
+	// mode must be left alone (e.g. a 0o700 ~/.ssh must not become 0o755).
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return fmt.Errorf("failed to create parent directories: %w", err)
+	}
+	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, perm)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	if err := f.Close(); err != nil {
+		return fmt.Errorf("failed to close file: %w", err)
+	}
+	return nil
+}
+
 // CopyFile copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced
 // before close. When `src` and `dst` are the same file (including via hard link)
 // [CopyFile] is a no-op.

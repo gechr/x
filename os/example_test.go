@@ -73,6 +73,23 @@ func ExampleEnsureDir() {
 	// true
 }
 
+// EnsureFile creates the file and any missing parent directories.
+func ExampleEnsureFile() {
+	dir, _ := os.MkdirTemp("", "example")
+	defer func() { _ = os.RemoveAll(dir) }()
+
+	path := filepath.Join(dir, "a", "b", "config.txt")
+	if err := xos.EnsureFile(path, 0o600); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	isFile, _ := xos.IsFile(path)
+	fmt.Println(isFile)
+	// Output:
+	// true
+}
+
 func ExampleIsSymlink() {
 	dir, _ := os.MkdirTemp("", "example")
 	defer func() { _ = os.RemoveAll(dir) }()

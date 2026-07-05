@@ -94,6 +94,50 @@ func TestEnsureDir_EnforcesPermOnCreation(t *testing.T) {
 	require.Equal(t, os.FileMode(0o750), info.Mode().Perm())
 }
 
+func TestEnsureFile(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	target := filepath.Join(dir, "a", "b", "config.txt")
+
+	require.NoError(t, xos.EnsureFile(target, 0o600))
+	info, err := os.Stat(target)
+	require.NoError(t, err)
+	require.True(t, info.Mode().IsRegular())
+	require.Equal(t, os.FileMode(0o600), info.Mode().Perm())
+}
+
+func TestEnsureFile_LeavesExistingUntouched(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	target := filepath.Join(dir, "data.txt")
+	require.NoError(t, os.WriteFile(target, []byte("payload"), 0o640))
+
+	require.NoError(t, xos.EnsureFile(target, 0o600))
+
+	got, err := os.ReadFile(target)
+	require.NoError(t, err)
+	require.Equal(t, "payload", string(got))
+	info, err := os.Stat(target)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0o640), info.Mode().Perm())
+}
+
+func TestEnsureFile_PreservesParentMode(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	parent := filepath.Join(dir, "secrets")
+	require.NoError(t, os.Mkdir(parent, 0o700))
+
+	require.NoError(t, xos.EnsureFile(filepath.Join(parent, "token"), 0o600))
+
+	info, err := os.Stat(parent)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0o700), info.Mode().Perm())
+}
+
 func TestCopyFile(t *testing.T) {
 	t.Parallel()
 

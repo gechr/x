@@ -11,6 +11,7 @@ Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
 - [func AtomicWrite(path string, data \[\]byte, perm os.FileMode) error](<#AtomicWrite>)
 - [func CopyFile(src, dst string) error](<#CopyFile>)
 - [func EnsureDir(dir string, perm os.FileMode) error](<#EnsureDir>)
+- [func EnsureFile(path string, perm os.FileMode) error](<#EnsureFile>)
 - [func Exists(path string) (bool, error)](<#Exists>)
 - [func IsDir(path string) (bool, error)](<#IsDir>)
 - [func IsFile(path string) (bool, error)](<#IsFile>)
@@ -57,7 +58,7 @@ hello
 
 <a name="CopyFile"></a>
 
-## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L69>)
+## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L88>)
 
 ```go
 func CopyFile(src, dst string) error
@@ -118,6 +119,42 @@ if err := xos.EnsureDir(nested, 0o755); err != nil {
 
 isDir, _ := xos.IsDir(nested)
 fmt.Println(isDir)
+```
+
+Output:
+
+```text
+true
+```
+
+</details>
+
+<a name="EnsureFile"></a>
+
+## func [EnsureFile](<https://github.com/gechr/x/blob/main/os/write.go#L69>)
+
+```go
+func EnsureFile(path string, perm os.FileMode) error
+```
+
+**EnsureFile** creates `path` as an empty file with mode `perm` if it does not exist, creating any missing parent directories. An existing file's contents, mode, and timestamps are left untouched.
+
+<details><summary><b>Example</b></summary>
+
+**EnsureFile** creates the file and any missing parent directories.
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "a", "b", "config.txt")
+if err := xos.EnsureFile(path, 0o600); err != nil {
+    fmt.Println(err)
+    return
+}
+
+isFile, _ := xos.IsFile(path)
+fmt.Println(isFile)
 ```
 
 Output:
