@@ -2,6 +2,8 @@ package human_test
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/gechr/x/human"
@@ -32,6 +34,32 @@ func ExampleParseDuration() {
 	// 2h15m0s
 	// 216h0m0s
 	// -1m30s
+}
+
+// ContractHome leaves paths outside the home directory untouched.
+func ExampleContractHome() {
+	home, _ := os.UserHomeDir()
+	fmt.Println(human.ContractHome(filepath.Join(home, "projects", "x")))
+	fmt.Println(human.ContractHome("/etc/hosts"))
+	// Output:
+	// ~/projects/x
+	// /etc/hosts
+}
+
+// FormatTimeAgo formats a time relative to the current time; see
+// [human.FormatTimeAgoFrom] for the full range of outputs.
+func ExampleFormatTimeAgo() {
+	fmt.Println(human.FormatTimeAgo(time.Now().Add(-90 * time.Minute)))
+	// Output:
+	// 1 hour ago
+}
+
+// FormatTimeAgoCompact formats a time relative to the current time; see
+// [human.FormatTimeAgoCompactFrom] for the full range of outputs.
+func ExampleFormatTimeAgoCompact() {
+	fmt.Println(human.FormatTimeAgoCompact(time.Now().Add(-90 * time.Minute)))
+	// Output:
+	// 1h ago
 }
 
 func ExampleFormatIECBytes() {

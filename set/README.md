@@ -53,6 +53,23 @@ func Sorted[T cmp.Ordered](s Set[T]) []T
 
 Sorted is a function rather than a [Set](<#Set>) method because it requires T to be ordered, not just comparable.
 
+<details><summary><b>Example</b></summary>
+
+**Sorted** turns a Set's indeterminate iteration order into a stable one.
+
+```go
+s := set.New("banana", "apple", "cherry")
+fmt.Println(set.Sorted(s))
+```
+
+Output:
+
+```text
+[apple banana cherry]
+```
+
+</details>
+
 <a name="SortedNatural"></a>
 
 ## func [SortedNatural](<https://github.com/gechr/x/blob/main/set/sorted.go#L26>)
@@ -65,9 +82,9 @@ func SortedNatural[T ~string](s Set[T]) []T
 
 SortedNatural is a function rather than a [Set](<#Set>) method because it requires T to be string-like, not just comparable.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
-SortedNatural orders embedded numbers by value, so "item2" sorts before "item10".
+**SortedNatural** orders embedded numbers by value, so "item2" sorts before "item10".
 
 ```go
 s := set.New("item10", "item2", "item1")
@@ -104,9 +121,9 @@ func Collect[T comparable](seq iter.Seq[T]) Set[T]
 
 **Collect** returns a Set containing the values of `seq`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
-Collect builds a Set from any iter.Seq, such as slices.Values.
+**Collect** builds a Set from any iter.Seq, such as slices.Values.
 
 ```go
 s := set.Collect(slices.Values([]int{3, 1, 3, 2}))
@@ -131,7 +148,7 @@ func New[T comparable](items ...T) Set[T]
 
 **New** returns a Set containing `items`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 s := set.New("a", "b", "a")
@@ -210,7 +227,7 @@ func (s Set[T]) Difference(others ...Set[T]) Set[T]
 
 **Difference** returns a new Set containing the items of `s` not present in any of `others`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 a := set.New(1, 2, 3)
@@ -246,7 +263,7 @@ func (s Set[T]) Intersect(others ...Set[T]) Set[T]
 
 **Intersect** returns a new Set containing the items of `s` present in every one of `others`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 a := set.New(1, 2, 3)
@@ -292,7 +309,7 @@ func (s Set[T]) SubsetOf(other Set[T]) bool
 
 **SubsetOf** returns whether every item in `s` is present in `other`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 a := set.New("x", "y")
@@ -320,7 +337,7 @@ func (s Set[T]) Union(others ...Set[T]) Set[T]
 
 **Union** returns a new Set containing the items of `s` and all `others`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 a := set.New(1, 2)
@@ -360,6 +377,23 @@ func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T]
 
 **CollectSorted** returns a SortedSet containing the values of `seq`.
 
+<details><summary><b>Example</b></summary>
+
+**CollectSorted** builds a SortedSet from any iter.Seq, such as slices.Values.
+
+```go
+s := set.CollectSorted(slices.Values([]int{3, 1, 3, 2}))
+fmt.Println(s.Slice())
+```
+
+Output:
+
+```text
+[1 2 3]
+```
+
+</details>
+
 <a name="NewSorted"></a>
 
 ### func [NewSorted](<https://github.com/gechr/x/blob/main/set/sortedset.go#L23>)
@@ -370,7 +404,7 @@ func NewSorted[T cmp.Ordered](items ...T) SortedSet[T]
 
 **NewSorted** returns a SortedSet containing `items`, sorted ascending with duplicates removed.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 SortedSet keeps its items in ascending order at all times, so iteration is deterministic.
 
@@ -409,7 +443,7 @@ func (s SortedSet[T]) All() iter.Seq[T]
 
 **All** returns an iterator over the items of `s`, in ascending order.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 s := set.NewSorted("banana", "apple", "cherry")

@@ -20,7 +20,7 @@ func Deref[T any](p *T) T
 
 **Deref** returns the value `p` points to, or the zero value when `p` is nil.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 s := "hello"
@@ -35,7 +35,7 @@ hello
 
 </details>
 
-<details><summary>Example (Nil)</summary>
+<details><summary><b>Example (Nil)</b></summary>
 
 A nil pointer dereferences to the zero value instead of panicking.
 
@@ -55,9 +55,9 @@ Output:
 
 </details>
 
-<details><summary>Example (OptionalField)</summary>
+<details><summary><b>Example (OptionalField)</b></summary>
 
-Deref is handy for optional struct fields modelled as pointers.
+**Deref** is handy for optional struct fields modelled as pointers.
 
 ```go
 type Config struct {

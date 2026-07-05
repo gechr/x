@@ -319,7 +319,7 @@ func CursorUp(n int) string
 
 **CursorUp** returns the CUU sequence: move cursor up `n` lines.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", ansi.CursorUp(3))
@@ -478,7 +478,7 @@ func StringWidth(s string) int
 
 **StringWidth** returns the display width of a string in cells, ignoring ANSI escape codes and accounting for wide characters. Uses grapheme clustering.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(ansi.StringWidth("\x1b[31mred\x1b[m"))
@@ -504,7 +504,7 @@ func Strip(s string) string
 
 **Strip** removes ANSI escape codes from a string.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(ansi.Strip("\x1b[1mbold\x1b[m and plain"))
@@ -528,7 +528,7 @@ func Truncate(s string, length int, tail string) string
 
 **Truncate** truncates a string to a given cell width, appending `tail` if the string was truncated. ANSI escape codes are preserved.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(ansi.Truncate("Hello, World!", 8, "…"))
@@ -552,7 +552,7 @@ func WrapHard(s string, width int) string
 
 **WrapHard** wraps `s` at exactly `width` columns, breaking mid-word if needed. ANSI styles are preserved.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(ansi.WrapHard("the quick brown fox", 6))
@@ -579,7 +579,7 @@ func WrapSoft(s string, width int) string
 
 **WrapSoft** wraps `s` to fit within `width` columns, breaking at space boundaries. Words longer than `width` are hard-wrapped. ANSI styles are preserved.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(ansi.WrapSoft("the quick brown fox jumps over the lazy dog", 12))
@@ -658,7 +658,7 @@ func (w *ANSI) Hyperlink(url, text string) string
 
 **Hyperlink** creates an OSC 8 terminal hyperlink. When the output is not a terminal, the [HyperlinkFallback](<#HyperlinkFallback>) mode controls how the link is rendered in plain text.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 When output is not a terminal, hyperlinks render as plain text using the configured fallback mode.
 
@@ -846,7 +846,7 @@ func NewWrapper(opts ...WrapOption) *Wrapper
 
 **NewWrapper** creates a [Wrapper](<#Wrapper>) with the given options. Defaults: soft wrap, no additional breakpoints, ANSI style preservation enabled.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 Breakpoints add word-break opportunities beyond spaces, which is useful for wrapping paths or flags.
 

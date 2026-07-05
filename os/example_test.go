@@ -56,6 +56,53 @@ func ExampleIsDir() {
 	// false
 }
 
+// EnsureDir creates missing parent directories, like mkdir -p.
+func ExampleEnsureDir() {
+	dir, _ := os.MkdirTemp("", "example")
+	defer func() { _ = os.RemoveAll(dir) }()
+
+	nested := filepath.Join(dir, "a", "b", "c")
+	if err := xos.EnsureDir(nested, 0o755); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	isDir, _ := xos.IsDir(nested)
+	fmt.Println(isDir)
+	// Output:
+	// true
+}
+
+func ExampleIsSymlink() {
+	dir, _ := os.MkdirTemp("", "example")
+	defer func() { _ = os.RemoveAll(dir) }()
+
+	path := filepath.Join(dir, "file.txt")
+	_ = os.WriteFile(path, []byte("hello"), 0o600)
+	link := filepath.Join(dir, "link.txt")
+	_ = os.Symlink(path, link)
+
+	isLink, _ := xos.IsSymlink(link)
+	notLink, _ := xos.IsSymlink(path)
+	fmt.Println(isLink)
+	fmt.Println(notLink)
+	// Output:
+	// true
+	// false
+}
+
+// A missing path is not a writable directory.
+func ExampleIsWritableDir() {
+	dir, _ := os.MkdirTemp("", "example")
+	defer func() { _ = os.RemoveAll(dir) }()
+
+	fmt.Println(xos.IsWritableDir(dir))
+	fmt.Println(xos.IsWritableDir(filepath.Join(dir, "missing")))
+	// Output:
+	// true
+	// false
+}
+
 func ExampleSameFile() {
 	dir, _ := os.MkdirTemp("", "example")
 	defer func() { _ = os.RemoveAll(dir) }()

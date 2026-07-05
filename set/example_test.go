@@ -60,6 +60,14 @@ func ExampleSet_SubsetOf() {
 	// false
 }
 
+// Sorted turns a Set's indeterminate iteration order into a stable one.
+func ExampleSorted() {
+	s := set.New("banana", "apple", "cherry")
+	fmt.Println(set.Sorted(s))
+	// Output:
+	// [apple banana cherry]
+}
+
 // SortedNatural orders embedded numbers by value, so "item2" sorts before
 // "item10".
 func ExampleSortedNatural() {
@@ -80,6 +88,14 @@ func ExampleNewSorted() {
 	fmt.Println(s.Slice())
 	// Output:
 	// [0 1 3]
+}
+
+// CollectSorted builds a SortedSet from any iter.Seq, such as slices.Values.
+func ExampleCollectSorted() {
+	s := set.CollectSorted(slices.Values([]int{3, 1, 3, 2}))
+	fmt.Println(s.Slice())
+	// Output:
+	// [1 2 3]
 }
 
 func ExampleSortedSet_All() {

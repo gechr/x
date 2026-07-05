@@ -21,7 +21,7 @@ func Clamp[T cmp.Ordered](v, lo, hi T) T
 
 **Clamp** restricts `v` to the \[`lo`, `hi`\] range. NaN clamps to `lo`; infinities clamp to the nearest bound. Unlike min(max(v, lo), hi), NaN does not propagate.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xmath.Clamp(5, 0, 10))
@@ -39,7 +39,7 @@ Output:
 
 </details>
 
-<details><summary>Example (Nan)</summary>
+<details><summary><b>Example (Nan)</b></summary>
 
 Unlike min(max(v, lo), hi), NaN does not propagate - it clamps to `lo`.
 
@@ -57,9 +57,9 @@ NaN
 
 </details>
 
-<details><summary>Example (Strings)</summary>
+<details><summary><b>Example (Strings)</b></summary>
 
-Clamp works with any ordered type, including strings.
+**Clamp** works with any ordered type, including strings.
 
 ```go
 fmt.Println(xmath.Clamp("a", "b", "d"))
@@ -87,7 +87,7 @@ func Clamp01(v float64) float64
 
 **Clamp01** restricts `v` to the \[0, 1\] range. NaN clamps to 0.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xmath.Clamp01(0.5))

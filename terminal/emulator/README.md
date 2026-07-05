@@ -80,7 +80,7 @@ func IsKnown(name string) bool
 
 **IsKnown** reports whether `name` matches a known terminal emulator.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(emulator.IsKnown(emulator.Kitty))
@@ -106,7 +106,7 @@ func Known() []string
 
 **Known** returns the set of recognized terminal emulator names.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(emulator.Known())

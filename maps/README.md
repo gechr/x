@@ -26,7 +26,7 @@ func Group[K comparable, V any](seq iter.Seq2[K, V]) map[K][]V
 
 **Group** collects the pairs of `seq` into a map of slices, grouping values by key in encounter order.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 words := []string{"apple", "banana", "avocado", "blueberry", "cherry"}
@@ -62,7 +62,7 @@ func GroupFunc[K comparable, V any](seq iter.Seq[V], key func(V) K) map[K][]V
 
 **GroupFunc** collects the values of `seq` into a map of slices, grouping values in encounter order by the key returned by `key`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 words := []string{"go", "rust", "zig", "java", "c"}
@@ -95,7 +95,7 @@ func Invert[M ~map[K]V, K, V comparable](m M) map[V]K
 
 **Invert** returns a new map with the keys and values of `m` swapped. If multiple keys map to the same value, exactly one of them survives as the value in the result, chosen arbitrarily due to map iteration order.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 codes := map[string]int{"a": 1, "b": 2, "c": 3}
@@ -125,7 +125,7 @@ func KeysSlice[M ~map[K]V, K comparable, V any](m M) []K
 
 **KeysSlice** returns the keys of `m` as a slice, in indeterminate order.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
@@ -152,7 +152,7 @@ func Sorted[M ~map[K]V, K cmp.Ordered, V any](m M) iter.Seq2[K, V]
 
 **Sorted** returns an iterator over the entries of `m` in ascending key order.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
@@ -181,9 +181,9 @@ func SortedFunc[M ~map[K]V, K comparable, V any](m M, compare func(x, y K) int) 
 
 **SortedFunc** returns an iterator over the entries of `m` in the key order determined by `compare`, which follows the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
-SortedFunc accepts any comparison following the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention, such as a descending key order.
+**SortedFunc** accepts any comparison following the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention, such as a descending key order.
 
 ```go
 m := map[int]string{1: "one", 2: "two", 3: "three"}
@@ -213,7 +213,7 @@ func ValuesSlice[M ~map[K]V, K comparable, V any](m M) []V
 
 **ValuesSlice** returns the values of `m` as a slice, in indeterminate order.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}

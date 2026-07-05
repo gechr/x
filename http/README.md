@@ -22,7 +22,7 @@ func IsRetryableStatus(code int) bool
 
 **IsRetryableStatus** reports whether an HTTP status code represents a transient failure worth retrying: a request timeout (408), rate limiting (429), or any server error (5xx).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xhttp.IsRetryableStatus(http.StatusTooManyRequests))
@@ -50,7 +50,7 @@ func NextLink(h http.Header) string
 
 **NextLink** returns the rel="next" target from an RFC 8288 Link header, or "" when none. The target is returned as written - possibly relative - so a caller that needs an absolute URL resolves it against the request URL. All Link header lines are searched, an unquoted rel token is tolerated, and a quoted rel list (e.g. rel="next last") matches on any member.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 h := http.Header{}
@@ -70,7 +70,7 @@ https://api.github.com/repos/o/r/tags?page=2
 
 </details>
 
-<details><summary>Example (RelList)</summary>
+<details><summary><b>Example (RelList)</b></summary>
 
 A quoted rel list matches on any member, and the empty string is returned when no link carries rel="next".
 
@@ -101,7 +101,7 @@ func Status(code int) string
 
 **Status** returns a human-readable form of an HTTP status code, pairing the numeric code with its canonical reason phrase, e.g. "404 Not Found".
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xhttp.Status(http.StatusNotFound))

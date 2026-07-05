@@ -104,6 +104,25 @@ func ContractHome(path string) string
 
 **ContractHome** replaces the user's home directory prefix with ~.
 
+<details><summary><b>Example</b></summary>
+
+**ContractHome** leaves paths outside the home directory untouched.
+
+```go
+home, _ := os.UserHomeDir()
+fmt.Println(human.ContractHome(filepath.Join(home, "projects", "x")))
+fmt.Println(human.ContractHome("/etc/hosts"))
+```
+
+Output:
+
+```text
+~/projects/x
+/etc/hosts
+```
+
+</details>
+
 <a name="FormatDuration"></a>
 
 ## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L23>)
@@ -122,7 +141,7 @@ FormatDuration(400 * 24 * time.Hour)         // "1y5w"
 FormatDuration(50 * time.Millisecond)        // "50ms"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.FormatDuration(90 * time.Second))
@@ -152,7 +171,7 @@ func FormatIECBytes(b float64) string
 
 **FormatIECBytes** formats a byte count using IEC binary units (KiB, MiB, GiB, TiB, PiB, EiB).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.FormatIECBytes(512))
@@ -187,7 +206,7 @@ FormatNumber(1234567, " ") // "1 234 567"
 FormatNumber(-42, ",")     // "-42"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.FormatNumber(1234567, ","))
@@ -225,7 +244,7 @@ FormatNumberCompact(9999999)  // "10M"
 FormatNumberCompact(-1500000) // "-1.5M"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.FormatNumberCompact(950))
@@ -261,7 +280,7 @@ FormatOrdinal(22)  // "22nd"
 FormatOrdinal(113) // "113th"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.FormatOrdinal(1))
@@ -289,7 +308,7 @@ func FormatSIBytes(b float64) string
 
 **FormatSIBytes** formats a byte count using SI decimal units (KB, MB, GB, TB, PB, EB).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.FormatSIBytes(512))
@@ -317,6 +336,22 @@ func FormatTimeAgo(t time.Time) string
 
 **FormatTimeAgo** formats a time as a human-readable relative string (plain text).
 
+<details><summary><b>Example</b></summary>
+
+**FormatTimeAgo** formats a time relative to the current time; see [human.FormatTimeAgoFrom](<#FormatTimeAgoFrom>) for the full range of outputs.
+
+```go
+fmt.Println(human.FormatTimeAgo(time.Now().Add(-90 * time.Minute)))
+```
+
+Output:
+
+```text
+1 hour ago
+```
+
+</details>
+
 <a name="FormatTimeAgoCompact"></a>
 
 ## func [FormatTimeAgoCompact](<https://github.com/gechr/x/blob/main/human/time.go#L47>)
@@ -326,6 +361,22 @@ func FormatTimeAgoCompact(t time.Time) string
 ```
 
 **FormatTimeAgoCompact** formats a time as a compact relative string (e.g. "15m ago").
+
+<details><summary><b>Example</b></summary>
+
+**FormatTimeAgoCompact** formats a time relative to the current time; see [human.FormatTimeAgoCompactFrom](<#FormatTimeAgoCompactFrom>) for the full range of outputs.
+
+```go
+fmt.Println(human.FormatTimeAgoCompact(time.Now().Add(-90 * time.Minute)))
+```
+
+Output:
+
+```text
+1h ago
+```
+
+</details>
 
 <a name="FormatTimeAgoCompactFrom"></a>
 
@@ -337,7 +388,7 @@ func FormatTimeAgoCompactFrom(t, now time.Time) string
 
 **FormatTimeAgoCompactFrom** formats a time as a compact relative string relative to `now`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 now := time.Date(2024, time.June, 1, 12, 0, 0, 0, time.UTC)
@@ -368,7 +419,7 @@ func FormatTimeAgoFrom(t, now time.Time) string
 
 **FormatTimeAgoFrom** formats a time relative to the given reference time `now`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 now := time.Date(2024, time.June, 1, 12, 0, 0, 0, time.UTC)
@@ -399,7 +450,7 @@ func ParseByteSize(s string) float64
 
 **ParseByteSize** parses a human-readable byte size string like "27.61 MiB" or "1.5 GB" into a byte count. Supports both IEC (KiB, MiB, GiB, TiB, PiB, EiB) and SI (KB, MB, GB, TB, PB, EB) units. Returns 0 for empty or unparseable input.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%.0f\n", human.ParseByteSize("1.5 GB"))
@@ -431,9 +482,9 @@ ParseDuration("1w2d")   // 9 * 24 * time.Hour
 ParseDuration("-1m30s") // -90 * time.Second
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
-ParseDuration is the inverse of [human.FormatDuration](<#FormatDuration>), accepting the y, w, d, h, m, s, ms, µs, and ns units that function emits.
+**ParseDuration** is the inverse of [human.FormatDuration](<#FormatDuration>), accepting the y, w, d, h, m, s, ms, µs, and ns units that function emits.
 
 ```go
 d, _ := human.ParseDuration("2h15m")
@@ -469,7 +520,7 @@ Plural(1, "file", "files") // "file"
 Plural(3, "file", "files") // "files"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.Plural(1, "file", "files"))
@@ -500,7 +551,7 @@ Pluralize(1, "file", "files") // "1 file"
 Pluralize(3, "file", "files") // "3 files"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(human.Pluralize(1, "file", "files"))

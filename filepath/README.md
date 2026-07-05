@@ -26,6 +26,23 @@ func Expand(path string) string
 
 **Expand** expands a leading ~ to the user's home directory and resolves environment variables via [os.ExpandEnv](<https://pkg.go.dev/os#ExpandEnv>). It is purely lexical: the result is not checked for existence or resolved against the filesystem (use [Resolve](<#Resolve>) or [ResolveLenient](<#ResolveLenient>) for that).
 
+<details><summary><b>Example</b></summary>
+
+**Expand** also expands a leading ~ to the user's home directory.
+
+```go
+_ = os.Setenv("PROJECT_ROOT", "/srv/app")
+fmt.Println(xfilepath.Expand("$PROJECT_ROOT/config.toml"))
+```
+
+Output:
+
+```text
+/srv/app/config.toml
+```
+
+</details>
+
 <a name="IsWithin"></a>
 
 ## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L75>)
@@ -36,15 +53,7 @@ func IsWithin(base string, targets ...string) bool
 
 **IsWithin** reports whether all target paths are equal to or contained within `base`. Returns false when no `targets` are provided.
 
-Example:
-
-```go
-IsWithin("src", "src/foo.go")             // true
-IsWithin(".", "src/foo.go", "lib/bar.go") // true
-IsWithin("src", "lib/foo.go")             // false
-```
-
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xfilepath.IsWithin("src", "src/foo.go"))
@@ -64,9 +73,9 @@ false
 
 </details>
 
-<details><summary>Example (MultipleTargets)</summary>
+<details><summary><b>Example (MultipleTargets)</b></summary>
 
-IsWithin only reports true when every target is contained within the base.
+**IsWithin** only reports `true` when every target is contained within the base.
 
 ```go
 fmt.Println(xfilepath.IsWithin(".", "src/foo.go", "lib/bar.go"))
@@ -94,16 +103,7 @@ func Merge(paths []string, opts ...MergeOption) []string
 
 The comparison is lexical by default; pass [WithResolveSymlinks](<#WithResolveSymlinks>) to compare resolved physical locations instead.
 
-Example:
-
-```go
-Merge([]string{"a", "a"})     // ["a"]
-Merge([]string{".", "./sub"}) // ["."]
-Merge([]string{"a/b", "a"})   // ["a"]
-Merge([]string{"a", "b"})     // ["a", "b"]
-```
-
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xfilepath.Merge([]string{".", "./sub"}))
@@ -121,7 +121,7 @@ Output:
 
 </details>
 
-<details><summary>Example (Duplicates)</summary>
+<details><summary><b>Example (Duplicates)</b></summary>
 
 Exact duplicates are merged; the first occurrence survives in its original spelling.
 
@@ -147,6 +147,32 @@ func Resolve(path string) (string, error)
 
 **Resolve** recursively follows every symlink along `path` and returns the fully resolved absolute path. On any error (missing component, cycle, permission) the input path is returned alongside the error so callers can choose whether to handle it or fall back.
 
+<details><summary><b>Example</b></summary>
+
+**Resolve** follows symlinks, so a link and its target resolve to the same path.
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+target := filepath.Join(dir, "target.txt")
+_ = os.WriteFile(target, []byte("hello"), 0o600)
+link := filepath.Join(dir, "link.txt")
+_ = os.Symlink(target, link)
+
+resolvedLink, _ := xfilepath.Resolve(link)
+resolvedTarget, _ := xfilepath.Resolve(target)
+fmt.Println(resolvedLink == resolvedTarget)
+```
+
+Output:
+
+```text
+true
+```
+
+</details>
+
 <a name="ResolveLenient"></a>
 
 ## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L51>)
@@ -156,6 +182,31 @@ func ResolveLenient(path string) (string, error)
 ```
 
 **ResolveLenient** returns an absolute path with symlinks resolved where possible. If `path` itself cannot be resolved, it resolves the parent directory and rejoins the original base name. If neither can be resolved, it returns the absolute path.
+
+<details><summary><b>Example</b></summary>
+
+**ResolveLenient** succeeds where Resolve fails: a missing file resolves via its parent directory, keeping the original base name.
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+missing := filepath.Join(dir, "missing.txt")
+_, err := xfilepath.Resolve(missing)
+fmt.Println(err != nil)
+
+resolved, _ := xfilepath.ResolveLenient(missing)
+fmt.Println(filepath.Base(resolved))
+```
+
+Output:
+
+```text
+true
+missing.txt
+```
+
+</details>
 
 <a name="MergeOption"></a>
 

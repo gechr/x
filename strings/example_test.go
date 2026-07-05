@@ -160,6 +160,18 @@ func ExampleIsHex() {
 	// false
 }
 
+func ExampleIsHexChar() {
+	fmt.Println(xstrings.IsHexChar('f'))
+	fmt.Println(xstrings.IsHexChar('F'))
+	fmt.Println(xstrings.IsHexChar('9'))
+	fmt.Println(xstrings.IsHexChar('g'))
+	// Output:
+	// true
+	// true
+	// true
+	// false
+}
+
 func ExampleIsSHA256() {
 	fmt.Println(
 		xstrings.IsSHA256("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"),

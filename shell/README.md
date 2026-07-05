@@ -150,7 +150,7 @@ func IsKnown(name string) bool
 
 **IsKnown** reports whether `name` matches a known shell.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(shell.IsKnown("zsh"))
@@ -176,7 +176,7 @@ func Known() []string
 
 **Known** returns the set of recognized shell names.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(shell.Known())
@@ -200,7 +200,7 @@ func Quote(s string) string
 
 **Quote** returns a shell-escaped version of `s`. The returned value can safely be used as one token in a POSIX shell command line.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(shell.Quote("safe-token_1.txt"))
@@ -220,7 +220,7 @@ safe-token_1.txt
 
 </details>
 
-<details><summary>Example (SingleQuotes)</summary>
+<details><summary><b>Example (SingleQuotes)</b></summary>
 
 Single quotes inside the input are escaped so the result stays one token.
 
@@ -246,7 +246,7 @@ func Split(s string) ([]string, error)
 
 **Split** partitions `s` into shell-style words. Whitespace separates words, quotes preserve whitespace, backslashes escape the following rune, a backslash-newline pair is removed as a line continuation, and a "#" starts a comment when it appears where a new word could start. Inside double quotes, a backslash is special only before '$', '\`', '"', '\\', or a newline; before any other rune it is kept literally, following POSIX.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 words, err := shell.Split(`cp "my file.txt" backup/ # keep a copy`)
@@ -264,7 +264,7 @@ Output:
 
 </details>
 
-<details><summary>Example (LineContinuation)</summary>
+<details><summary><b>Example (LineContinuation)</b></summary>
 
 A backslash-newline pair is removed as a line continuation.
 
@@ -284,7 +284,7 @@ Output:
 
 </details>
 
-<details><summary>Example (UnclosedQuote)</summary>
+<details><summary><b>Example (UnclosedQuote)</b></summary>
 
 ```go
 _, err := shell.Split(`echo "unterminated`)

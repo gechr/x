@@ -37,7 +37,7 @@ func ContainsAll[S ~[]E, E comparable](target E, lists ...S) bool
 
 **ContainsAll** reports whether every one of the given `lists` contains `target`. It returns true when no `lists` are given.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 Every list must contain the target; no lists reports true.
 
@@ -67,7 +67,7 @@ func ContainsAny[S ~[]E, E comparable](target E, lists ...S) bool
 
 **ContainsAny** reports whether any of the given `lists` contains `target`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 A single list containing the target suffices; no lists reports false.
 
@@ -97,7 +97,7 @@ func ContainsFold[S ~[]E, E ~string](items S, target E) bool
 
 **ContainsFold** reports whether `items` contains `target` case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 tags := []string{"Latest", "Stable"}
@@ -126,7 +126,7 @@ func Count[S ~[]E, E comparable](items S, target E) int
 
 **Count** returns the number of elements in `items` equal to `target`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.Count([]string{"a", "b", "a", "c", "a"}, "a"))
@@ -152,7 +152,7 @@ func CountFunc[S ~[]E, E any](items S, match func(E) bool) int
 
 **CountFunc** returns the number of elements in `items` satisfying `match`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 isEven := func(n int) bool { return n%2 == 0 }
@@ -177,7 +177,7 @@ func Difference[S ~[]E, E comparable](items S, others ...S) S
 
 **Difference** returns the elements of `items` not present in any of `others`, preserving order and duplicates from `items`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 Duplicates and order in the first slice are preserved.
 
@@ -205,7 +205,7 @@ func Intersect[S ~[]E, E comparable](items S, others ...S) S
 
 **Intersect** returns the elements of `items` also present in every one of `others`, preserving order and duplicates from `items`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.Intersect([]string{"a", "b", "c"}, []string{"c", "b", "d"}))
@@ -231,7 +231,7 @@ func LastIndex[S ~[]E, E comparable](items S, target E) int
 
 **LastIndex** returns the index of the last occurrence of `target` in `items`, or -1 if not present.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.LastIndex([]string{"a", "b", "a", "c"}, "a"))
@@ -257,7 +257,7 @@ func LastIndexFunc[S ~[]E, E any](items S, match func(E) bool) int
 
 **LastIndexFunc** returns the index of the last element of `items` satisfying `match`, or -1 if none do.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 isEven := func(n int) bool { return n%2 == 0 }
@@ -284,7 +284,7 @@ func Partition[S ~[]E, E any](items S, match func(E) bool) (S, S)
 
 **Partition** splits `items` into two slices: elements satisfying `match`, and elements that do not, preserving the original relative order in both.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 isEven := func(n int) bool { return n%2 == 0 }
@@ -312,7 +312,7 @@ func SortNatural[S ~[]E, E ~string](s S)
 
 **SortNatural** sorts a string slice in place in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 Embedded numbers compare by value, so "item2" sorts before "item10".
 
@@ -340,7 +340,7 @@ func Trim[S ~[]E, E comparable](items, cutset S) S
 
 **Trim** returns `items` with all leading and trailing elements contained in `cutset` removed. The result is a subslice of `items`, sharing its backing array.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.Trim([]int{0, 0, 1, 2, 0}, []int{0}))
@@ -366,7 +366,7 @@ func TrimLeft[S ~[]E, E comparable](items, cutset S) S
 
 **TrimLeft** returns `items` with all leading elements contained in `cutset` removed. The result is a subslice of `items`, sharing its backing array.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.TrimLeft([]int{0, 0, 1, 2, 0}, []int{0}))
@@ -390,7 +390,7 @@ func TrimRight[S ~[]E, E comparable](items, cutset S) S
 
 **TrimRight** returns `items` with all trailing elements contained in `cutset` removed. The result is a subslice of `items`, sharing its backing array.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.TrimRight([]int{0, 0, 1, 2, 0}, []int{0}))
@@ -414,7 +414,7 @@ func Union[S ~[]E, E comparable](items S, others ...S) S
 
 **Union** returns the elements of `items` followed by the elements of `others`, in first-seen order with duplicates removed.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.Union([]int{1, 2}, []int{2, 3}, []int{3, 4, 1}))
@@ -438,7 +438,7 @@ func Unique[S ~[]E, E comparable](items S) S
 
 **Unique** returns `items` in first-seen order with duplicates removed.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xslices.Unique([]string{"a", "b", "a", "A", "c", "b"}))
@@ -462,7 +462,7 @@ func UniqueFold[S ~[]E, E ~string](items S) S
 
 **UniqueFold** returns strings in first-seen order with duplicates removed case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 The first-seen spelling wins; folding matches strings.EqualFold, so Greek final sigma "ς", medial "σ", and capital "Σ" are duplicates.
 
@@ -490,7 +490,7 @@ func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S
 
 **UniqueFunc** returns `items` in first-seen order with duplicates removed, where two items are duplicates when `key` reports the same value for both.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 The first-seen item wins for each key.
 

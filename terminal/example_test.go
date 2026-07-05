@@ -32,3 +32,17 @@ func ExampleSize() {
 	// Output:
 	// 0 0
 }
+
+// Width returns 0 when the file is nil or not connected to a terminal.
+func ExampleWidth() {
+	fmt.Println(terminal.Width(nil))
+	// Output:
+	// 0
+}
+
+// Height returns 0 when the file is nil or not connected to a terminal.
+func ExampleHeight() {
+	fmt.Println(terminal.Height(nil))
+	// Output:
+	// 0
+}

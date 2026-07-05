@@ -51,7 +51,7 @@ func AppendCSV(dst []string, raw string) []string
 
 **AppendCSV** splits `raw` on commas, trims whitespace, drops empty values, and appends the remaining values to `dst`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.AppendCSV([]string{"x"}, " a, b ,, c "))
@@ -80,7 +80,7 @@ Closest("verfiy", []string{"verify", "deep"}) // "verify"
 Closest("xyzzy", []string{"verify", "deep"})  // ""
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.Closest("verfiy", []string{"verify", "deep"}))
@@ -106,7 +106,7 @@ func CompactLines(s, sep string) string
 
 **CompactLines** trims lines, drops blank lines, removes duplicate lines while preserving first-seen order, and joins the remaining lines with `sep`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.CompactLines("  foo \n\nbar\nfoo\n", ", "))
@@ -130,7 +130,7 @@ func CompareFold(a, b string) int
 
 **CompareFold** compares `a` and `b` case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>), and returns -1, 0, or 1 following the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention. CompareFold(a, b) == 0 iff strings.EqualFold(a, b).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.CompareFold("Go", "go"))
@@ -158,7 +158,7 @@ func CompareNatural(a, b string) int
 
 **CompareNatural** orders `a` and `b` the way a human reads them, treating each run of digits as a single decimal number so "x2" sorts before "x10". It returns -1, 0, or +1 and allocates nothing, handling numbers of any length without overflow.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 versions := []string{"v10", "v2", "v1"}
@@ -184,7 +184,7 @@ func ContainsAll(s string, substrings ...string) bool
 
 **ContainsAll** reports whether `s` contains all of the given `substrings`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.ContainsAll("hello world", "hello", "world"))
@@ -210,7 +210,7 @@ func ContainsAny(s string, substrings ...string) bool
 
 **ContainsAny** reports whether `s` contains any of the given `substrings`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.ContainsAny("hello world", "moon", "world"))
@@ -236,7 +236,7 @@ func CountAny(s, chars string) int
 
 **CountAny** returns the number of Unicode code points in `s` that are contained in `chars`, following the cutset convention of [strings.IndexAny](<https://pkg.go.dev/strings#IndexAny>).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.CountAny("hello world", "lo"))
@@ -264,7 +264,7 @@ func Dedent(s string) string
 Dedent("    foo\n      bar\n    baz") // "foo\n  bar\nbaz"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.Dedent("    foo\n      bar\n    baz"))
@@ -290,7 +290,7 @@ func EnsureTrailingNewline(s string) string
 
 **EnsureTrailingNewline** trims any trailing newlines from `s` and appends exactly one, so the result always ends in a single "\\n". An empty string becomes "\\n".
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.EnsureTrailingNewline("hello\n\n"))
@@ -316,7 +316,7 @@ func EqualNatural(a, b string) bool
 
 **EqualNatural** reports whether `a` and `b` compare equal in natural order, as decided by [CompareNatural](<#CompareNatural>). This can differ from a == b, since a numeric run followed by more to compare matches regardless of leading zeros (for example "a00b00" and "a0b00").
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 Leading zeros are ignored when more text follows the numeric run.
 
@@ -350,7 +350,7 @@ Indent("foo\n\nbar", "> ")    // "> foo\n\n> bar"
 Indent("foo\n   \nbar", "> ") // "> foo\n\n> bar"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.Indent("foo\nbar", "> "))
@@ -375,7 +375,7 @@ func IsBlank(s string) bool
 
 **IsBlank** reports whether `s` is empty or consists only of whitespace.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.IsBlank(" \t\n"))
@@ -401,7 +401,7 @@ func IsDigits(s string) bool
 
 **IsDigits** reports whether `s` is non-empty and consists entirely of ASCII digits (0-9). An empty string is not digits.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.IsDigits("12345"))
@@ -429,7 +429,7 @@ func IsGitCommit(s string) bool
 
 **IsGitCommit** reports whether `s` is 40 hexadecimal digits (a Git commit hash).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.IsGitCommit("3b18e512dba79e4c8300dd08aeb37f8e728b8dad"))
@@ -455,7 +455,7 @@ func IsHex(s string) bool
 
 **IsHex** reports whether `s` is non-empty and consists entirely of hexadecimal digits. An empty string is not hex.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.IsHex("deadBEEF42"))
@@ -481,6 +481,26 @@ func IsHexChar(c rune) bool
 
 **IsHexChar** reports whether `c` is a valid hexadecimal digit (0-9, a-f, A-F).
 
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.IsHexChar('f'))
+fmt.Println(xstrings.IsHexChar('F'))
+fmt.Println(xstrings.IsHexChar('9'))
+fmt.Println(xstrings.IsHexChar('g'))
+```
+
+Output:
+
+```text
+true
+true
+true
+false
+```
+
+</details>
+
 <a name="IsSHA256"></a>
 
 ## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L28>)
@@ -491,7 +511,7 @@ func IsSHA256(s string) bool
 
 **IsSHA256** reports whether `s` is 64 hexadecimal digits (a SHA-256 digest).
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(
@@ -519,7 +539,7 @@ func LessNatural(a, b string) bool
 
 **LessNatural** reports whether `a` sorts before `b` in natural order, as decided by [CompareNatural](<#CompareNatural>). It reads cleanly at call sites that want a boolean rather than a three-way result, such as sort predicates and conditionals.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.LessNatural("v2", "v10"))
@@ -549,9 +569,9 @@ func PadCenter(s string, width int) string
 PadCenter("hi", 5) // " hi  "
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
-PadCenter places the odd rune of padding on the right.
+**PadCenter** places the odd rune of padding on the right.
 
 ```go
 fmt.Printf("%q\n", xstrings.PadCenter("hi", 5))
@@ -579,7 +599,7 @@ func PadLeft(s string, width int) string
 PadLeft("hi", 5) // "   hi"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.PadLeft("hi", 5))
@@ -607,7 +627,7 @@ func PadRight(s string, width int) string
 PadRight("hi", 5) // "hi   "
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.PadRight("hi", 5))
@@ -631,7 +651,7 @@ func SplitAny(s, chars string) []string
 
 **SplitAny** splits `s` around each occurrence of any Unicode code point in `chars`, following the cutset convention of [strings.IndexAny](<https://pkg.go.dev/strings#IndexAny>). Empty segments between adjacent separators are preserved, matching [strings.Split](<https://pkg.go.dev/strings#Split>) semantics. If `chars` is empty, SplitAny returns a single-element slice containing `s`.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 Empty segments between adjacent separators are preserved.
 
@@ -657,7 +677,7 @@ func SplitBy(s, sep string) []string
 
 **SplitBy** splits `s` by `sep`, trims whitespace from each part, and drops empty values.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.SplitBy(" a | b || c ", "|"))
@@ -681,7 +701,7 @@ func SplitCSV(s string) []string
 
 **SplitCSV** splits `s` on commas, trims whitespace, and drops empty values.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.SplitCSV(" a, b ,, c "))
@@ -705,7 +725,7 @@ func SplitLines(s string) []string
 
 **SplitLines** splits `s` into non-empty trimmed lines.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.SplitLines("foo\n\n  bar \n"))
@@ -729,7 +749,7 @@ func SplitLinesRaw(s string) []string
 
 **SplitLinesRaw** splits `s` into lines losslessly, normalizing CRLF to LF: every line is kept verbatim - empty lines and the trailing empty element included - so the result joins back with `"\n"` without losing content or line numbers.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Printf("%q\n", xstrings.SplitLinesRaw("foo\r\nbar\n"))
@@ -753,7 +773,7 @@ func Truncate(s string, n int, marker string) string
 
 **Truncate** is an alias for [TruncateRight](<#TruncateRight>), the most common form: it keeps the head and trims the tail.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.Truncate("hello world", 8, "…"))
@@ -781,7 +801,7 @@ func TruncateLeft(s string, n int, marker string) string
 TruncateLeft("hello world", 8, "…") // "…o world"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.TruncateLeft("hello world", 8, "…"))
@@ -809,7 +829,7 @@ func TruncateMiddle(s string, n int, marker string) string
 TruncateMiddle("0123456789abcdef", 7, "…") // "012…def"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.TruncateMiddle("0123456789abcdef", 7, "…"))
@@ -838,7 +858,7 @@ TruncateRight("hello world", 8, "…") // "hello w…"
 TruncateRight("hi", 8, "…")          // "hi"
 ```
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.TruncateRight("hello world", 8, "…"))
@@ -864,7 +884,7 @@ func Unwrap(s, prefix, suffix string) (string, bool)
 
 **Unwrap** returns `s` with the leading `prefix` and trailing `suffix` removed and reports whether both were present. Unlike a [strings.TrimPrefix](<https://pkg.go.dev/strings#TrimPrefix>) + [strings.TrimSuffix](<https://pkg.go.dev/strings#TrimSuffix>) chain, nothing is removed unless `s` starts with `prefix` AND ends with `suffix`, so a one-sided match is returned unchanged.
 
-<details><summary>Example</summary>
+<details><summary><b>Example</b></summary>
 
 ```go
 fmt.Println(xstrings.Unwrap(`"quoted"`, `"`, `"`))
