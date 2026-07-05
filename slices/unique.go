@@ -19,6 +19,22 @@ func Unique[S ~[]E, E comparable](items S) S {
 	return unique
 }
 
+// UniqueFunc returns items in first-seen order with duplicates removed,
+// where two items are duplicates when key reports the same value for both.
+func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S {
+	seen := make(map[K]struct{}, len(items))
+	unique := make(S, 0, len(items))
+	for _, item := range items {
+		k := key(item)
+		if _, ok := seen[k]; ok {
+			continue
+		}
+		seen[k] = struct{}{}
+		unique = append(unique, item)
+	}
+	return unique
+}
+
 // UniqueFold returns strings in first-seen order with duplicates removed
 // case-insensitively, using the same simple case-folding as
 // [strings.EqualFold].

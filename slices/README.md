@@ -25,6 +25,7 @@ Package slices provides slice helpers.
 - [func Union\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Union>)
 - [func Unique\[S ~\[\]E, E comparable\](items S) S](<#Unique>)
 - [func UniqueFold\[S ~\[\]E, E ~string\](items S) S](<#UniqueFold>)
+- [func UniqueFunc\[S ~\[\]E, E any, K comparable\](items S, key func(E) K) S](<#UniqueFunc>)
 
 <a name="ContainsAll"></a>
 
@@ -188,10 +189,20 @@ func Unique[S ~[]E, E comparable](items S) S
 
 <a name="UniqueFold"></a>
 
-## func [UniqueFold](<https://github.com/gechr/x/blob/main/slices/unique.go#L25>)
+## func [UniqueFold](<https://github.com/gechr/x/blob/main/slices/unique.go#L41>)
 
 ```go
 func UniqueFold[S ~[]E, E ~string](items S) S
 ```
 
 **UniqueFold** returns strings in first-seen order with duplicates removed case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
+
+<a name="UniqueFunc"></a>
+
+## func [UniqueFunc](<https://github.com/gechr/x/blob/main/slices/unique.go#L24>)
+
+```go
+func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S
+```
+
+**UniqueFunc** returns items in first-seen order with duplicates removed, where two items are duplicates when key reports the same value for both.

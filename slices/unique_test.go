@@ -19,6 +19,34 @@ func TestUnique(t *testing.T) {
 	require.Equal(t, []string{}, xslices.Unique([]string{}))
 }
 
+func TestUniqueFunc(t *testing.T) {
+	t.Parallel()
+
+	type pair struct {
+		key string
+		val int
+	}
+	// First-seen wins for each key.
+	require.Equal(
+		t,
+		[]pair{{"a", 1}, {"b", 2}, {"c", 4}},
+		xslices.UniqueFunc(
+			[]pair{{"a", 1}, {"b", 2}, {"a", 3}, {"c", 4}, {"b", 5}},
+			func(p pair) string { return p.key },
+		),
+	)
+	require.Equal(
+		t,
+		[]int{1, 2, 10},
+		xslices.UniqueFunc([]int{1, 2, 11, 10, 22}, func(n int) int { return n % 10 }),
+	)
+	require.Equal(
+		t,
+		[]string{},
+		xslices.UniqueFunc([]string{}, func(s string) string { return s }),
+	)
+}
+
 func TestUniqueFold(t *testing.T) {
 	t.Parallel()
 
