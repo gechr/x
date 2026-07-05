@@ -2,7 +2,7 @@ package shell
 
 import "slices"
 
-// Recognized shell names, as returned by Known.
+// Recognized shell names, as returned by [Known].
 const (
 	Ash    = "ash"
 	Bash   = "bash"
@@ -50,7 +50,7 @@ func Known() []string {
 	return slices.Clone(knownShells)
 }
 
-// IsKnown reports whether name matches a known shell.
+// IsKnown reports whether `name` matches a known shell.
 func IsKnown(name string) bool {
 	_, ok := knownShellSet[name]
 	return ok

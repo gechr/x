@@ -49,7 +49,7 @@ Package set provides a generic set backed by a map.
 func Sorted[T cmp.Ordered](s Set[T]) []T
 ```
 
-**Sorted** returns the items of s as a slice in ascending order.
+**Sorted** returns the items of `s` as a slice in ascending order.
 
 Sorted is a function rather than a [Set](<#Set>) method because it requires T to be ordered, not just comparable.
 
@@ -61,7 +61,7 @@ Sorted is a function rather than a [Set](<#Set>) method because it requires T to
 func SortedNatural[T ~string](s Set[T]) []T
 ```
 
-**SortedNatural** returns the items of s as a slice in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [xstrings.CompareNatural](<https://pkg.go.dev/github.com/gechr/x/strings#CompareNatural>).
+**SortedNatural** returns the items of `s` as a slice in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [xstrings.CompareNatural](<https://pkg.go.dev/github.com/gechr/x/strings#CompareNatural>).
 
 SortedNatural is a function rather than a [Set](<#Set>) method because it requires T to be string-like, not just comparable.
 
@@ -69,7 +69,7 @@ SortedNatural is a function rather than a [Set](<#Set>) method because it requir
 
 ## type [Set](<https://github.com/gechr/x/blob/main/set/set.go#L13>)
 
-**Set** is a set of comparable items backed by a map. Pointer types and structs containing pointer fields are compared using shallow equality. The zero value is nil: read operations work, but Add panics - use [New](<#New>) or [Collect](<#Collect>) to create a usable Set.
+**Set** is a set of comparable items backed by a map. Pointer types and structs containing pointer fields are compared using shallow equality. The zero value is nil: read operations work, but [Set.Add](<#Set.Add>) panics - use [New](<#New>) or [Collect](<#Collect>) to create a usable Set.
 
 ```go
 type Set[T comparable] map[T]struct{}
@@ -83,7 +83,7 @@ type Set[T comparable] map[T]struct{}
 func Collect[T comparable](seq iter.Seq[T]) Set[T]
 ```
 
-**Collect** returns a Set containing the values of seq.
+**Collect** returns a Set containing the values of `seq`.
 
 <a name="New"></a>
 
@@ -93,7 +93,7 @@ func Collect[T comparable](seq iter.Seq[T]) Set[T]
 func New[T comparable](items ...T) Set[T]
 ```
 
-**New** returns a Set containing items.
+**New** returns a Set containing `items`.
 
 <a name="Set.Add"></a>
 
@@ -103,7 +103,7 @@ func New[T comparable](items ...T) Set[T]
 func (s Set[T]) Add(items ...T)
 ```
 
-**Add** adds items to s.
+**Add** adds `items` to `s`.
 
 <a name="Set.All"></a>
 
@@ -113,7 +113,7 @@ func (s Set[T]) Add(items ...T)
 func (s Set[T]) All() iter.Seq[T]
 ```
 
-**All** returns an iterator over the items of s, in indeterminate order.
+**All** returns an iterator over the items of `s`, in indeterminate order.
 
 <a name="Set.Clone"></a>
 
@@ -123,7 +123,7 @@ func (s Set[T]) All() iter.Seq[T]
 func (s Set[T]) Clone() Set[T]
 ```
 
-**Clone** returns a copy of s.
+**Clone** returns a copy of `s`.
 
 <a name="Set.Contains"></a>
 
@@ -133,7 +133,7 @@ func (s Set[T]) Clone() Set[T]
 func (s Set[T]) Contains(item T) bool
 ```
 
-**Contains** returns whether item is present in s.
+**Contains** returns whether `item` is present in `s`.
 
 <a name="Set.Delete"></a>
 
@@ -143,7 +143,7 @@ func (s Set[T]) Contains(item T) bool
 func (s Set[T]) Delete(items ...T)
 ```
 
-**Delete** removes items from s.
+**Delete** removes `items` from `s`.
 
 <a name="Set.Difference"></a>
 
@@ -153,7 +153,7 @@ func (s Set[T]) Delete(items ...T)
 func (s Set[T]) Difference(others ...Set[T]) Set[T]
 ```
 
-**Difference** returns a new Set containing the items of s not present in any of others.
+**Difference** returns a new Set containing the items of `s` not present in any of `others`.
 
 <a name="Set.Equal"></a>
 
@@ -163,7 +163,7 @@ func (s Set[T]) Difference(others ...Set[T]) Set[T]
 func (s Set[T]) Equal(other Set[T]) bool
 ```
 
-**Equal** returns whether s and other contain the same items.
+**Equal** returns whether `s` and `other` contain the same items.
 
 <a name="Set.Intersect"></a>
 
@@ -173,7 +173,7 @@ func (s Set[T]) Equal(other Set[T]) bool
 func (s Set[T]) Intersect(others ...Set[T]) Set[T]
 ```
 
-**Intersect** returns a new Set containing the items of s present in every one of others.
+**Intersect** returns a new Set containing the items of `s` present in every one of `others`.
 
 <a name="Set.Len"></a>
 
@@ -183,7 +183,7 @@ func (s Set[T]) Intersect(others ...Set[T]) Set[T]
 func (s Set[T]) Len() int
 ```
 
-**Len** returns the number of items in s.
+**Len** returns the number of items in `s`.
 
 <a name="Set.Slice"></a>
 
@@ -193,7 +193,7 @@ func (s Set[T]) Len() int
 func (s Set[T]) Slice() []T
 ```
 
-**Slice** returns the items of s as a slice, in indeterminate order.
+**Slice** returns the items of `s` as a slice, in indeterminate order.
 
 <a name="Set.SubsetOf"></a>
 
@@ -203,7 +203,7 @@ func (s Set[T]) Slice() []T
 func (s Set[T]) SubsetOf(other Set[T]) bool
 ```
 
-**SubsetOf** returns whether every item in s is present in other.
+**SubsetOf** returns whether every item in `s` is present in `other`.
 
 <a name="Set.Union"></a>
 
@@ -213,7 +213,7 @@ func (s Set[T]) SubsetOf(other Set[T]) bool
 func (s Set[T]) Union(others ...Set[T]) Set[T]
 ```
 
-**Union** returns a new Set containing the items of s and all others.
+**Union** returns a new Set containing the items of `s` and all `others`.
 
 <a name="SortedSet"></a>
 
@@ -237,7 +237,7 @@ type SortedSet[T cmp.Ordered] struct {
 func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T]
 ```
 
-**CollectSorted** returns a SortedSet containing the values of seq.
+**CollectSorted** returns a SortedSet containing the values of `seq`.
 
 <a name="NewSorted"></a>
 
@@ -247,7 +247,7 @@ func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T]
 func NewSorted[T cmp.Ordered](items ...T) SortedSet[T]
 ```
 
-**NewSorted** returns a SortedSet containing items, sorted ascending with duplicates removed.
+**NewSorted** returns a SortedSet containing `items`, sorted ascending with duplicates removed.
 
 <a name="SortedSet.Add"></a>
 
@@ -257,7 +257,7 @@ func NewSorted[T cmp.Ordered](items ...T) SortedSet[T]
 func (s *SortedSet[T]) Add(items ...T)
 ```
 
-**Add** adds items to s, inserting each in sorted position and ignoring duplicates.
+**Add** adds `items` to `s`, inserting each in sorted position and ignoring duplicates.
 
 <a name="SortedSet.All"></a>
 
@@ -267,7 +267,7 @@ func (s *SortedSet[T]) Add(items ...T)
 func (s SortedSet[T]) All() iter.Seq[T]
 ```
 
-**All** returns an iterator over the items of s, in ascending order.
+**All** returns an iterator over the items of `s`, in ascending order.
 
 <a name="SortedSet.Clone"></a>
 
@@ -277,7 +277,7 @@ func (s SortedSet[T]) All() iter.Seq[T]
 func (s SortedSet[T]) Clone() SortedSet[T]
 ```
 
-**Clone** returns a copy of s.
+**Clone** returns a copy of `s`.
 
 <a name="SortedSet.Contains"></a>
 
@@ -287,7 +287,7 @@ func (s SortedSet[T]) Clone() SortedSet[T]
 func (s SortedSet[T]) Contains(item T) bool
 ```
 
-**Contains** returns whether item is present in s.
+**Contains** returns whether `item` is present in `s`.
 
 <a name="SortedSet.Delete"></a>
 
@@ -297,7 +297,7 @@ func (s SortedSet[T]) Contains(item T) bool
 func (s *SortedSet[T]) Delete(items ...T)
 ```
 
-**Delete** removes items from s.
+**Delete** removes `items` from `s`.
 
 <a name="SortedSet.Difference"></a>
 
@@ -307,7 +307,7 @@ func (s *SortedSet[T]) Delete(items ...T)
 func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T]
 ```
 
-**Difference** returns a new SortedSet containing the items of s not present in any of others.
+**Difference** returns a new SortedSet containing the items of `s` not present in any of `others`.
 
 <a name="SortedSet.Equal"></a>
 
@@ -317,7 +317,7 @@ func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T]
 func (s SortedSet[T]) Equal(other SortedSet[T]) bool
 ```
 
-**Equal** returns whether s and other contain the same items.
+**Equal** returns whether `s` and `other` contain the same items.
 
 <a name="SortedSet.Intersect"></a>
 
@@ -327,7 +327,7 @@ func (s SortedSet[T]) Equal(other SortedSet[T]) bool
 func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T]
 ```
 
-**Intersect** returns a new SortedSet containing the items of s present in every one of others.
+**Intersect** returns a new SortedSet containing the items of `s` present in every one of `others`.
 
 <a name="SortedSet.Len"></a>
 
@@ -337,7 +337,7 @@ func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T]
 func (s SortedSet[T]) Len() int
 ```
 
-**Len** returns the number of items in s.
+**Len** returns the number of items in `s`.
 
 <a name="SortedSet.Slice"></a>
 
@@ -347,7 +347,7 @@ func (s SortedSet[T]) Len() int
 func (s SortedSet[T]) Slice() []T
 ```
 
-**Slice** returns the items of s as a slice, in ascending order.
+**Slice** returns the items of `s` as a slice, in ascending order.
 
 <a name="SortedSet.SubsetOf"></a>
 
@@ -357,7 +357,7 @@ func (s SortedSet[T]) Slice() []T
 func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool
 ```
 
-**SubsetOf** returns whether every item in s is present in other.
+**SubsetOf** returns whether every item in `s` is present in `other`.
 
 <a name="SortedSet.Union"></a>
 
@@ -367,4 +367,4 @@ func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool
 func (s SortedSet[T]) Union(others ...SortedSet[T]) SortedSet[T]
 ```
 
-**Union** returns a new SortedSet containing the items of s and all others.
+**Union** returns a new SortedSet containing the items of `s` and all `others`.

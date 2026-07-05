@@ -6,16 +6,16 @@ import (
 	"path/filepath"
 )
 
-// EnvShell is the environment variable consulted by DetectFromEnv.
+// EnvShell is the environment variable consulted by [DetectFromEnv].
 const EnvShell = "SHELL"
 
-// DetectFromEnv returns the base name of env if it names a recognized shell.
+// DetectFromEnv returns the base name of `env` if it names a recognized shell.
 func DetectFromEnv(env string) string {
 	return normalizeShellName(os.Getenv(env))
 }
 
 // parentProcessName returns the parent process name.
-// Replaced in tests to control DetectFromProcess behavior.
+// Replaced in tests to control [DetectFromProcess] behavior.
 var parentProcessName = func() string {
 	if ppid := os.Getppid(); ppid > 0 {
 		return processName(ppid)

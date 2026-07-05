@@ -45,8 +45,8 @@ func NewWrapper(opts ...WrapOption) *Wrapper {
 	return w
 }
 
-// Wrap wraps s according to the configured mode and width.
-// Returns s unchanged if the effective width is < 1.
+// Wrap wraps `s` according to the configured mode and width.
+// Returns `s` unchanged if the effective width is < 1.
 func (w *Wrapper) Wrap(s string) string {
 	width := w.effectiveWidth()
 	if width < 1 {
@@ -67,7 +67,7 @@ func (w *Wrapper) Wrap(s string) string {
 	return reapplyStyles(wrapped)
 }
 
-// effectiveWidth returns the width to use: widthFunc > explicit width > terminal width.
+// effectiveWidth returns the width to use: `widthFunc` > explicit width > terminal width.
 // An explicit width < 1 is honored (disabling wrapping) rather than falling
 // back to the terminal width.
 func (w *Wrapper) effectiveWidth() int {
@@ -83,7 +83,7 @@ func (w *Wrapper) effectiveWidth() int {
 // WrapOption configures a [Wrapper].
 type WrapOption func(*Wrapper)
 
-// WithWidth sets a static wrap width. A width < 1 disables wrapping.
+// WithWidth sets a static wrap width. A `width` < 1 disables wrapping.
 func WithWidth(width int) WrapOption {
 	return func(w *Wrapper) {
 		w.width = width
@@ -122,13 +122,13 @@ func WithPreserveStyle(preserve bool) WrapOption {
 	return func(w *Wrapper) { w.preserveAnsi = preserve }
 }
 
-// WrapSoft wraps s to fit within width columns, breaking at space boundaries.
-// Words longer than width are hard-wrapped. ANSI styles are preserved.
+// WrapSoft wraps `s` to fit within `width` columns, breaking at space boundaries.
+// Words longer than `width` are hard-wrapped. ANSI styles are preserved.
 func WrapSoft(s string, width int) string {
 	return NewWrapper(WithWidth(width), WithWrapSoft()).Wrap(s)
 }
 
-// WrapHard wraps s at exactly width columns, breaking mid-word if needed.
+// WrapHard wraps `s` at exactly `width` columns, breaking mid-word if needed.
 // ANSI styles are preserved.
 func WrapHard(s string, width int) string {
 	return NewWrapper(WithWidth(width), WithWrapHard()).Wrap(s)
@@ -145,7 +145,7 @@ func reapplyStyles(s string) string {
 }
 
 // softWrap wraps text at word boundaries (unicode spaces), with optional
-// additional breakpoints. Words longer than limit are hard-wrapped.
+// additional breakpoints. Words longer than `limit` are hard-wrapped.
 // ANSI escape sequences are skipped for width calculation but preserved.
 func softWrap(s string, limit int, breakpoints string) string {
 	var (

@@ -8,7 +8,7 @@ import (
 )
 
 // Expand expands a leading ~ to the user's home directory and resolves
-// environment variables via os.ExpandEnv. It is purely lexical: the result is
+// environment variables via [os.ExpandEnv]. It is purely lexical: the result is
 // not checked for existence or resolved against the filesystem (use [Resolve]
 // or [ResolveLenient] for that).
 func Expand(path string) string {
@@ -28,7 +28,7 @@ func Expand(path string) string {
 	return os.ExpandEnv(path)
 }
 
-// Resolve recursively follows every symlink along path and returns the fully
+// Resolve recursively follows every symlink along `path` and returns the fully
 // resolved absolute path. On any error (missing component, cycle, permission)
 // the input path is returned alongside the error so callers can choose whether
 // to handle it or fall back.
@@ -45,7 +45,7 @@ func Resolve(path string) (string, error) {
 }
 
 // ResolveLenient returns an absolute path with symlinks resolved where
-// possible. If path itself cannot be resolved, it resolves the parent directory
+// possible. If `path` itself cannot be resolved, it resolves the parent directory
 // and rejoins the original base name. If neither can be resolved, it returns
 // the absolute path.
 func ResolveLenient(path string) (string, error) {
@@ -65,7 +65,7 @@ func ResolveLenient(path string) (string, error) {
 }
 
 // IsWithin reports whether all target paths are equal to or contained within
-// base. Returns false when no targets are provided.
+// `base`. Returns false when no `targets` are provided.
 //
 // Example:
 //
@@ -92,7 +92,7 @@ func IsWithin(base string, targets ...string) bool {
 	return true
 }
 
-// contains reports whether inner is equal to or nested under outer. Both must be
+// contains reports whether `inner` is equal to or nested under `outer`. Both must be
 // absolute, cleaned paths. The separator appended to the prefix stops "a" from
 // matching a sibling "ab".
 func contains(outer, inner string) bool {
@@ -116,12 +116,12 @@ type mergeConfig struct {
 // WithResolveSymlinks makes [Merge] compare paths by their resolved physical
 // location (via [ResolveLenient]) rather than lexically, so two spellings that
 // reach the same target through a symlink are merged. It touches the filesystem;
-// without it Merge is pure and lexical.
+// without it [Merge] is pure and lexical.
 func WithResolveSymlinks() MergeOption {
 	return func(c *mergeConfig) { c.resolveSymlinks = true }
 }
 
-// Merge reduces paths to the minimal set covering the same locations: comparing
+// Merge reduces `paths` to the minimal set covering the same locations: comparing
 // them as cleaned absolute paths, it drops any that duplicate or are nested
 // within another, so a later walk visits each file once. Survivors keep their
 // original form and first-seen order; a path whose absolute form cannot be
@@ -157,7 +157,7 @@ func Merge(paths []string, opts ...MergeOption) []string {
 }
 
 // mergeKey returns the comparison key for a path: its resolved physical location
-// when WithResolveSymlinks is set, otherwise its cleaned absolute (lexical) form,
+// when [WithResolveSymlinks] is set, otherwise its cleaned absolute (lexical) form,
 // falling back to the cleaned form when an absolute path cannot be computed.
 func (c mergeConfig) mergeKey(path string) string {
 	if c.resolveSymlinks {
@@ -171,7 +171,7 @@ func (c mergeConfig) mergeKey(path string) string {
 	return abs
 }
 
-// subsumed reports whether keys[i] is covered by another entry: a strict
+// subsumed reports whether `keys[i]` is covered by another entry: a strict
 // ancestor, or - for an exact duplicate - an earlier occurrence (so the first of
 // a set of equal paths survives).
 func subsumed(keys []string, i int) bool {

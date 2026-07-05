@@ -18,7 +18,7 @@ type SortedSet[T cmp.Ordered] struct {
 	items []T
 }
 
-// NewSorted returns a SortedSet containing items, sorted ascending with
+// NewSorted returns a SortedSet containing `items`, sorted ascending with
 // duplicates removed.
 func NewSorted[T cmp.Ordered](items ...T) SortedSet[T] {
 	var s SortedSet[T]
@@ -26,7 +26,7 @@ func NewSorted[T cmp.Ordered](items ...T) SortedSet[T] {
 	return s
 }
 
-// CollectSorted returns a SortedSet containing the values of seq.
+// CollectSorted returns a SortedSet containing the values of `seq`.
 func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T] {
 	var s SortedSet[T]
 	for item := range seq {
@@ -35,7 +35,7 @@ func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T] {
 	return s
 }
 
-// Add adds items to s, inserting each in sorted position and ignoring
+// Add adds `items` to `s`, inserting each in sorted position and ignoring
 // duplicates.
 func (s *SortedSet[T]) Add(items ...T) {
 	for _, item := range items {
@@ -46,7 +46,7 @@ func (s *SortedSet[T]) Add(items ...T) {
 	}
 }
 
-// Delete removes items from s.
+// Delete removes `items` from `s`.
 func (s *SortedSet[T]) Delete(items ...T) {
 	for _, item := range items {
 		if i, found := slices.BinarySearch(s.items, item); found {
@@ -55,40 +55,40 @@ func (s *SortedSet[T]) Delete(items ...T) {
 	}
 }
 
-// Contains returns whether item is present in s.
+// Contains returns whether `item` is present in `s`.
 func (s SortedSet[T]) Contains(item T) bool {
 	_, found := slices.BinarySearch(s.items, item)
 	return found
 }
 
-// Len returns the number of items in s.
+// Len returns the number of items in `s`.
 func (s SortedSet[T]) Len() int {
 	return len(s.items)
 }
 
-// Equal returns whether s and other contain the same items.
+// Equal returns whether `s` and `other` contain the same items.
 func (s SortedSet[T]) Equal(other SortedSet[T]) bool {
 	return slices.Equal(s.items, other.items)
 }
 
-// SubsetOf returns whether every item in s is present in other.
+// SubsetOf returns whether every item in `s` is present in `other`.
 func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool {
 	return toSet(s).SubsetOf(toSet(other))
 }
 
-// Union returns a new SortedSet containing the items of s and all others.
+// Union returns a new SortedSet containing the items of `s` and all `others`.
 func (s SortedSet[T]) Union(others ...SortedSet[T]) SortedSet[T] {
 	return combineSorted(Set[T].Union, s, others)
 }
 
-// Intersect returns a new SortedSet containing the items of s present in
-// every one of others.
+// Intersect returns a new SortedSet containing the items of `s` present in
+// every one of `others`.
 func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T] {
 	return combineSorted(Set[T].Intersect, s, others)
 }
 
-// Difference returns a new SortedSet containing the items of s not present
-// in any of others.
+// Difference returns a new SortedSet containing the items of `s` not present
+// in any of `others`.
 func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T] {
 	return combineSorted(Set[T].Difference, s, others)
 }
@@ -99,7 +99,7 @@ func toSet[T cmp.Ordered](s SortedSet[T]) Set[T] {
 }
 
 // combineSorted applies a Set-combining method (Union/Intersect/Difference)
-// to s and others, converting to Set and back to SortedSet around the call.
+// to `s` and `others`, converting to Set and back to SortedSet around the call.
 func combineSorted[T cmp.Ordered](
 	method func(Set[T], ...Set[T]) Set[T],
 	s SortedSet[T],
@@ -112,17 +112,17 @@ func combineSorted[T cmp.Ordered](
 	return NewSorted(method(toSet(s), otherSets...).Slice()...)
 }
 
-// Clone returns a copy of s.
+// Clone returns a copy of `s`.
 func (s SortedSet[T]) Clone() SortedSet[T] {
 	return SortedSet[T]{items: slices.Clone(s.items)}
 }
 
-// Slice returns the items of s as a slice, in ascending order.
+// Slice returns the items of `s` as a slice, in ascending order.
 func (s SortedSet[T]) Slice() []T {
 	return slices.Clone(s.items)
 }
 
-// All returns an iterator over the items of s, in ascending order.
+// All returns an iterator over the items of `s`, in ascending order.
 func (s SortedSet[T]) All() iter.Seq[T] {
 	return slices.Values(s.items)
 }

@@ -247,7 +247,7 @@ const ResetStyle = xansi.ResetStyle
 func CursorBackward(n int) string
 ```
 
-**CursorBackward** returns the CUB sequence: move cursor left n columns.
+**CursorBackward** returns the CUB sequence: move cursor left `n` columns.
 
 <a name="CursorDown"></a>
 
@@ -257,7 +257,7 @@ func CursorBackward(n int) string
 func CursorDown(n int) string
 ```
 
-**CursorDown** returns the CUD sequence: move cursor down n lines.
+**CursorDown** returns the CUD sequence: move cursor down `n` lines.
 
 <a name="CursorForward"></a>
 
@@ -267,7 +267,7 @@ func CursorDown(n int) string
 func CursorForward(n int) string
 ```
 
-**CursorForward** returns the CUF sequence: move cursor right n columns.
+**CursorForward** returns the CUF sequence: move cursor right `n` columns.
 
 <a name="CursorHorizontalAbsolute"></a>
 
@@ -277,7 +277,7 @@ func CursorForward(n int) string
 func CursorHorizontalAbsolute(col int) string
 ```
 
-**CursorHorizontalAbsolute** returns the CHA sequence: move to column col on the current line.
+**CursorHorizontalAbsolute** returns the CHA sequence: move to column `col` on the current line.
 
 <a name="CursorNextLine"></a>
 
@@ -287,7 +287,7 @@ func CursorHorizontalAbsolute(col int) string
 func CursorNextLine(n int) string
 ```
 
-**CursorNextLine** returns the CNL sequence: move down n lines and to column 1.
+**CursorNextLine** returns the CNL sequence: move down `n` lines and to column 1.
 
 <a name="CursorPosition"></a>
 
@@ -297,7 +297,7 @@ func CursorNextLine(n int) string
 func CursorPosition(col, row int) string
 ```
 
-**CursorPosition** returns the CUP sequence: move to (col, row). Coordinates are 1-based.
+**CursorPosition** returns the CUP sequence: move to (`col`, `row`). Coordinates are 1-based.
 
 <a name="CursorPreviousLine"></a>
 
@@ -307,7 +307,7 @@ func CursorPosition(col, row int) string
 func CursorPreviousLine(n int) string
 ```
 
-**CursorPreviousLine** returns the CPL sequence: move up n lines and to column 1.
+**CursorPreviousLine** returns the CPL sequence: move up `n` lines and to column 1.
 
 <a name="CursorUp"></a>
 
@@ -317,7 +317,7 @@ func CursorPreviousLine(n int) string
 func CursorUp(n int) string
 ```
 
-**CursorUp** returns the CUU sequence: move cursor up n lines.
+**CursorUp** returns the CUU sequence: move cursor up `n` lines.
 
 <a name="DeleteCharacter"></a>
 
@@ -327,7 +327,7 @@ func CursorUp(n int) string
 func DeleteCharacter(n int) string
 ```
 
-**DeleteCharacter** returns the DCH sequence: delete n characters at the cursor, pulling subsequent characters left.
+**DeleteCharacter** returns the DCH sequence: delete `n` characters at the cursor, pulling subsequent characters left.
 
 <a name="DeleteLine"></a>
 
@@ -337,7 +337,7 @@ func DeleteCharacter(n int) string
 func DeleteLine(n int) string
 ```
 
-**DeleteLine** returns the DL sequence: delete n lines starting at the cursor, pulling subsequent lines up.
+**DeleteLine** returns the DL sequence: delete `n` lines starting at the cursor, pulling subsequent lines up.
 
 <a name="EraseCharacter"></a>
 
@@ -347,7 +347,7 @@ func DeleteLine(n int) string
 func EraseCharacter(n int) string
 ```
 
-**EraseCharacter** returns the ECH sequence: erase n characters from the cursor position (no cursor movement).
+**EraseCharacter** returns the ECH sequence: erase `n` characters from the cursor position (no cursor movement).
 
 <a name="EraseDisplay"></a>
 
@@ -357,7 +357,7 @@ func EraseCharacter(n int) string
 func EraseDisplay(n int) string
 ```
 
-**EraseDisplay** returns the ED sequence. n selects the variant: 0 = below cursor, 1 = above cursor, 2 = entire screen.
+**EraseDisplay** returns the ED sequence. `n` selects the variant: 0 = below cursor, 1 = above cursor, 2 = entire screen.
 
 <a name="EraseLine"></a>
 
@@ -367,7 +367,7 @@ func EraseDisplay(n int) string
 func EraseLine(n int) string
 ```
 
-**EraseLine** returns the EL sequence. n selects the variant: 0 = right of cursor, 1 = left of cursor, 2 = entire line.
+**EraseLine** returns the EL sequence. `n` selects the variant: 0 = right of cursor, 1 = left of cursor, 2 = entire line.
 
 <a name="InsertCharacter"></a>
 
@@ -377,7 +377,7 @@ func EraseLine(n int) string
 func InsertCharacter(n int) string
 ```
 
-**InsertCharacter** returns the ICH sequence: insert n blank characters at the cursor, shifting existing characters right.
+**InsertCharacter** returns the ICH sequence: insert `n` blank characters at the cursor, shifting existing characters right.
 
 <a name="InsertLine"></a>
 
@@ -387,7 +387,7 @@ func InsertCharacter(n int) string
 func InsertLine(n int) string
 ```
 
-**InsertLine** returns the IL sequence: insert n blank lines at the cursor, pushing existing lines down.
+**InsertLine** returns the IL sequence: insert `n` blank lines at the cursor, pushing existing lines down.
 
 <a name="ScrollDown"></a>
 
@@ -397,7 +397,7 @@ func InsertLine(n int) string
 func ScrollDown(n int) string
 ```
 
-**ScrollDown** returns the SD sequence: scroll viewport down n lines (content moves down; new blank lines appear at the top).
+**ScrollDown** returns the SD sequence: scroll viewport down `n` lines (content moves down; new blank lines appear at the top).
 
 <a name="ScrollUp"></a>
 
@@ -407,7 +407,7 @@ func ScrollDown(n int) string
 func ScrollUp(n int) string
 ```
 
-**ScrollUp** returns the SU sequence: scroll viewport up n lines (content moves up; new blank lines appear at the bottom).
+**ScrollUp** returns the SU sequence: scroll viewport up `n` lines (content moves up; new blank lines appear at the bottom).
 
 <a name="SetCursorStyle"></a>
 
@@ -482,7 +482,7 @@ func Strip(s string) string
 func Truncate(s string, length int, tail string) string
 ```
 
-**Truncate** truncates a string to a given cell width, appending tail if the string was truncated. ANSI escape codes are preserved.
+**Truncate** truncates a string to a given cell width, appending `tail` if the string was truncated. ANSI escape codes are preserved.
 
 <a name="WrapHard"></a>
 
@@ -492,7 +492,7 @@ func Truncate(s string, length int, tail string) string
 func WrapHard(s string, width int) string
 ```
 
-**WrapHard** wraps s at exactly width columns, breaking mid-word if needed. ANSI styles are preserved.
+**WrapHard** wraps `s` at exactly `width` columns, breaking mid-word if needed. ANSI styles are preserved.
 
 <a name="WrapSoft"></a>
 
@@ -502,7 +502,7 @@ func WrapHard(s string, width int) string
 func WrapSoft(s string, width int) string
 ```
 
-**WrapSoft** wraps s to fit within width columns, breaking at space boundaries. Words longer than width are hard-wrapped. ANSI styles are preserved.
+**WrapSoft** wraps `s` to fit within `width` columns, breaking at space boundaries. Words longer than `width` are hard-wrapped. ANSI styles are preserved.
 
 <a name="ANSI"></a>
 
@@ -524,7 +524,7 @@ type ANSI struct {
 func Auto(files ...*os.File) *ANSI
 ```
 
-**Auto** creates an ANSI that auto-detects whether the output is a terminal. All provided files must be terminals for ANSI output to be enabled. Defaults to os.Stdout if no files are provided.
+**Auto** creates an ANSI that auto-detects whether the output is a terminal. All provided `files` must be terminals for ANSI output to be enabled. Defaults to [os.Stdout](<https://pkg.go.dev/os#Stdout>) if no `files` are provided.
 
 <a name="Force"></a>
 
@@ -564,7 +564,7 @@ func New(opts ...Option) *ANSI
 func (w *ANSI) Hyperlink(url, text string) string
 ```
 
-**Hyperlink** creates an OSC 8 terminal hyperlink. When the output is not a terminal, the HyperlinkFallback mode controls how the link is rendered in plain text.
+**Hyperlink** creates an OSC 8 terminal hyperlink. When the output is not a terminal, the [HyperlinkFallback](<#HyperlinkFallback>) mode controls how the link is rendered in plain text.
 
 <a name="ANSI.Terminal"></a>
 
@@ -679,7 +679,7 @@ func WithPreserveStyle(preserve bool) WrapOption
 func WithWidth(width int) WrapOption
 ```
 
-**WithWidth** sets a static wrap width. A width \< 1 disables wrapping.
+**WithWidth** sets a static wrap width. A `width` \< 1 disables wrapping.
 
 <a name="WithWidthFunc"></a>
 
@@ -741,4 +741,4 @@ func NewWrapper(opts ...WrapOption) *Wrapper
 func (w *Wrapper) Wrap(s string) string
 ```
 
-**Wrap** wraps s according to the configured mode and width. Returns s unchanged if the effective width is \< 1.
+**Wrap** wraps `s` according to the configured mode and width. Returns `s` unchanged if the effective width is \< 1.

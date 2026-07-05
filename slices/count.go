@@ -1,6 +1,6 @@
 package slices
 
-// Count returns the number of elements in items equal to target.
+// Count returns the number of elements in `items` equal to `target`.
 func Count[S ~[]E, E comparable](items S, target E) int {
 	var n int
 	for _, item := range items {
@@ -11,7 +11,7 @@ func Count[S ~[]E, E comparable](items S, target E) int {
 	return n
 }
 
-// CountFunc returns the number of elements in items satisfying match.
+// CountFunc returns the number of elements in `items` satisfying `match`.
 func CountFunc[S ~[]E, E any](items S, match func(E) bool) int {
 	var n int
 	for _, item := range items {

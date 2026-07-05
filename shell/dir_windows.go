@@ -17,8 +17,8 @@ const (
 
 // Windows fallbacks map the XDG roles onto the standard Windows locations.
 // They are only used when the corresponding XDG_* variable is unset or
-// relative; an absolute XDG_* value is always honored (see baseDir). The
-// locations match what os.UserConfigDir and os.UserCacheDir return, but those
+// relative; an absolute XDG_* value is always honored (see `baseDir`). The
+// locations match what [os.UserConfigDir] and [os.UserCacheDir] return, but those
 // stdlib helpers ignore the XDG_* variables entirely, so we resolve them here.
 //
 //	ConfigDir -> %AppData%             (roaming, like os.UserConfigDir)
@@ -33,7 +33,7 @@ func stateDirDefault() (string, error)  { return knownFolder(dirLocalAppData, "s
 func configDirsDefault() []string { return programData() }
 func dataDirsDefault() []string   { return programData() }
 
-// knownFolder joins parts onto the directory named by the given environment
+// knownFolder joins `parts` onto the directory named by the given environment
 // variable (e.g. AppData, LocalAppData), erroring if it is undefined.
 func knownFolder(env string, parts ...string) (string, error) {
 	dir := os.Getenv(env)

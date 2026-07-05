@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-// Unique returns items in first-seen order with duplicates removed.
+// Unique returns `items` in first-seen order with duplicates removed.
 func Unique[S ~[]E, E comparable](items S) S {
 	seen := make(map[E]struct{}, len(items))
 	unique := make(S, 0, len(items))
@@ -19,8 +19,8 @@ func Unique[S ~[]E, E comparable](items S) S {
 	return unique
 }
 
-// UniqueFunc returns items in first-seen order with duplicates removed,
-// where two items are duplicates when key reports the same value for both.
+// UniqueFunc returns `items` in first-seen order with duplicates removed,
+// where two items are duplicates when `key` reports the same value for both.
 func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S {
 	seen := make(map[K]struct{}, len(items))
 	unique := make(S, 0, len(items))
@@ -53,7 +53,7 @@ func UniqueFold[S ~[]E, E ~string](items S) S {
 }
 
 // foldKey maps each rune to the canonical (smallest) member of its case-fold
-// orbit, so two strings have equal keys iff strings.EqualFold reports them
+// orbit, so two strings have equal keys iff [strings.EqualFold] reports them
 // equal. ToLower alone misses orbit members with distinct lowercase forms,
 // e.g. Greek final sigma 'ς' vs 'σ'.
 func foldKey(s string) string {

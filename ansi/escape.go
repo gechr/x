@@ -21,15 +21,15 @@ const (
 	EraseEntireScreen = xansi.EraseEntireScreen
 )
 
-// EraseLine returns the EL sequence. n selects the variant:
+// EraseLine returns the EL sequence. `n` selects the variant:
 // 0 = right of cursor, 1 = left of cursor, 2 = entire line.
 func EraseLine(n int) string { return xansi.EraseLine(n) }
 
-// EraseDisplay returns the ED sequence. n selects the variant:
+// EraseDisplay returns the ED sequence. `n` selects the variant:
 // 0 = below cursor, 1 = above cursor, 2 = entire screen.
 func EraseDisplay(n int) string { return xansi.EraseDisplay(n) }
 
-// EraseCharacter returns the ECH sequence: erase n characters from the
+// EraseCharacter returns the ECH sequence: erase `n` characters from the
 // cursor position (no cursor movement).
 func EraseCharacter(n int) string { return xansi.EraseCharacter(n) }
 
@@ -43,29 +43,29 @@ const (
 	CursorLeft1  = xansi.CUB1
 )
 
-// CursorUp returns the CUU sequence: move cursor up n lines.
+// CursorUp returns the CUU sequence: move cursor up `n` lines.
 func CursorUp(n int) string { return xansi.CursorUp(n) }
 
-// CursorDown returns the CUD sequence: move cursor down n lines.
+// CursorDown returns the CUD sequence: move cursor down `n` lines.
 func CursorDown(n int) string { return xansi.CursorDown(n) }
 
-// CursorForward returns the CUF sequence: move cursor right n columns.
+// CursorForward returns the CUF sequence: move cursor right `n` columns.
 func CursorForward(n int) string { return xansi.CursorForward(n) }
 
-// CursorBackward returns the CUB sequence: move cursor left n columns.
+// CursorBackward returns the CUB sequence: move cursor left `n` columns.
 func CursorBackward(n int) string { return xansi.CursorBackward(n) }
 
-// CursorNextLine returns the CNL sequence: move down n lines and to column 1.
+// CursorNextLine returns the CNL sequence: move down `n` lines and to column 1.
 func CursorNextLine(n int) string { return xansi.CursorNextLine(n) }
 
-// CursorPreviousLine returns the CPL sequence: move up n lines and to column 1.
+// CursorPreviousLine returns the CPL sequence: move up `n` lines and to column 1.
 func CursorPreviousLine(n int) string { return xansi.CursorPreviousLine(n) }
 
-// CursorHorizontalAbsolute returns the CHA sequence: move to column col
+// CursorHorizontalAbsolute returns the CHA sequence: move to column `col`
 // on the current line.
 func CursorHorizontalAbsolute(col int) string { return xansi.CursorHorizontalAbsolute(col) }
 
-// CursorPosition returns the CUP sequence: move to (col, row). Coordinates
+// CursorPosition returns the CUP sequence: move to (`col`, `row`). Coordinates
 // are 1-based.
 func CursorPosition(col, row int) string { return xansi.CursorPosition(col, row) }
 
@@ -134,29 +134,29 @@ const (
 
 // Scrolling.
 
-// ScrollUp returns the SU sequence: scroll viewport up n lines
+// ScrollUp returns the SU sequence: scroll viewport up `n` lines
 // (content moves up; new blank lines appear at the bottom).
 func ScrollUp(n int) string { return xansi.ScrollUp(n) }
 
-// ScrollDown returns the SD sequence: scroll viewport down n lines
+// ScrollDown returns the SD sequence: scroll viewport down `n` lines
 // (content moves down; new blank lines appear at the top).
 func ScrollDown(n int) string { return xansi.ScrollDown(n) }
 
 // Line and character insert/delete at the cursor.
 
-// InsertLine returns the IL sequence: insert n blank lines at the cursor,
+// InsertLine returns the IL sequence: insert `n` blank lines at the cursor,
 // pushing existing lines down.
 func InsertLine(n int) string { return xansi.InsertLine(n) }
 
-// DeleteLine returns the DL sequence: delete n lines starting at the
+// DeleteLine returns the DL sequence: delete `n` lines starting at the
 // cursor, pulling subsequent lines up.
 func DeleteLine(n int) string { return xansi.DeleteLine(n) }
 
-// InsertCharacter returns the ICH sequence: insert n blank characters
+// InsertCharacter returns the ICH sequence: insert `n` blank characters
 // at the cursor, shifting existing characters right.
 func InsertCharacter(n int) string { return xansi.InsertCharacter(n) }
 
-// DeleteCharacter returns the DCH sequence: delete n characters at the
+// DeleteCharacter returns the DCH sequence: delete `n` characters at the
 // cursor, pulling subsequent characters left.
 func DeleteCharacter(n int) string { return xansi.DeleteCharacter(n) }
 

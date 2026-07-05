@@ -2,7 +2,7 @@ package strings
 
 import "strings"
 
-// Indent prefixes every non-blank line of s with prefix. Blank and
+// Indent prefixes every non-blank line of `s` with `prefix`. Blank and
 // whitespace-only lines are normalized to empty.
 //
 //	Indent("foo\nbar", "  ")      // "  foo\n  bar"

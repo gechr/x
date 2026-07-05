@@ -15,7 +15,7 @@ func stateDirDefault() (string, error)  { return homeDir(".local", "state") }
 func configDirsDefault() []string { return []string{"/etc/xdg"} }
 func dataDirsDefault() []string   { return []string{"/usr/local/share", "/usr/share"} }
 
-// homeDir joins parts onto the user's home directory.
+// homeDir joins `parts` onto the user's home directory.
 func homeDir(parts ...string) (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {

@@ -1,7 +1,7 @@
 package slices
 
-// Difference returns the elements of items not present in any of others,
-// preserving order and duplicates from items.
+// Difference returns the elements of `items` not present in any of `others`,
+// preserving order and duplicates from `items`.
 func Difference[S ~[]E, E comparable](items S, others ...S) S {
 	drop := make(map[E]struct{})
 	for _, other := range others {
@@ -18,8 +18,8 @@ func Difference[S ~[]E, E comparable](items S, others ...S) S {
 	return diff
 }
 
-// Intersect returns the elements of items also present in every one of
-// others, preserving order and duplicates from items.
+// Intersect returns the elements of `items` also present in every one of
+// `others`, preserving order and duplicates from `items`.
 func Intersect[S ~[]E, E comparable](items S, others ...S) S {
 	sets := make([]map[E]struct{}, len(others))
 	for i, other := range others {
@@ -41,7 +41,7 @@ func Intersect[S ~[]E, E comparable](items S, others ...S) S {
 	return both
 }
 
-// Union returns the elements of items followed by the elements of others, in
+// Union returns the elements of `items` followed by the elements of `others`, in
 // first-seen order with duplicates removed.
 func Union[S ~[]E, E comparable](items S, others ...S) S {
 	all := make(S, 0, len(items))

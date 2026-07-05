@@ -2,7 +2,7 @@ package strings
 
 import "strings"
 
-// ContainsAll reports whether s contains all of the given substrings.
+// ContainsAll reports whether `s` contains all of the given `substrings`.
 func ContainsAll(s string, substrings ...string) bool {
 	for _, ss := range substrings {
 		if !strings.Contains(s, ss) {
@@ -12,7 +12,7 @@ func ContainsAll(s string, substrings ...string) bool {
 	return true
 }
 
-// ContainsAny reports whether s contains any of the given substrings.
+// ContainsAny reports whether `s` contains any of the given `substrings`.
 func ContainsAny(s string, substrings ...string) bool {
 	for _, ss := range substrings {
 		if strings.Contains(s, ss) {

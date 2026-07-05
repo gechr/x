@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// ReadLines reads path and returns its non-empty, trimmed lines.
+// ReadLines reads `path` and returns its non-empty, trimmed lines.
 func ReadLines(path string) ([]string, error) {
 	data, err := stdos.ReadFile(path)
 	if err != nil {
@@ -22,7 +22,7 @@ func ReadLines(path string) ([]string, error) {
 	return lines, nil
 }
 
-// WriteLines atomically writes lines to path, one per line, with a trailing
+// WriteLines atomically writes `lines` to `path`, one per line, with a trailing
 // newline.
 func WriteLines(path string, lines []string, perm stdos.FileMode) error {
 	var b strings.Builder

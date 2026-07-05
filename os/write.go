@@ -7,7 +7,7 @@ import (
 	stdpath "path/filepath"
 )
 
-// AtomicWrite writes data to path via a temp-file-and-rename in the same
+// AtomicWrite writes `data` to `path` via a temp-file-and-rename in the same
 // directory. The temp file is removed on any failure.
 func AtomicWrite(path string, data []byte, perm stdos.FileMode) error {
 	dir := stdpath.Dir(path)
@@ -44,14 +44,14 @@ func AtomicWrite(path string, data []byte, perm stdos.FileMode) error {
 	return nil
 }
 
-// EnsureDir creates dir and any parents with the given permissions.
+// EnsureDir creates `dir` and any parents with the given permissions.
 func EnsureDir(dir string, perm stdos.FileMode) error {
 	return stdos.MkdirAll(dir, perm)
 }
 
-// CopyFile copies src to dst, preserving src's mode bits. dst is fsynced
-// before close. When src and dst are the same file (including via hard link)
-// CopyFile is a no-op.
+// CopyFile copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced
+// before close. When `src` and `dst` are the same file (including via hard link)
+// [CopyFile] is a no-op.
 func CopyFile(src, dst string) error {
 	in, err := stdos.Open(src)
 	if err != nil {

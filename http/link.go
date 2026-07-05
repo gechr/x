@@ -48,8 +48,8 @@ func splitLinks(value string) []string {
 	return append(links, value[start:])
 }
 
-// hasRel reports whether the semicolon-separated link params carry a rel
-// whose (possibly quoted, space-separated) value list contains rel.
+// hasRel reports whether the semicolon-separated link `params` carry a rel
+// whose (possibly quoted, space-separated) value list contains `rel`.
 func hasRel(params, rel string) bool {
 	for param := range strings.SplitSeq(params, ";") {
 		name, value, ok := strings.Cut(strings.TrimSpace(param), "=")

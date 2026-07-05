@@ -11,7 +11,7 @@ import (
 	xtime "github.com/gechr/x/time"
 )
 
-// FormatDuration formats d as up to two adjacent units with no separator
+// FormatDuration formats `d` as up to two adjacent units with no separator
 // (e.g. "2h15m", "1w2d", "1y5w"). Years are 365 days, weeks are 7 days.
 // Durations >= 1s are rounded to the nearest second.
 //
@@ -92,8 +92,8 @@ func FormatDuration(d time.Duration) string {
 	return out
 }
 
-// ParseDuration parses a human duration string into a time.Duration. It is the
-// inverse of FormatDuration, accepting the units that function emits: y, w, d,
+// ParseDuration parses a human duration string into a [time.Duration]. It is the
+// inverse of [FormatDuration], accepting the units that function emits: y, w, d,
 // h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7
 // days. Units may be combined but each may appear at most once and must run in
 // descending order of size, so "1y2w", "2h15m", and "90s" are valid while a

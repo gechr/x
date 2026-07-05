@@ -28,7 +28,7 @@ func FormatTimeAgo(t time.Time) string {
 	return FormatTimeAgoFrom(t, time.Now().UTC())
 }
 
-// FormatTimeAgoFrom formats a time relative to the given reference time now.
+// FormatTimeAgoFrom formats a time relative to the given reference time `now`.
 func FormatTimeAgoFrom(t, now time.Time) string {
 	v := decompose(t, now)
 	return formatDuration(
@@ -48,7 +48,7 @@ func FormatTimeAgoCompact(t time.Time) string {
 	return FormatTimeAgoCompactFrom(t, time.Now().UTC())
 }
 
-// FormatTimeAgoCompactFrom formats a time as a compact relative string relative to now.
+// FormatTimeAgoCompactFrom formats a time as a compact relative string relative to `now`.
 func FormatTimeAgoCompactFrom(t, now time.Time) string {
 	v := decompose(t, now)
 	return formatDurationCompact(

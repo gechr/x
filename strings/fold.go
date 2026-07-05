@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 )
 
-// CompareFold compares a and b case-insensitively, using the same simple
+// CompareFold compares `a` and `b` case-insensitively, using the same simple
 // case-folding as [strings.EqualFold], and returns -1, 0, or 1 following the
 // [cmp.Compare] convention. CompareFold(a, b) == 0 iff strings.EqualFold(a, b).
 func CompareFold(a, b string) int {
@@ -21,7 +21,7 @@ func CompareFold(a, b string) int {
 	return cmp.Compare(len(a), len(b))
 }
 
-// foldRune maps r to the canonical (smallest) member of its case-fold orbit,
+// foldRune maps `r` to the canonical (smallest) member of its case-fold orbit,
 // so two runes have equal keys iff they are equal under simple case-folding.
 // ToLower alone misses orbit members with distinct lowercase forms, e.g.
 // Greek final sigma 'ς' vs 'σ'.

@@ -18,4 +18,4 @@ Package ptr provides pointer helpers.
 func Deref[T any](p *T) T
 ```
 
-**Deref** returns the value p points to, or the zero value when p is nil.
+**Deref** returns the value `p` points to, or the zero value when `p` is nil.

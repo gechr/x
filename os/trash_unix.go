@@ -17,7 +17,7 @@ import (
 // specification records in a .trashinfo file.
 const deletionDateFormat = "2006-01-02T15:04:05"
 
-// trash moves path to a FreeDesktop.org trash directory: the home trash for a
+// trash moves `path` to a FreeDesktop.org trash directory: the home trash for a
 // file on the same device as the home trash, or the matching top-directory trash
 // ($top/.Trash/$uid or $top/.Trash-$uid) on the file's own device otherwise.
 // The trash is always on the file's device, so the move is a plain rename that
@@ -35,7 +35,7 @@ func trash(path string) error {
 	return trashInto(path, root, topDir)
 }
 
-// trashDir resolves the trash root for a file on device dev, and the top
+// trashDir resolves the trash root for a file on device `dev`, and the top
 // directory its recorded path should be made relative to (empty for the home
 // trash, which records an absolute path).
 func trashDir(path string, dev uint64) (string, string, error) {
@@ -84,7 +84,7 @@ func homeTrashDevice(root string) (uint64, error) {
 	}
 }
 
-// device returns the ID of the device path resides on.
+// device returns the ID of the device `path` resides on.
 func device(path string) (uint64, error) {
 	info, err := stdos.Lstat(path)
 	if err != nil {
@@ -97,8 +97,8 @@ func device(path string) (uint64, error) {
 	return uint64(st.Dev), nil //nolint:unconvert // Dev is int32 on some platforms
 }
 
-// topDirOf returns the mount point path is under: the highest ancestor still on
-// device dev, found by walking up until the device changes or root is reached.
+// topDirOf returns the mount point `path` is under: the highest ancestor still on
+// device `dev`, found by walking up until the device changes or root is reached.
 //
 // This locates a mount point by device boundary, which misses mounts that share
 // a device ID with their parent (bind mounts, btrfs subvolumes); such a file is
@@ -117,7 +117,7 @@ func topDirOf(path string, dev uint64) string {
 	}
 }
 
-// topDirTrash returns a validated trash root on the mount point top, preferring
+// topDirTrash returns a validated trash root on the mount point `top`, preferring
 // an admin-created $top/.Trash/$uid (under a sticky, non-symlink .Trash, per the
 // spec) and otherwise creating $top/.Trash-$uid.
 func topDirTrash(top string) (string, error) {
@@ -150,8 +150,8 @@ func topDirTrash(top string) (string, error) {
 }
 
 // validateTrashRoot rejects an unsafe top-directory trash root: the spec is
-// strict here because these live on shared or removable mounts. The root must be
-// a real directory (not a planted symlink), owned by the current user, and not
+// strict here because these live on shared or removable mounts. The `root` must
+// be a real directory (not a planted symlink), owned by the current user, and not
 // accessible to others. A rejection wraps [errors.ErrUnsupported].
 func validateTrashRoot(root string, uid int) error {
 	info, err := stdos.Lstat(root)
@@ -182,8 +182,8 @@ func validateTrashRoot(root string, uid int) error {
 	return nil
 }
 
-// trashInto writes path's .trashinfo record and moves it into root's files/
-// directory under a name unique within that trash. topDir, when set, is the
+// trashInto writes `path`'s .trashinfo record and moves it into `root`'s files/
+// directory under a name unique within that trash. `topDir`, when set, is the
 // mount point the recorded path is made relative to.
 func trashInto(path, root, topDir string) error {
 	filesDir := stdpath.Join(root, "files")
@@ -210,7 +210,7 @@ func trashInto(path, root, topDir string) error {
 }
 
 // trashInfo renders a .trashinfo record. The stored path is absolute for the
-// home trash and relative to topDir for a top-directory trash, URL-encoded with
+// home trash and relative to `topDir` for a top-directory trash, URL-encoded with
 // path separators preserved.
 func trashInfo(path, topDir string) string {
 	stored := path
@@ -255,7 +255,7 @@ func claimName(infoDir, filesDir, base string) (string, string, error) {
 	return "", "", fmt.Errorf("no free name for %q in trash", base)
 }
 
-// move renames src to dst. The trash root was chosen on src's own device, so a
+// move renames `src` to `dst`. The trash root was chosen on `src`'s own device, so a
 // cross-device rename should not arise; if it does, it is reported as unsupported
 // rather than silently copying across the boundary (which a caller may prefer to
 // handle, e.g. by deleting instead).

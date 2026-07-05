@@ -23,7 +23,7 @@ func StringWidth(s string) int {
 	return xansi.StringWidth(s)
 }
 
-// Truncate truncates a string to a given cell width, appending tail
+// Truncate truncates a string to a given cell width, appending `tail`
 // if the string was truncated. ANSI escape codes are preserved.
 func Truncate(s string, length int, tail string) string {
 	return xansi.Truncate(s, length, tail)

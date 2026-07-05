@@ -21,7 +21,7 @@ Package terminal provides terminal detection and size queries.
 func Height(f *os.File) int
 ```
 
-**Height** returns the height of the terminal connected to f, or 0 if f is nil or not a terminal.
+**Height** returns the height of the terminal connected to `f`, or 0 if `f` is nil or not a terminal.
 
 <a name="Is"></a>
 
@@ -41,7 +41,7 @@ func Is(f *os.File) bool
 func Size(f *os.File) (int, int)
 ```
 
-**Size** returns the (width, height) of the terminal connected to f in cells, or (0, 0) if f is nil or not a terminal.
+**Size** returns the (width, height) of the terminal connected to `f` in cells, or (0, 0) if `f` is nil or not a terminal.
 
 <a name="Width"></a>
 
@@ -51,4 +51,4 @@ func Size(f *os.File) (int, int)
 func Width(f *os.File) int
 ```
 
-**Width** returns the width of the terminal connected to f. Returns 0 if f is nil or not a terminal.
+**Width** returns the width of the terminal connected to `f`. Returns 0 if `f` is nil or not a terminal.

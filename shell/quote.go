@@ -2,7 +2,7 @@ package shell
 
 import "strings"
 
-// Quote returns a shell-escaped version of s. The returned value can safely be
+// Quote returns a shell-escaped version of `s`. The returned value can safely be
 // used as one token in a POSIX shell command line.
 func Quote(s string) string {
 	if s == "" {

@@ -24,7 +24,7 @@ func WithHyperlinkFallback(fallback HyperlinkFallback) Option {
 }
 
 // Hyperlink creates an OSC 8 terminal hyperlink.
-// When the output is not a terminal, the HyperlinkFallback mode controls
+// When the output is not a terminal, the [HyperlinkFallback] mode controls
 // how the link is rendered in plain text.
 func (w *ANSI) Hyperlink(url, text string) string {
 	if !w.terminal {

@@ -3,7 +3,7 @@ package strings
 import "strings"
 
 // CompactLines trims lines, drops blank lines, removes duplicate lines while
-// preserving first-seen order, and joins the remaining lines with sep.
+// preserving first-seen order, and joins the remaining lines with `sep`.
 func CompactLines(s, sep string) string {
 	lines := strings.Split(s, "\n")
 	parts := make([]string, 0, len(lines))

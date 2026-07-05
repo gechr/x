@@ -2,9 +2,10 @@ package strings
 
 import "unicode/utf8"
 
-// TruncateRight shortens s to at most n runes (including marker) by removing
-// characters from the right, appending marker when truncation occurs. The head
-// is kept. For display-width-aware truncation of ANSI text use ansi.Truncate.
+// TruncateRight shortens `s` to at most `n` runes (including `marker`) by
+// removing characters from the right, appending `marker` when truncation
+// occurs. The head is kept. For display-width-aware truncation of ANSI text
+// use [github.com/gechr/x/ansi.Truncate].
 //
 //	TruncateRight("hello world", 8, "…") // "hello w…"
 //	TruncateRight("hi", 8, "…")          // "hi"
@@ -14,9 +15,9 @@ func TruncateRight(s string, n int, marker string) string {
 	})
 }
 
-// TruncateLeft shortens s to at most n runes (including marker) by removing
-// characters from the left, prepending marker when truncation occurs. The tail
-// is kept.
+// TruncateLeft shortens `s` to at most `n` runes (including `marker`) by
+// removing characters from the left, prepending `marker` when truncation
+// occurs. The tail is kept.
 //
 //	TruncateLeft("hello world", 8, "…") // "…o world"
 func TruncateLeft(s string, n int, marker string) string {
@@ -25,10 +26,10 @@ func TruncateLeft(s string, n int, marker string) string {
 	})
 }
 
-// TruncateMiddle shortens s to at most n runes (including marker) by removing
-// characters from the middle, inserting marker between the kept head and tail so
-// both ends stay visible. This suits hashes and paths, where the start and end
-// are the recognisable parts.
+// TruncateMiddle shortens `s` to at most `n` runes (including `marker`) by
+// removing characters from the middle, inserting `marker` between the kept head
+// and tail so both ends stay visible. This suits hashes and paths, where the
+// start and end are the recognisable parts.
 //
 //	TruncateMiddle("0123456789abcdef", 7, "…") // "012…def"
 func TruncateMiddle(s string, n int, marker string) string {
@@ -46,10 +47,10 @@ func Truncate(s string, n int, marker string) string {
 }
 
 // truncate holds the shared truncation preamble: an empty result for a
-// non-positive n, s unchanged when it already fits, and a clamped marker when it
-// alone would meet or exceed n. Otherwise it hands place the runes and the
-// budget of runes to keep (n minus the marker), letting each variant decide
-// which runes survive.
+// non-positive `n`, `s` unchanged when it already fits, and a clamped `marker`
+// when it alone would meet or exceed `n`. Otherwise it hands `place` the runes
+// and the budget of runes to keep (`n` minus the `marker`), letting each
+// variant decide which runes survive.
 func truncate(s string, n int, marker string, place func(runes []rune, keep int) string) string {
 	if n <= 0 {
 		return ""

@@ -6,13 +6,13 @@ import (
 	"syscall"
 )
 
-// notExist reports whether err means the path does not exist, including
+// notExist reports whether `err` means the path does not exist, including
 // ENOTDIR (a non-directory component partway through the path).
 func notExist(err error) bool {
 	return errors.Is(err, stdos.ErrNotExist) || errors.Is(err, syscall.ENOTDIR)
 }
 
-// stat returns the FileInfo for path, or (nil, nil) if it does not exist.
+// stat returns the FileInfo for `path`, or (nil, nil) if it does not exist.
 func stat(path string) (stdos.FileInfo, error) {
 	info, err := stdos.Stat(path)
 	if notExist(err) {
@@ -21,25 +21,25 @@ func stat(path string) (stdos.FileInfo, error) {
 	return info, err
 }
 
-// Exists reports whether path exists.
+// Exists reports whether `path` exists.
 func Exists(path string) (bool, error) {
 	info, err := stat(path)
 	return info != nil, err
 }
 
-// IsFile reports whether path is a regular file.
+// IsFile reports whether `path` is a regular file.
 func IsFile(path string) (bool, error) {
 	info, err := stat(path)
 	return info != nil && info.Mode().IsRegular(), err
 }
 
-// IsDir reports whether path is a directory.
+// IsDir reports whether `path` is a directory.
 func IsDir(path string) (bool, error) {
 	info, err := stat(path)
 	return info != nil && info.IsDir(), err
 }
 
-// IsSymlink reports whether path is a symbolic link.
+// IsSymlink reports whether `path` is a symbolic link.
 func IsSymlink(path string) (bool, error) {
 	info, err := stdos.Lstat(path)
 	switch {
@@ -52,7 +52,7 @@ func IsSymlink(path string) (bool, error) {
 	}
 }
 
-// IsWritableDir reports whether dir exists and the current process can create
+// IsWritableDir reports whether `dir` exists and the current process can create
 // files in it. Uses a probe file rather than permission-bit inspection so that
 // ACLs and immutable mounts are handled correctly.
 func IsWritableDir(dir string) bool {

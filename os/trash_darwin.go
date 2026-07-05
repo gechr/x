@@ -16,7 +16,7 @@ import (
 // a file on an external disk.
 const systemTrash = "/usr/bin/trash"
 
-// trash moves path to the Trash via the system trash tool. On a macOS too old to
+// trash moves `path` to the Trash via the system trash tool. On a macOS too old to
 // ship that tool it returns an error wrapping [errors.ErrUnsupported], so a
 // caller can detect the case and fall back (e.g. to [os.Remove]).
 func trash(path string) error {

@@ -2,7 +2,7 @@ package emulator
 
 import "slices"
 
-// Recognized terminal emulator names, as returned by Detect.
+// Recognized terminal emulator names, as returned by [Detect].
 const (
 	Alacritty       = "alacritty"
 	AppleTerminal   = "apple-terminal"
@@ -98,7 +98,7 @@ func Known() []string {
 	return slices.Clone(knownEmulators)
 }
 
-// IsKnown reports whether name matches a known terminal emulator.
+// IsKnown reports whether `name` matches a known terminal emulator.
 func IsKnown(name string) bool {
 	_, ok := knownEmulatorSet[name]
 	return ok

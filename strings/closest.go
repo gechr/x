@@ -5,12 +5,12 @@ package strings
 // long word tolerates more than a short one.
 const closestMaxDistanceDivisor = 3
 
-// Closest returns the candidate nearest to target, suitable for a "did you
+// Closest returns the candidate nearest to `target`, suitable for a "did you
 // mean?" suggestion. Distance is the Damerau-Levenshtein (optimal string
 // alignment) edit distance, so an adjacent transposition like "verfiy" counts
 // as one edit, not two - the common typo plain Levenshtein over-penalizes. It
-// returns "" when the nearest candidate is further than a third of target's
-// length in edits, so an unrelated word is never suggested. An empty target
+// returns "" when the nearest candidate is further than a third of `target`'s
+// length in edits, so an unrelated word is never suggested. An empty `target`
 // carries no signal and suggests nothing. Ties resolve to the first candidate.
 //
 //	Closest("verfiy", []string{"verify", "deep"}) // "verify"
@@ -33,8 +33,8 @@ func Closest(target string, candidates []string) string {
 	return best
 }
 
-// damerauLevenshtein returns the optimal-string-alignment distance between a and
-// b: the fewest single-character insertions, deletions, substitutions, or
+// damerauLevenshtein returns the optimal-string-alignment distance between `a`
+// and `b`: the fewest single-character insertions, deletions, substitutions, or
 // adjacent transpositions to turn one into the other. It keeps three rows so a
 // transposition can reach two rows back, for O(len(a)*len(b)) time and O(len(b))
 // space.

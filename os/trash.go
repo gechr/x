@@ -6,10 +6,10 @@ import (
 	stdpath "path/filepath"
 )
 
-// Trash asks the operating system to move path to its trash (or recycle bin)
+// Trash asks the operating system to move `path` to its trash (or recycle bin)
 // rather than removing it permanently like [os.Remove], so it can typically be
-// recovered. The path is resolved to an absolute path first, so a relative path
-// trashes the intended file regardless of the working directory.
+// recovered. The `path` is resolved to an absolute path first, so a relative
+// path trashes the intended file regardless of the working directory.
 //
 // The mechanism is platform-specific: the system trash tool on macOS (so the
 // Finder's "Put Back" works), the FreeDesktop.org trash specification on Linux

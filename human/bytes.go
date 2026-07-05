@@ -109,8 +109,8 @@ func FormatIECBytes(b float64) string {
 	return formatBytes(b, KiB, []string{UnitKiB, UnitMiB, UnitGiB, UnitTiB, UnitPiB, UnitEiB})
 }
 
-// formatBytes scales b into the largest unit whose rounded value stays below
-// base, so values just under a boundary promote to the next unit ("1.00 MB")
+// formatBytes scales `b` into the largest unit whose rounded value stays below
+// `base`, so values just under a boundary promote to the next unit ("1.00 MB")
 // instead of rounding to it ("1000.00 KB").
 func formatBytes(b, base float64, units []string) string {
 	if b < base {

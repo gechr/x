@@ -1,6 +1,6 @@
 package strings
 
-// IsDigits reports whether s is non-empty and consists entirely of ASCII
+// IsDigits reports whether `s` is non-empty and consists entirely of ASCII
 // digits (0-9). An empty string is not digits.
 func IsDigits(s string) bool {
 	if s == "" {

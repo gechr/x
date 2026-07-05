@@ -26,7 +26,7 @@ Package shell provides shell detection, path expansion, argument quoting, and sp
 
 ## Constants
 
-<a name="Ash"></a>Recognized shell names, as returned by Known.
+<a name="Ash"></a>Recognized shell names, as returned by [Known](<#Known>).
 
 ```go
 const (
@@ -44,7 +44,7 @@ const (
 )
 ```
 
-<a name="EnvShell"></a>**EnvShell** is the environment variable consulted by DetectFromEnv.
+<a name="EnvShell"></a>**EnvShell** is the environment variable consulted by [DetectFromEnv](<#DetectFromEnv>).
 
 ```go
 const EnvShell = "SHELL"
@@ -88,7 +88,7 @@ func ConfigDir() (string, error)
 func ConfigDirs() []string
 ```
 
-**ConfigDirs** returns the ordered, read-only config search directories: `$XDG_CONFIG_DIRS` when it has absolute entries, otherwise OS-specific defaults. These are searched after ConfigDir, so a user's config overrides the system defaults.
+**ConfigDirs** returns the ordered, read-only config search directories: `$XDG_CONFIG_DIRS` when it has absolute entries, otherwise OS-specific defaults. These are searched after [ConfigDir](<#ConfigDir>), so a user's config overrides the system defaults.
 
 <a name="DataDir"></a>
 
@@ -108,7 +108,7 @@ func DataDir() (string, error)
 func DataDirs() []string
 ```
 
-**DataDirs** returns the ordered, read-only data search directories: `$XDG_DATA_DIRS` when it has absolute entries, otherwise OS-specific defaults. These are searched after DataDir, so a user's data overrides the system defaults.
+**DataDirs** returns the ordered, read-only data search directories: `$XDG_DATA_DIRS` when it has absolute entries, otherwise OS-specific defaults. These are searched after [DataDir](<#DataDir>), so a user's data overrides the system defaults.
 
 <a name="Detect"></a>
 
@@ -128,7 +128,7 @@ func Detect() string
 func DetectFromEnv(env string) string
 ```
 
-**DetectFromEnv** returns the base name of env if it names a recognized shell.
+**DetectFromEnv** returns the base name of `env` if it names a recognized shell.
 
 <a name="DetectFromProcess"></a>
 
@@ -148,7 +148,7 @@ func DetectFromProcess() string
 func IsKnown(name string) bool
 ```
 
-**IsKnown** reports whether name matches a known shell.
+**IsKnown** reports whether `name` matches a known shell.
 
 <a name="Known"></a>
 
@@ -168,7 +168,7 @@ func Known() []string
 func Quote(s string) string
 ```
 
-**Quote** returns a shell-escaped version of s. The returned value can safely be used as one token in a POSIX shell command line.
+**Quote** returns a shell-escaped version of `s`. The returned value can safely be used as one token in a POSIX shell command line.
 
 <a name="Split"></a>
 
@@ -178,7 +178,7 @@ func Quote(s string) string
 func Split(s string) ([]string, error)
 ```
 
-**Split** partitions s into shell-style words. Whitespace separates words, quotes preserve whitespace, backslashes escape the following rune, a backslash-newline pair is removed as a line continuation, and a "#" starts a comment when it appears where a new word could start. Inside double quotes, a backslash is special only before '$', '\`', '"', '\\', or a newline; before any other rune it is kept literally, following POSIX.
+**Split** partitions `s` into shell-style words. Whitespace separates words, quotes preserve whitespace, backslashes escape the following rune, a backslash-newline pair is removed as a line continuation, and a "#" starts a comment when it appears where a new word could start. Inside double quotes, a backslash is special only before '$', '\`', '"', '\\', or a newline; before any other rune it is kept literally, following POSIX.
 
 <a name="StateDir"></a>
 

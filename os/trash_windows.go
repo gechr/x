@@ -19,7 +19,7 @@ const (
 	fofNoErrorUI      = 0x0400
 )
 
-// shFileOpStruct mirrors the Win32 SHFILEOPSTRUCTW. pFrom is a list of source
+// shFileOpStruct mirrors the Win32 SHFILEOPSTRUCTW. `pFrom` is a list of source
 // paths terminated by a double NUL.
 type shFileOpStruct struct {
 	hwnd                  windows.Handle
@@ -37,7 +37,7 @@ var (
 	procSHFileOperationW = shell32.NewProc("SHFileOperationW")
 )
 
-// trash moves path to the Recycle Bin via SHFileOperationW with FOF_ALLOWUNDO,
+// trash moves `path` to the Recycle Bin via SHFileOperationW with FOF_ALLOWUNDO,
 // which selects the correct per-volume bin and records the original location so
 // the file can be restored. FOF_ALLOWUNDO is a request the OS may decline (e.g.
 // the Recycle Bin disabled, or a path over MAX_PATH that this legacy API cannot
@@ -66,8 +66,8 @@ func trash(path string) error {
 	return nil
 }
 
-// doubleNullTerminated encodes path as a UTF-16 string with the extra trailing
-// NUL SHFileOperationW's pFrom list requires.
+// doubleNullTerminated encodes `path` as a UTF-16 string with the extra trailing
+// NUL SHFileOperationW's `pFrom` list requires.
 func doubleNullTerminated(path string) ([]uint16, error) {
 	encoded, err := windows.UTF16FromString(path)
 	if err != nil {

@@ -7,8 +7,8 @@ import (
 
 const thousandsGroup = 3
 
-// Plural returns singular when n == 1, otherwise plural. Unlike Pluralize, it
-// omits the count.
+// Plural returns `singular` when `n` == 1, otherwise `plural`. Unlike
+// [Pluralize], it omits the count.
 //
 //	Plural(1, "file", "files") // "file"
 //	Plural(3, "file", "files") // "files"
@@ -27,7 +27,7 @@ func Pluralize(n int, singular, plural string) string {
 	return strconv.Itoa(n) + " " + Plural(n, singular, plural)
 }
 
-// FormatNumber groups n's digits in threes from the right, joined with sep.
+// FormatNumber groups `n`'s digits in threes from the right, joined with `sep`.
 // Not locale-aware: pick a separator suited to your output.
 //
 //	FormatNumber(1234567, ",") // "1,234,567"
@@ -73,7 +73,7 @@ const compactBase = 1000
 // order: thousand, million, billion, trillion.
 var compactUnits = []string{"K", "M", "B", "T"}
 
-// FormatNumberCompact renders n in a compact, abbreviated form using K, M, B,
+// FormatNumberCompact renders `n` in a compact, abbreviated form using K, M, B,
 // and T suffixes (powers of 1000), with up to one decimal place and a trailing
 // ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim.
 // Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and
@@ -119,7 +119,7 @@ func FormatNumberCompact(n int64) string {
 	return s + unit
 }
 
-// FormatOrdinal returns n with its English ordinal suffix.
+// FormatOrdinal returns `n` with its English ordinal suffix.
 //
 //	FormatOrdinal(1)   // "1st"
 //	FormatOrdinal(22)  // "22nd"

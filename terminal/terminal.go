@@ -16,22 +16,22 @@ func Is(f *os.File) bool {
 	return term.IsTerminal(int(f.Fd()))
 }
 
-// Width returns the width of the terminal connected to f.
-// Returns 0 if f is nil or not a terminal.
+// Width returns the width of the terminal connected to `f`.
+// Returns 0 if `f` is nil or not a terminal.
 func Width(f *os.File) int {
 	w, _ := Size(f)
 	return w
 }
 
-// Height returns the height of the terminal connected to f, or 0 if f is nil
+// Height returns the height of the terminal connected to `f`, or 0 if `f` is nil
 // or not a terminal.
 func Height(f *os.File) int {
 	_, h := Size(f)
 	return h
 }
 
-// Size returns the (width, height) of the terminal connected to f in cells,
-// or (0, 0) if f is nil or not a terminal.
+// Size returns the (width, height) of the terminal connected to `f` in cells,
+// or (0, 0) if `f` is nil or not a terminal.
 func Size(f *os.File) (int, int) {
 	if f == nil {
 		return 0, 0

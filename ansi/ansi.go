@@ -34,8 +34,8 @@ func Force() *ANSI {
 }
 
 // Auto creates an ANSI that auto-detects whether the output is a terminal.
-// All provided files must be terminals for ANSI output to be enabled.
-// Defaults to os.Stdout if no files are provided.
+// All provided `files` must be terminals for ANSI output to be enabled.
+// Defaults to [os.Stdout] if no `files` are provided.
 func Auto(files ...*os.File) *ANSI {
 	if len(files) == 0 {
 		files = []*os.File{os.Stdout}

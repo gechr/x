@@ -16,7 +16,7 @@ Package emulator identifies the terminal emulator hosting the process.
 
 ## Constants
 
-<a name="EnvTerm"></a>Environment variables consulted by Detect.
+<a name="EnvTerm"></a>Environment variables consulted by [Detect](<#Detect>).
 
 ```go
 const (
@@ -26,7 +26,7 @@ const (
 )
 ```
 
-<a name="Alacritty"></a>Recognized terminal emulator names, as returned by Detect.
+<a name="Alacritty"></a>Recognized terminal emulator names, as returned by [Detect](<#Detect>).
 
 ```go
 const (
@@ -78,7 +78,7 @@ func Detect() string
 func IsKnown(name string) bool
 ```
 
-**IsKnown** reports whether name matches a known terminal emulator.
+**IsKnown** reports whether `name` matches a known terminal emulator.
 
 <a name="Known"></a>
 

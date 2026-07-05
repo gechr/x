@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Environment variables consulted by Detect.
+// Environment variables consulted by [Detect].
 const (
 	EnvTerm             = "TERM"
 	EnvTermProgram      = "TERM_PROGRAM"
@@ -127,7 +127,7 @@ func Detect() string {
 }
 
 // normalizeTerm strips color/variant suffixes so values like "st-256color",
-// "foot-extra", and "alacritty-direct" match their base termValues entry.
+// "foot-extra", and "alacritty-direct" match their base `termValues` entry.
 func normalizeTerm(term string) string {
 	for {
 		base := term

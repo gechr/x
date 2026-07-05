@@ -112,7 +112,7 @@ func ContractHome(path string) string
 func FormatDuration(d time.Duration) string
 ```
 
-**FormatDuration** formats d as up to two adjacent units with no separator (e.g. "2h15m", "1w2d", "1y5w"). Years are 365 days, weeks are 7 days. Durations >= 1s are rounded to the nearest second.
+**FormatDuration** formats `d` as up to two adjacent units with no separator (e.g. "2h15m", "1w2d", "1y5w"). Years are 365 days, weeks are 7 days. Durations >= 1s are rounded to the nearest second.
 
 ```text
 FormatDuration(90 * time.Second)             // "1m30s"
@@ -140,7 +140,7 @@ func FormatIECBytes(b float64) string
 func FormatNumber(n int64, sep string) string
 ```
 
-**FormatNumber** groups n's digits in threes from the right, joined with sep. Not locale-aware: pick a separator suited to your output.
+**FormatNumber** groups `n`'s digits in threes from the right, joined with `sep`. Not locale-aware: pick a separator suited to your output.
 
 ```text
 FormatNumber(1234567, ",") // "1,234,567"
@@ -157,7 +157,7 @@ FormatNumber(-42, ",")     // "-42"
 func FormatNumberCompact(n int64) string
 ```
 
-**FormatNumberCompact** renders n in a compact, abbreviated form using K, M, B, and T suffixes (powers of 1000), with up to one decimal place and a trailing ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim. Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and magnitudes beyond a trillion stay in "T".
+**FormatNumberCompact** renders `n` in a compact, abbreviated form using K, M, B, and T suffixes (powers of 1000), with up to one decimal place and a trailing ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim. Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and magnitudes beyond a trillion stay in "T".
 
 ```text
 FormatNumberCompact(950)      // "950"
@@ -175,7 +175,7 @@ FormatNumberCompact(-1500000) // "-1.5M"
 func FormatOrdinal(n int) string
 ```
 
-**FormatOrdinal** returns n with its English ordinal suffix.
+**FormatOrdinal** returns `n` with its English ordinal suffix.
 
 ```text
 FormatOrdinal(1)   // "1st"
@@ -221,7 +221,7 @@ func FormatTimeAgoCompact(t time.Time) string
 func FormatTimeAgoCompactFrom(t, now time.Time) string
 ```
 
-**FormatTimeAgoCompactFrom** formats a time as a compact relative string relative to now.
+**FormatTimeAgoCompactFrom** formats a time as a compact relative string relative to `now`.
 
 <a name="FormatTimeAgoFrom"></a>
 
@@ -231,7 +231,7 @@ func FormatTimeAgoCompactFrom(t, now time.Time) string
 func FormatTimeAgoFrom(t, now time.Time) string
 ```
 
-**FormatTimeAgoFrom** formats a time relative to the given reference time now.
+**FormatTimeAgoFrom** formats a time relative to the given reference time `now`.
 
 <a name="ParseByteSize"></a>
 
@@ -251,7 +251,7 @@ func ParseByteSize(s string) float64
 func ParseDuration(s string) (time.Duration, error)
 ```
 
-**ParseDuration** parses a human duration string into a time.Duration. It is the inverse of FormatDuration, accepting the units that function emits: y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size, so "1y2w", "2h15m", and "90s" are valid while a repeated ("5w5w") or out-of-order ("1w1y") unit is an error. An optional leading - negates the result, and "0" parses to zero.
+**ParseDuration** parses a human duration string into a [time.Duration](<https://pkg.go.dev/time#Duration>). It is the inverse of [FormatDuration](<#FormatDuration>), accepting the units that function emits: y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size, so "1y2w", "2h15m", and "90s" are valid while a repeated ("5w5w") or out-of-order ("1w1y") unit is an error. An optional leading - negates the result, and "0" parses to zero.
 
 ```text
 ParseDuration("2h15m")  // 2*time.Hour + 15*time.Minute
@@ -267,7 +267,7 @@ ParseDuration("-1m30s") // -90 * time.Second
 func Plural(n int, singular, plural string) string
 ```
 
-**Plural** returns singular when n == 1, otherwise plural. Unlike Pluralize, it omits the count.
+**Plural** returns `singular` when `n` == 1, otherwise `plural`. Unlike [Pluralize](<#Pluralize>), it omits the count.
 
 ```text
 Plural(1, "file", "files") // "file"
