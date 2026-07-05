@@ -57,7 +57,7 @@ hello
 
 <a name="CopyFile"></a>
 
-## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L55>)
+## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L69>)
 
 ```go
 func CopyFile(src, dst string) error
@@ -94,13 +94,13 @@ hello
 
 <a name="EnsureDir"></a>
 
-## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L48>)
+## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L50>)
 
 ```go
 func EnsureDir(dir string, perm os.FileMode) error
 ```
 
-**EnsureDir** creates `dir` and any parents with the given permissions.
+**EnsureDir** creates `dir` and any missing parents, and guarantees `dir` itself has mode `perm` even if it already existed with a different mode or the umask interfered at creation time. Pre-existing parents are left untouched.
 
 <details><summary><b>Example</b></summary>
 

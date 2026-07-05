@@ -68,6 +68,32 @@ func TestEnsureDir(t *testing.T) {
 	require.NoError(t, xos.EnsureDir(target, 0o755))
 }
 
+func TestEnsureDir_EnforcesPermOnExisting(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	target := filepath.Join(dir, "private")
+	require.NoError(t, os.Mkdir(target, 0o777))
+
+	require.NoError(t, xos.EnsureDir(target, 0o700))
+	info, err := os.Stat(target)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0o700), info.Mode().Perm())
+}
+
+func TestEnsureDir_EnforcesPermOnCreation(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	parent := filepath.Join(dir, "parent")
+	target := filepath.Join(parent, "child")
+
+	require.NoError(t, xos.EnsureDir(target, 0o750))
+	info, err := os.Stat(target)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0o750), info.Mode().Perm())
+}
+
 func TestCopyFile(t *testing.T) {
 	t.Parallel()
 

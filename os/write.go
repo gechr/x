@@ -44,9 +44,23 @@ func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 	return nil
 }
 
-// EnsureDir creates `dir` and any parents with the given permissions.
+// EnsureDir creates `dir` and any missing parents, and guarantees `dir` itself
+// has mode `perm` even if it already existed with a different mode or the
+// umask interfered at creation time. Pre-existing parents are left untouched.
 func EnsureDir(dir string, perm os.FileMode) error {
-	return os.MkdirAll(dir, perm)
+	if err := os.MkdirAll(dir, perm); err != nil {
+		return fmt.Errorf("failed to create directory: %w", err)
+	}
+	info, err := os.Stat(dir)
+	if err != nil {
+		return fmt.Errorf("failed to stat directory: %w", err)
+	}
+	if info.Mode().Perm() != perm {
+		if err := os.Chmod(dir, perm); err != nil {
+			return fmt.Errorf("failed to chmod directory: %w", err)
+		}
+	}
+	return nil
 }
 
 // CopyFile copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced
