@@ -1,8 +1,8 @@
 package os_test
 
 import (
-	stdos "os"
-	stdpath "path/filepath"
+	"os"
+	"path/filepath"
 	"testing"
 
 	xos "github.com/gechr/x/os"
@@ -12,25 +12,25 @@ import (
 func TestSameFile(t *testing.T) {
 	t.Parallel()
 
-	dir, err := stdpath.EvalSymlinks(t.TempDir())
+	dir, err := filepath.EvalSymlinks(t.TempDir())
 	require.NoError(t, err)
 
-	file := stdpath.Join(dir, "file")
-	require.NoError(t, stdos.WriteFile(file, []byte("payload"), 0o600))
+	file := filepath.Join(dir, "file")
+	require.NoError(t, os.WriteFile(file, []byte("payload"), 0o600))
 
-	link := stdpath.Join(dir, "link")
-	require.NoError(t, stdos.Symlink(file, link))
+	link := filepath.Join(dir, "link")
+	require.NoError(t, os.Symlink(file, link))
 
-	realDir := stdpath.Join(dir, "real")
-	linkDir := stdpath.Join(dir, "link-dir")
-	require.NoError(t, stdos.Mkdir(realDir, 0o755))
-	require.NoError(t, stdos.Symlink(realDir, linkDir))
+	realDir := filepath.Join(dir, "real")
+	linkDir := filepath.Join(dir, "link-dir")
+	require.NoError(t, os.Mkdir(realDir, 0o755))
+	require.NoError(t, os.Symlink(realDir, linkDir))
 
-	hardlink := stdpath.Join(dir, "hardlink")
-	require.NoError(t, stdos.Link(file, hardlink))
+	hardlink := filepath.Join(dir, "hardlink")
+	require.NoError(t, os.Link(file, hardlink))
 
-	other := stdpath.Join(dir, "other")
-	require.NoError(t, stdos.WriteFile(other, []byte("payload"), 0o600))
+	other := filepath.Join(dir, "other")
+	require.NoError(t, os.WriteFile(other, []byte("payload"), 0o600))
 
 	tests := []struct {
 		name string
@@ -52,8 +52,8 @@ func TestSameFile(t *testing.T) {
 		},
 		{
 			name: "symlinked ancestor with missing leaf",
-			a:    stdpath.Join(linkDir, "missing"),
-			b:    stdpath.Join(realDir, "missing"),
+			a:    filepath.Join(linkDir, "missing"),
+			b:    filepath.Join(realDir, "missing"),
 			want: true,
 		},
 		{

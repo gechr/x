@@ -51,6 +51,20 @@ func AppendCSV(dst []string, raw string) []string
 
 **AppendCSV** splits `raw` on commas, trims whitespace, drops empty values, and appends the remaining values to `dst`.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.AppendCSV([]string{"x"}, " a, b ,, c "))
+```
+
+Output:
+
+```text
+["x" "a" "b" "c"]
+```
+
+</details>
+
 <a name="Closest"></a>
 
 ## func [Closest](<https://github.com/gechr/x/blob/main/strings/closest.go#L18>)
@@ -61,10 +75,26 @@ func Closest(target string, candidates []string) string
 
 **Closest** returns the candidate nearest to `target`, suitable for a "did you mean?" suggestion. Distance is the Damerau-Levenshtein (optimal string alignment) edit distance, so an adjacent transposition like "verfiy" counts as one edit, not two - the common typo plain Levenshtein over-penalizes. It returns "" when the nearest candidate is further than a third of `target`'s length in edits, so an unrelated word is never suggested. An empty `target` carries no signal and suggests nothing. Ties resolve to the first candidate.
 
-```text
+```go
 Closest("verfiy", []string{"verify", "deep"}) // "verify"
 Closest("xyzzy", []string{"verify", "deep"})  // ""
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.Closest("verfiy", []string{"verify", "deep"}))
+fmt.Printf("%q\n", xstrings.Closest("xyzzy", []string{"verify", "deep"}))
+```
+
+Output:
+
+```text
+"verify"
+""
+```
+
+</details>
 
 <a name="CompactLines"></a>
 
@@ -76,6 +106,20 @@ func CompactLines(s, sep string) string
 
 **CompactLines** trims lines, drops blank lines, removes duplicate lines while preserving first-seen order, and joins the remaining lines with `sep`.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.CompactLines("  foo \n\nbar\nfoo\n", ", "))
+```
+
+Output:
+
+```text
+foo, bar
+```
+
+</details>
+
 <a name="CompareFold"></a>
 
 ## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L12>)
@@ -85,6 +129,24 @@ func CompareFold(a, b string) int
 ```
 
 **CompareFold** compares `a` and `b` case-insensitively, using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>), and returns -1, 0, or 1 following the [cmp.Compare](<https://pkg.go.dev/cmp#Compare>) convention. CompareFold(a, b) == 0 iff strings.EqualFold(a, b).
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.CompareFold("Go", "go"))
+fmt.Println(xstrings.CompareFold("abc", "ABD"))
+fmt.Println(xstrings.CompareFold("B", "a"))
+```
+
+Output:
+
+```text
+0
+-1
+1
+```
+
+</details>
 
 <a name="CompareNatural"></a>
 
@@ -96,6 +158,22 @@ func CompareNatural(a, b string) int
 
 **CompareNatural** orders `a` and `b` the way a human reads them, treating each run of digits as a single decimal number so "x2" sorts before "x10". It returns -1, 0, or +1 and allocates nothing, handling numbers of any length without overflow.
 
+<details><summary>Example</summary>
+
+```go
+versions := []string{"v10", "v2", "v1"}
+slices.SortFunc(versions, xstrings.CompareNatural)
+fmt.Println(versions)
+```
+
+Output:
+
+```text
+[v1 v2 v10]
+```
+
+</details>
+
 <a name="ContainsAll"></a>
 
 ## func [ContainsAll](<https://github.com/gechr/x/blob/main/strings/contains.go#L6>)
@@ -105,6 +183,22 @@ func ContainsAll(s string, substrings ...string) bool
 ```
 
 **ContainsAll** reports whether `s` contains all of the given `substrings`.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.ContainsAll("hello world", "hello", "world"))
+fmt.Println(xstrings.ContainsAll("hello world", "hello", "moon"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="ContainsAny"></a>
 
@@ -116,6 +210,22 @@ func ContainsAny(s string, substrings ...string) bool
 
 **ContainsAny** reports whether `s` contains any of the given `substrings`.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.ContainsAny("hello world", "moon", "world"))
+fmt.Println(xstrings.ContainsAny("hello world", "moon", "sun"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="CountAny"></a>
 
 ## func [CountAny](<https://github.com/gechr/x/blob/main/strings/any.go#L32>)
@@ -125,6 +235,20 @@ func CountAny(s, chars string) int
 ```
 
 **CountAny** returns the number of Unicode code points in `s` that are contained in `chars`, following the cutset convention of [strings.IndexAny](<https://pkg.go.dev/strings#IndexAny>).
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.CountAny("hello world", "lo"))
+```
+
+Output:
+
+```text
+5
+```
+
+</details>
 
 <a name="Dedent"></a>
 
@@ -136,9 +260,25 @@ func Dedent(s string) string
 
 **Dedent** strips the longest common leading-whitespace prefix from non-empty lines. Whitespace-only lines are normalized to empty (Python textwrap.dedent).
 
-```text
+```go
 Dedent("    foo\n      bar\n    baz") // "foo\n  bar\nbaz"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.Dedent("    foo\n      bar\n    baz"))
+```
+
+Output:
+
+```text
+foo
+  bar
+baz
+```
+
+</details>
 
 <a name="EnsureTrailingNewline"></a>
 
@@ -150,6 +290,22 @@ func EnsureTrailingNewline(s string) string
 
 **EnsureTrailingNewline** trims any trailing newlines from `s` and appends exactly one, so the result always ends in a single "\\n". An empty string becomes "\\n".
 
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.EnsureTrailingNewline("hello\n\n"))
+fmt.Printf("%q\n", xstrings.EnsureTrailingNewline("hello"))
+```
+
+Output:
+
+```text
+"hello\n"
+"hello\n"
+```
+
+</details>
+
 <a name="EqualNatural"></a>
 
 ## func [EqualNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L49>)
@@ -159,6 +315,24 @@ func EqualNatural(a, b string) bool
 ```
 
 **EqualNatural** reports whether `a` and `b` compare equal in natural order, as decided by [CompareNatural](<#CompareNatural>). This can differ from a == b, since a numeric run followed by more to compare matches regardless of leading zeros (for example "a00b00" and "a0b00").
+
+<details><summary>Example</summary>
+
+Leading zeros are ignored when more text follows the numeric run.
+
+```go
+fmt.Println(xstrings.EqualNatural("a00b00", "a0b00"))
+fmt.Println(xstrings.EqualNatural("a1", "a2"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="Indent"></a>
 
@@ -170,11 +344,26 @@ func Indent(s, prefix string) string
 
 **Indent** prefixes every non-blank line of `s` with `prefix`. Blank and whitespace-only lines are normalized to empty.
 
-```text
+```go
 Indent("foo\nbar", "  ")      // "  foo\n  bar"
 Indent("foo\n\nbar", "> ")    // "> foo\n\n> bar"
 Indent("foo\n   \nbar", "> ") // "> foo\n\n> bar"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.Indent("foo\nbar", "> "))
+```
+
+Output:
+
+```text
+> foo
+> bar
+```
+
+</details>
 
 <a name="IsBlank"></a>
 
@@ -186,6 +375,22 @@ func IsBlank(s string) bool
 
 **IsBlank** reports whether `s` is empty or consists only of whitespace.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.IsBlank(" \t\n"))
+fmt.Println(xstrings.IsBlank("x"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="IsDigits"></a>
 
 ## func [IsDigits](<https://github.com/gechr/x/blob/main/strings/digits.go#L5>)
@@ -195,6 +400,24 @@ func IsDigits(s string) bool
 ```
 
 **IsDigits** reports whether `s` is non-empty and consists entirely of ASCII digits (0-9). An empty string is not digits.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.IsDigits("12345"))
+fmt.Println(xstrings.IsDigits("12a45"))
+fmt.Println(xstrings.IsDigits(""))
+```
+
+Output:
+
+```text
+true
+false
+false
+```
+
+</details>
 
 <a name="IsGitCommit"></a>
 
@@ -206,6 +429,22 @@ func IsGitCommit(s string) bool
 
 **IsGitCommit** reports whether `s` is 40 hexadecimal digits (a Git commit hash).
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.IsGitCommit("3b18e512dba79e4c8300dd08aeb37f8e728b8dad"))
+fmt.Println(xstrings.IsGitCommit("deadbeef"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="IsHex"></a>
 
 ## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L5>)
@@ -215,6 +454,22 @@ func IsHex(s string) bool
 ```
 
 **IsHex** reports whether `s` is non-empty and consists entirely of hexadecimal digits. An empty string is not hex.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.IsHex("deadBEEF42"))
+fmt.Println(xstrings.IsHex("xyz"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="IsHexChar"></a>
 
@@ -236,6 +491,24 @@ func IsSHA256(s string) bool
 
 **IsSHA256** reports whether `s` is 64 hexadecimal digits (a SHA-256 digest).
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(
+    xstrings.IsSHA256("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"),
+)
+fmt.Println(xstrings.IsSHA256("deadbeef"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="LessNatural"></a>
 
 ## func [LessNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L41>)
@@ -245,6 +518,22 @@ func LessNatural(a, b string) bool
 ```
 
 **LessNatural** reports whether `a` sorts before `b` in natural order, as decided by [CompareNatural](<#CompareNatural>). It reads cleanly at call sites that want a boolean rather than a three-way result, such as sort predicates and conditionals.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.LessNatural("v2", "v10"))
+fmt.Println(xstrings.LessNatural("v10", "v2"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="PadCenter"></a>
 
@@ -256,9 +545,25 @@ func PadCenter(s string, width int) string
 
 **PadCenter** pads `s` with spaces on both sides to `width` runes, centring it. An odd rune of padding goes on the right. Strings already `width` runes or longer are returned unchanged.
 
-```text
+```go
 PadCenter("hi", 5) // " hi  "
 ```
+
+<details><summary>Example</summary>
+
+PadCenter places the odd rune of padding on the right.
+
+```go
+fmt.Printf("%q\n", xstrings.PadCenter("hi", 5))
+```
+
+Output:
+
+```text
+" hi  "
+```
+
+</details>
 
 <a name="PadLeft"></a>
 
@@ -270,9 +575,23 @@ func PadLeft(s string, width int) string
 
 **PadLeft** pads `s` with spaces on the left to `width` runes, right-aligning it. Strings already `width` runes or longer are returned unchanged. Width is counted in runes; for display-width-aware handling of ANSI text use the [ansi](<../ansi/README.md>) package.
 
-```text
+```go
 PadLeft("hi", 5) // "   hi"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.PadLeft("hi", 5))
+```
+
+Output:
+
+```text
+"   hi"
+```
+
+</details>
 
 <a name="PadRight"></a>
 
@@ -284,9 +603,23 @@ func PadRight(s string, width int) string
 
 **PadRight** pads `s` with spaces on the right to `width` runes, left-aligning it. Strings already `width` runes or longer are returned unchanged.
 
-```text
+```go
 PadRight("hi", 5) // "hi   "
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.PadRight("hi", 5))
+```
+
+Output:
+
+```text
+"hi   "
+```
+
+</details>
 
 <a name="SplitAny"></a>
 
@@ -298,6 +631,22 @@ func SplitAny(s, chars string) []string
 
 **SplitAny** splits `s` around each occurrence of any Unicode code point in `chars`, following the cutset convention of [strings.IndexAny](<https://pkg.go.dev/strings#IndexAny>). Empty segments between adjacent separators are preserved, matching [strings.Split](<https://pkg.go.dev/strings#Split>) semantics. If `chars` is empty, SplitAny returns a single-element slice containing `s`.
 
+<details><summary>Example</summary>
+
+Empty segments between adjacent separators are preserved.
+
+```go
+fmt.Printf("%q\n", xstrings.SplitAny("a,b;;c", ",;"))
+```
+
+Output:
+
+```text
+["a" "b" "" "c"]
+```
+
+</details>
+
 <a name="SplitBy"></a>
 
 ## func [SplitBy](<https://github.com/gechr/x/blob/main/strings/split.go#L7>)
@@ -307,6 +656,20 @@ func SplitBy(s, sep string) []string
 ```
 
 **SplitBy** splits `s` by `sep`, trims whitespace from each part, and drops empty values.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.SplitBy(" a | b || c ", "|"))
+```
+
+Output:
+
+```text
+["a" "b" "c"]
+```
+
+</details>
 
 <a name="SplitCSV"></a>
 
@@ -318,6 +681,20 @@ func SplitCSV(s string) []string
 
 **SplitCSV** splits `s` on commas, trims whitespace, and drops empty values.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.SplitCSV(" a, b ,, c "))
+```
+
+Output:
+
+```text
+["a" "b" "c"]
+```
+
+</details>
+
 <a name="SplitLines"></a>
 
 ## func [SplitLines](<https://github.com/gechr/x/blob/main/strings/lines.go#L6>)
@@ -327,6 +704,20 @@ func SplitLines(s string) []string
 ```
 
 **SplitLines** splits `s` into non-empty trimmed lines.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.SplitLines("foo\n\n  bar \n"))
+```
+
+Output:
+
+```text
+["foo" "bar"]
+```
+
+</details>
 
 <a name="SplitLinesRaw"></a>
 
@@ -338,6 +729,20 @@ func SplitLinesRaw(s string) []string
 
 **SplitLinesRaw** splits `s` into lines losslessly, normalizing CRLF to LF: every line is kept verbatim - empty lines and the trailing empty element included - so the result joins back with `"\n"` without losing content or line numbers.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", xstrings.SplitLinesRaw("foo\r\nbar\n"))
+```
+
+Output:
+
+```text
+["foo" "bar" ""]
+```
+
+</details>
+
 <a name="Truncate"></a>
 
 ## func [Truncate](<https://github.com/gechr/x/blob/main/strings/truncate.go#L45>)
@@ -347,6 +752,20 @@ func Truncate(s string, n int, marker string) string
 ```
 
 **Truncate** is an alias for [TruncateRight](<#TruncateRight>), the most common form: it keeps the head and trims the tail.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.Truncate("hello world", 8, "…"))
+```
+
+Output:
+
+```text
+hello w…
+```
+
+</details>
 
 <a name="TruncateLeft"></a>
 
@@ -358,9 +777,23 @@ func TruncateLeft(s string, n int, marker string) string
 
 **TruncateLeft** shortens `s` to at most `n` runes (including `marker`) by removing characters from the left, prepending `marker` when truncation occurs. The tail is kept.
 
-```text
+```go
 TruncateLeft("hello world", 8, "…") // "…o world"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.TruncateLeft("hello world", 8, "…"))
+```
+
+Output:
+
+```text
+…o world
+```
+
+</details>
 
 <a name="TruncateMiddle"></a>
 
@@ -372,9 +805,23 @@ func TruncateMiddle(s string, n int, marker string) string
 
 **TruncateMiddle** shortens `s` to at most `n` runes (including `marker`) by removing characters from the middle, inserting `marker` between the kept head and tail so both ends stay visible. This suits hashes and paths, where the start and end are the recognisable parts.
 
-```text
+```go
 TruncateMiddle("0123456789abcdef", 7, "…") // "012…def"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.TruncateMiddle("0123456789abcdef", 7, "…"))
+```
+
+Output:
+
+```text
+012…def
+```
+
+</details>
 
 <a name="TruncateRight"></a>
 
@@ -386,10 +833,26 @@ func TruncateRight(s string, n int, marker string) string
 
 **TruncateRight** shortens `s` to at most `n` runes (including `marker`) by removing characters from the right, appending `marker` when truncation occurs. The head is kept. For display-width-aware truncation of ANSI text use [ansi.Truncate](<../ansi/README.md#Truncate>).
 
-```text
+```go
 TruncateRight("hello world", 8, "…") // "hello w…"
 TruncateRight("hi", 8, "…")          // "hi"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.TruncateRight("hello world", 8, "…"))
+fmt.Println(xstrings.TruncateRight("hi", 8, "…"))
+```
+
+Output:
+
+```text
+hello w…
+hi
+```
+
+</details>
 
 <a name="Unwrap"></a>
 
@@ -400,3 +863,19 @@ func Unwrap(s, prefix, suffix string) (string, bool)
 ```
 
 **Unwrap** returns `s` with the leading `prefix` and trailing `suffix` removed and reports whether both were present. Unlike a [strings.TrimPrefix](<https://pkg.go.dev/strings#TrimPrefix>) + [strings.TrimSuffix](<https://pkg.go.dev/strings#TrimSuffix>) chain, nothing is removed unless `s` starts with `prefix` AND ends with `suffix`, so a one-sided match is returned unchanged.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xstrings.Unwrap(`"quoted"`, `"`, `"`))
+fmt.Println(xstrings.Unwrap(`"one-sided`, `"`, `"`))
+```
+
+Output:
+
+```text
+quoted true
+"one-sided false
+```
+
+</details>

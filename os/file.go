@@ -2,7 +2,7 @@
 package os
 
 import (
-	stdos "os"
+	"os"
 
 	xfilepath "github.com/gechr/x/filepath"
 )
@@ -14,7 +14,7 @@ func SameFile(a, b string) (bool, error) {
 	return sameFile(a, nil, b)
 }
 
-func sameFile(a string, aInfo stdos.FileInfo, b string) (bool, error) {
+func sameFile(a string, aInfo os.FileInfo, b string) (bool, error) {
 	aResolved, err := xfilepath.ResolveLenient(a)
 	if err != nil {
 		return false, err
@@ -37,10 +37,10 @@ func sameFile(a string, aInfo stdos.FileInfo, b string) (bool, error) {
 	if !ok {
 		return false, nil
 	}
-	return stdos.SameFile(aInfo, bInfo), nil
+	return os.SameFile(aInfo, bInfo), nil
 }
 
-func sameFileInfo(path string) (stdos.FileInfo, bool) {
-	info, err := stdos.Stat(path)
+func sameFileInfo(path string) (os.FileInfo, bool) {
+	info, err := os.Stat(path)
 	return info, err == nil
 }

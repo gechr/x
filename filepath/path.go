@@ -3,7 +3,7 @@ package filepath
 
 import (
 	"os"
-	stdpath "path/filepath"
+	"path/filepath"
 	"strings"
 )
 
@@ -22,7 +22,7 @@ func Expand(path string) string {
 	}
 	if rest, ok := strings.CutPrefix(path, "~/"); ok {
 		if home, err := os.UserHomeDir(); err == nil {
-			path = stdpath.Join(home, rest)
+			path = filepath.Join(home, rest)
 		}
 	}
 	return os.ExpandEnv(path)
@@ -33,11 +33,11 @@ func Expand(path string) string {
 // the input path is returned alongside the error so callers can choose whether
 // to handle it or fall back.
 func Resolve(path string) (string, error) {
-	resolved, err := stdpath.EvalSymlinks(path)
+	resolved, err := filepath.EvalSymlinks(path)
 	if err != nil {
 		return path, err
 	}
-	abs, err := stdpath.Abs(resolved)
+	abs, err := filepath.Abs(resolved)
 	if err != nil {
 		return resolved, err
 	}
@@ -49,7 +49,7 @@ func Resolve(path string) (string, error) {
 // and rejoins the original base name. If neither can be resolved, it returns
 // the absolute path.
 func ResolveLenient(path string) (string, error) {
-	abs, err := stdpath.Abs(path)
+	abs, err := filepath.Abs(path)
 	if err != nil {
 		return path, err
 	}
@@ -57,9 +57,9 @@ func ResolveLenient(path string) (string, error) {
 	if err == nil {
 		return resolved, nil
 	}
-	parent, err := Resolve(stdpath.Dir(abs))
+	parent, err := Resolve(filepath.Dir(abs))
 	if err == nil {
-		return stdpath.Join(parent, stdpath.Base(abs)), nil
+		return filepath.Join(parent, filepath.Base(abs)), nil
 	}
 	return abs, nil
 }
@@ -76,12 +76,12 @@ func IsWithin(base string, targets ...string) bool {
 	if len(targets) == 0 {
 		return false
 	}
-	absBase, err := stdpath.Abs(base)
+	absBase, err := filepath.Abs(base)
 	if err != nil {
 		return false
 	}
 	for _, target := range targets {
-		absTarget, err := stdpath.Abs(target)
+		absTarget, err := filepath.Abs(target)
 		if err != nil {
 			return false
 		}
@@ -100,8 +100,8 @@ func contains(outer, inner string) bool {
 		return true
 	}
 	prefix := outer
-	if !strings.HasSuffix(prefix, string(stdpath.Separator)) {
-		prefix += string(stdpath.Separator)
+	if !strings.HasSuffix(prefix, string(filepath.Separator)) {
+		prefix += string(filepath.Separator)
 	}
 	return hasPathPrefix(inner, prefix)
 }
@@ -164,9 +164,9 @@ func (c mergeConfig) mergeKey(path string) string {
 		resolved, _ := ResolveLenient(path)
 		return resolved
 	}
-	abs, err := stdpath.Abs(path)
+	abs, err := filepath.Abs(path)
 	if err != nil {
-		return stdpath.Clean(path)
+		return filepath.Clean(path)
 	}
 	return abs
 }

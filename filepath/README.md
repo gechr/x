@@ -38,11 +38,49 @@ func IsWithin(base string, targets ...string) bool
 
 Example:
 
-```text
+```go
 IsWithin("src", "src/foo.go")             // true
 IsWithin(".", "src/foo.go", "lib/bar.go") // true
 IsWithin("src", "lib/foo.go")             // false
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xfilepath.IsWithin("src", "src/foo.go"))
+fmt.Println(xfilepath.IsWithin("src", "src"))
+fmt.Println(xfilepath.IsWithin("src", "lib/foo.go"))
+fmt.Println(xfilepath.IsWithin("src"))
+```
+
+Output:
+
+```text
+true
+true
+false
+false
+```
+
+</details>
+
+<details><summary>Example (MultipleTargets)</summary>
+
+IsWithin only reports true when every target is contained within the base.
+
+```go
+fmt.Println(xfilepath.IsWithin(".", "src/foo.go", "lib/bar.go"))
+fmt.Println(xfilepath.IsWithin("src", "src/foo.go", "lib/bar.go"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="Merge"></a>
 
@@ -58,12 +96,46 @@ The comparison is lexical by default; pass [WithResolveSymlinks](<#WithResolveSy
 
 Example:
 
-```text
+```go
 Merge([]string{"a", "a"})     // ["a"]
 Merge([]string{".", "./sub"}) // ["."]
 Merge([]string{"a/b", "a"})   // ["a"]
 Merge([]string{"a", "b"})     // ["a", "b"]
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(xfilepath.Merge([]string{".", "./sub"}))
+fmt.Println(xfilepath.Merge([]string{"a/b", "a"}))
+fmt.Println(xfilepath.Merge([]string{"a", "b"}))
+```
+
+Output:
+
+```text
+[.]
+[a]
+[a b]
+```
+
+</details>
+
+<details><summary>Example (Duplicates)</summary>
+
+Exact duplicates are merged; the first occurrence survives in its original spelling.
+
+```go
+fmt.Println(xfilepath.Merge([]string{"a", "./a", "a/"}))
+```
+
+Output:
+
+```text
+[a]
+```
+
+</details>
 
 <a name="Resolve"></a>
 

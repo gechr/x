@@ -2,19 +2,19 @@ package os
 
 import (
 	"errors"
-	stdos "os"
+	"os"
 	"syscall"
 )
 
 // notExist reports whether `err` means the path does not exist, including
 // ENOTDIR (a non-directory component partway through the path).
 func notExist(err error) bool {
-	return errors.Is(err, stdos.ErrNotExist) || errors.Is(err, syscall.ENOTDIR)
+	return errors.Is(err, os.ErrNotExist) || errors.Is(err, syscall.ENOTDIR)
 }
 
 // stat returns the FileInfo for `path`, or (nil, nil) if it does not exist.
-func stat(path string) (stdos.FileInfo, error) {
-	info, err := stdos.Stat(path)
+func stat(path string) (os.FileInfo, error) {
+	info, err := os.Stat(path)
 	if notExist(err) {
 		return nil, nil //nolint:nilnil // fine for an internal helper
 	}
@@ -41,14 +41,14 @@ func IsDir(path string) (bool, error) {
 
 // IsSymlink reports whether `path` is a symbolic link.
 func IsSymlink(path string) (bool, error) {
-	info, err := stdos.Lstat(path)
+	info, err := os.Lstat(path)
 	switch {
 	case notExist(err):
 		return false, nil
 	case err != nil:
 		return false, err
 	default:
-		return info.Mode()&stdos.ModeSymlink != 0, nil
+		return info.Mode()&os.ModeSymlink != 0, nil
 	}
 }
 
@@ -60,12 +60,12 @@ func IsWritableDir(dir string) bool {
 	if err != nil || !ok {
 		return false
 	}
-	tmp, err := stdos.CreateTemp(dir, ".x-writable-check-*")
+	tmp, err := os.CreateTemp(dir, ".x-writable-check-*")
 	if err != nil {
 		return false
 	}
 	name := tmp.Name()
 	_ = tmp.Close()
-	_ = stdos.Remove(name)
+	_ = os.Remove(name)
 	return true
 }

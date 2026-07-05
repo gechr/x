@@ -114,13 +114,33 @@ func FormatDuration(d time.Duration) string
 
 **FormatDuration** formats `d` as up to two adjacent units with no separator (e.g. "2h15m", "1w2d", "1y5w"). Years are 365 days, weeks are 7 days. Durations >= 1s are rounded to the nearest second.
 
-```text
+```go
 FormatDuration(90 * time.Second)             // "1m30s"
 FormatDuration(2*time.Hour + 15*time.Minute) // "2h15m"
 FormatDuration(8 * 24 * time.Hour)           // "1w1d"
 FormatDuration(400 * 24 * time.Hour)         // "1y5w"
 FormatDuration(50 * time.Millisecond)        // "50ms"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.FormatDuration(90 * time.Second))
+fmt.Println(human.FormatDuration(2*time.Hour + 15*time.Minute))
+fmt.Println(human.FormatDuration(400 * 24 * time.Hour))
+fmt.Println(human.FormatDuration(50 * time.Millisecond))
+```
+
+Output:
+
+```text
+1m30s
+2h15m
+1y5w
+50ms
+```
+
+</details>
 
 <a name="FormatIECBytes"></a>
 
@@ -132,6 +152,24 @@ func FormatIECBytes(b float64) string
 
 **FormatIECBytes** formats a byte count using IEC binary units (KiB, MiB, GiB, TiB, PiB, EiB).
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.FormatIECBytes(512))
+fmt.Println(human.FormatIECBytes(1536))
+fmt.Println(human.FormatIECBytes(5 * human.GiB))
+```
+
+Output:
+
+```text
+512 B
+1.50 KiB
+5.00 GiB
+```
+
+</details>
+
 <a name="FormatNumber"></a>
 
 ## func [FormatNumber](<https://github.com/gechr/x/blob/main/human/count.go#L37>)
@@ -142,12 +180,32 @@ func FormatNumber(n int64, sep string) string
 
 **FormatNumber** groups `n`'s digits in threes from the right, joined with `sep`. Not locale-aware: pick a separator suited to your output.
 
-```text
+```go
 FormatNumber(1234567, ",") // "1,234,567"
 FormatNumber(1234567, ".") // "1.234.567"
 FormatNumber(1234567, " ") // "1 234 567"
 FormatNumber(-42, ",")     // "-42"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.FormatNumber(1234567, ","))
+fmt.Println(human.FormatNumber(1234567, "."))
+fmt.Println(human.FormatNumber(1234567, " "))
+fmt.Println(human.FormatNumber(-42, ","))
+```
+
+Output:
+
+```text
+1,234,567
+1.234.567
+1 234 567
+-42
+```
+
+</details>
 
 <a name="FormatNumberCompact"></a>
 
@@ -159,13 +217,33 @@ func FormatNumberCompact(n int64) string
 
 **FormatNumberCompact** renders `n` in a compact, abbreviated form using K, M, B, and T suffixes (powers of 1000), with up to one decimal place and a trailing ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim. Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and magnitudes beyond a trillion stay in "T".
 
-```text
+```go
 FormatNumberCompact(950)      // "950"
 FormatNumberCompact(1234)     // "1.2K"
 FormatNumberCompact(1000000)  // "1M"
 FormatNumberCompact(9999999)  // "10M"
 FormatNumberCompact(-1500000) // "-1.5M"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.FormatNumberCompact(950))
+fmt.Println(human.FormatNumberCompact(1500))
+fmt.Println(human.FormatNumberCompact(999999))
+fmt.Println(human.FormatNumberCompact(3400000000))
+```
+
+Output:
+
+```text
+950
+1.5K
+1M
+3.4B
+```
+
+</details>
 
 <a name="FormatOrdinal"></a>
 
@@ -177,11 +255,29 @@ func FormatOrdinal(n int) string
 
 **FormatOrdinal** returns `n` with its English ordinal suffix.
 
-```text
+```go
 FormatOrdinal(1)   // "1st"
 FormatOrdinal(22)  // "22nd"
 FormatOrdinal(113) // "113th"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.FormatOrdinal(1))
+fmt.Println(human.FormatOrdinal(22))
+fmt.Println(human.FormatOrdinal(113))
+```
+
+Output:
+
+```text
+1st
+22nd
+113th
+```
+
+</details>
 
 <a name="FormatSIBytes"></a>
 
@@ -192,6 +288,24 @@ func FormatSIBytes(b float64) string
 ```
 
 **FormatSIBytes** formats a byte count using SI decimal units (KB, MB, GB, TB, PB, EB).
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.FormatSIBytes(512))
+fmt.Println(human.FormatSIBytes(1500))
+fmt.Println(human.FormatSIBytes(5 * human.GB))
+```
+
+Output:
+
+```text
+512 B
+1.50 KB
+5.00 GB
+```
+
+</details>
 
 <a name="FormatTimeAgo"></a>
 
@@ -223,6 +337,27 @@ func FormatTimeAgoCompactFrom(t, now time.Time) string
 
 **FormatTimeAgoCompactFrom** formats a time as a compact relative string relative to `now`.
 
+<details><summary>Example</summary>
+
+```go
+now := time.Date(2024, time.June, 1, 12, 0, 0, 0, time.UTC)
+fmt.Println(human.FormatTimeAgoCompactFrom(now.Add(-30*time.Second), now))
+fmt.Println(human.FormatTimeAgoCompactFrom(now.Add(-90*time.Minute), now))
+fmt.Println(human.FormatTimeAgoCompactFrom(now.Add(-3*24*time.Hour), now))
+fmt.Println(human.FormatTimeAgoCompactFrom(now.Add(2*time.Hour), now))
+```
+
+Output:
+
+```text
+now
+1h ago
+3d ago
+in 2h
+```
+
+</details>
+
 <a name="FormatTimeAgoFrom"></a>
 
 ## func [FormatTimeAgoFrom](<https://github.com/gechr/x/blob/main/human/time.go#L32>)
@@ -232,6 +367,27 @@ func FormatTimeAgoFrom(t, now time.Time) string
 ```
 
 **FormatTimeAgoFrom** formats a time relative to the given reference time `now`.
+
+<details><summary>Example</summary>
+
+```go
+now := time.Date(2024, time.June, 1, 12, 0, 0, 0, time.UTC)
+fmt.Println(human.FormatTimeAgoFrom(now.Add(-30*time.Second), now))
+fmt.Println(human.FormatTimeAgoFrom(now.Add(-90*time.Minute), now))
+fmt.Println(human.FormatTimeAgoFrom(now.Add(-3*24*time.Hour), now))
+fmt.Println(human.FormatTimeAgoFrom(now.Add(2*time.Hour), now))
+```
+
+Output:
+
+```text
+now
+1 hour ago
+3 days ago
+in 2 hours
+```
+
+</details>
 
 <a name="ParseByteSize"></a>
 
@@ -243,6 +399,22 @@ func ParseByteSize(s string) float64
 
 **ParseByteSize** parses a human-readable byte size string like "27.61 MiB" or "1.5 GB" into a byte count. Supports both IEC (KiB, MiB, GiB, TiB, PiB, EiB) and SI (KB, MB, GB, TB, PB, EB) units. Returns 0 for empty or unparseable input.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%.0f\n", human.ParseByteSize("1.5 GB"))
+fmt.Printf("%.0f\n", human.ParseByteSize("27.61 MiB"))
+```
+
+Output:
+
+```text
+1500000000
+28951183
+```
+
+</details>
+
 <a name="ParseDuration"></a>
 
 ## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L106>)
@@ -253,11 +425,34 @@ func ParseDuration(s string) (time.Duration, error)
 
 **ParseDuration** parses a human duration string into a [time.Duration](<https://pkg.go.dev/time#Duration>). It is the inverse of [FormatDuration](<#FormatDuration>), accepting the units that function emits: y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size, so "1y2w", "2h15m", and "90s" are valid while a repeated ("5w5w") or out-of-order ("1w1y") unit is an error. An optional leading - negates the result, and "0" parses to zero.
 
-```text
+```go
 ParseDuration("2h15m")  // 2*time.Hour + 15*time.Minute
 ParseDuration("1w2d")   // 9 * 24 * time.Hour
 ParseDuration("-1m30s") // -90 * time.Second
 ```
+
+<details><summary>Example</summary>
+
+ParseDuration is the inverse of [human.FormatDuration](<#FormatDuration>), accepting the y, w, d, h, m, s, ms, µs, and ns units that function emits.
+
+```go
+d, _ := human.ParseDuration("2h15m")
+fmt.Println(d)
+d, _ = human.ParseDuration("1w2d")
+fmt.Println(d)
+d, _ = human.ParseDuration("-1m30s")
+fmt.Println(d)
+```
+
+Output:
+
+```text
+2h15m0s
+216h0m0s
+-1m30s
+```
+
+</details>
 
 <a name="Plural"></a>
 
@@ -269,10 +464,26 @@ func Plural(n int, singular, plural string) string
 
 **Plural** returns `singular` when `n` == 1, otherwise `plural`. Unlike [Pluralize](<#Pluralize>), it omits the count.
 
-```text
+```go
 Plural(1, "file", "files") // "file"
 Plural(3, "file", "files") // "files"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.Plural(1, "file", "files"))
+fmt.Println(human.Plural(3, "file", "files"))
+```
+
+Output:
+
+```text
+file
+files
+```
+
+</details>
 
 <a name="Pluralize"></a>
 
@@ -284,7 +495,23 @@ func Pluralize(n int, singular, plural string) string
 
 **Pluralize** returns "1 singular" or "n plural".
 
-```text
+```go
 Pluralize(1, "file", "files") // "1 file"
 Pluralize(3, "file", "files") // "3 files"
 ```
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(human.Pluralize(1, "file", "files"))
+fmt.Println(human.Pluralize(3, "file", "files"))
+```
+
+Output:
+
+```text
+1 file
+3 files
+```
+
+</details>

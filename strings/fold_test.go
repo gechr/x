@@ -1,7 +1,7 @@
 package strings_test
 
 import (
-	stdstrings "strings"
+	"strings"
 	"testing"
 
 	xstrings "github.com/gechr/x/strings"
@@ -31,7 +31,7 @@ func TestCompareFold(t *testing.T) {
 		{"", "a"},
 	} {
 		a, b := pair[0], pair[1]
-		require.Equal(t, stdstrings.EqualFold(a, b), xstrings.CompareFold(a, b) == 0,
+		require.Equal(t, strings.EqualFold(a, b), xstrings.CompareFold(a, b) == 0,
 			"EqualFold(%q, %q) mismatch", a, b)
 	}
 }

@@ -33,6 +33,33 @@ func Is(f *os.File) bool
 
 **Is** returns true if the given file is a terminal. Returns false for nil files.
 
+<details><summary>Example</summary>
+
+A pipe is not a terminal, and nil files are always reported as non-terminals.
+
+```go
+r, w, err := os.Pipe()
+if err != nil {
+    panic(err)
+}
+defer r.Close()
+defer w.Close()
+
+fmt.Println(terminal.Is(r))
+fmt.Println(terminal.Is(w))
+fmt.Println(terminal.Is(nil))
+```
+
+Output:
+
+```text
+false
+false
+false
+```
+
+</details>
+
 <a name="Size"></a>
 
 ## func [Size](<https://github.com/gechr/x/blob/main/terminal/terminal.go#L35>)
@@ -42,6 +69,23 @@ func Size(f *os.File) (int, int)
 ```
 
 **Size** returns the (width, height) of the terminal connected to `f` in cells, or (0, 0) if `f` is nil or not a terminal.
+
+<details><summary>Example</summary>
+
+Size returns (0, 0) when the file is nil or not connected to a terminal.
+
+```go
+w, h := terminal.Size(nil)
+fmt.Println(w, h)
+```
+
+Output:
+
+```text
+0 0
+```
+
+</details>
 
 <a name="Width"></a>
 

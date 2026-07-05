@@ -2,8 +2,8 @@ package filepath_test
 
 import (
 	ifs "io/fs"
-	stdos "os"
-	stdpath "path/filepath"
+	"os"
+	"path/filepath"
 	"testing"
 
 	xfilepath "github.com/gechr/x/filepath"
@@ -11,14 +11,14 @@ import (
 )
 
 func TestExpand_Tilde(t *testing.T) {
-	home, err := stdos.UserHomeDir()
+	home, err := os.UserHomeDir()
 	require.NoError(t, err)
 
-	require.Equal(t, stdpath.Join(home, "config.yaml"), xfilepath.Expand("~/config.yaml"))
+	require.Equal(t, filepath.Join(home, "config.yaml"), xfilepath.Expand("~/config.yaml"))
 }
 
 func TestExpand_BareTilde(t *testing.T) {
-	home, err := stdos.UserHomeDir()
+	home, err := os.UserHomeDir()
 	require.NoError(t, err)
 
 	require.Equal(t, home, xfilepath.Expand("~"))
@@ -40,14 +40,14 @@ func TestExpand_NoExpansion(t *testing.T) {
 func TestResolve(t *testing.T) {
 	t.Parallel()
 
-	dir, err := stdpath.EvalSymlinks(t.TempDir())
+	dir, err := filepath.EvalSymlinks(t.TempDir())
 	require.NoError(t, err)
-	file := stdpath.Join(dir, "f")
-	link1 := stdpath.Join(dir, "l1")
-	link2 := stdpath.Join(dir, "l2")
-	require.NoError(t, stdos.WriteFile(file, []byte("x"), 0o600))
-	require.NoError(t, stdos.Symlink(file, link1))
-	require.NoError(t, stdos.Symlink(link1, link2))
+	file := filepath.Join(dir, "f")
+	link1 := filepath.Join(dir, "l1")
+	link2 := filepath.Join(dir, "l2")
+	require.NoError(t, os.WriteFile(file, []byte("x"), 0o600))
+	require.NoError(t, os.Symlink(file, link1))
+	require.NoError(t, os.Symlink(link1, link2))
 
 	got, err := xfilepath.Resolve(link2)
 	require.NoError(t, err)
@@ -61,7 +61,7 @@ func TestResolve(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, file, got)
 
-	missing := stdpath.Join(dir, "missing")
+	missing := filepath.Join(dir, "missing")
 	got, err = xfilepath.Resolve(missing)
 	require.ErrorIs(t, err, ifs.ErrNotExist)
 	require.Equal(t, missing, got)
@@ -70,16 +70,16 @@ func TestResolve(t *testing.T) {
 func TestResolveLenient(t *testing.T) {
 	t.Parallel()
 
-	dir, err := stdpath.EvalSymlinks(t.TempDir())
+	dir, err := filepath.EvalSymlinks(t.TempDir())
 	require.NoError(t, err)
-	realDir := stdpath.Join(dir, "real")
-	linkDir := stdpath.Join(dir, "link")
-	require.NoError(t, stdos.Mkdir(realDir, 0o755))
-	require.NoError(t, stdos.Symlink(realDir, linkDir))
+	realDir := filepath.Join(dir, "real")
+	linkDir := filepath.Join(dir, "link")
+	require.NoError(t, os.Mkdir(realDir, 0o755))
+	require.NoError(t, os.Symlink(realDir, linkDir))
 
-	got, err := xfilepath.ResolveLenient(stdpath.Join(linkDir, "missing"))
+	got, err := xfilepath.ResolveLenient(filepath.Join(linkDir, "missing"))
 	require.NoError(t, err)
-	require.Equal(t, stdpath.Join(realDir, "missing"), got)
+	require.Equal(t, filepath.Join(realDir, "missing"), got)
 }
 
 func TestIsWithin(t *testing.T) {
@@ -91,8 +91,8 @@ func TestIsWithin(t *testing.T) {
 	require.False(t, xfilepath.IsWithin("src"))
 
 	dir := t.TempDir()
-	sub := stdpath.Join(dir, "sub")
-	require.NoError(t, stdos.Mkdir(sub, 0o755))
+	sub := filepath.Join(dir, "sub")
+	require.NoError(t, os.Mkdir(sub, 0o755))
 
 	require.True(t, xfilepath.IsWithin(dir, sub))
 	require.True(t, xfilepath.IsWithin(dir, dir))
@@ -132,12 +132,12 @@ func TestMerge(t *testing.T) {
 func TestMergeResolveSymlinks(t *testing.T) {
 	t.Parallel()
 
-	dir, err := stdpath.EvalSymlinks(t.TempDir())
+	dir, err := filepath.EvalSymlinks(t.TempDir())
 	require.NoError(t, err)
-	target := stdpath.Join(dir, "target")
-	link := stdpath.Join(dir, "link")
-	require.NoError(t, stdos.Mkdir(target, 0o755))
-	require.NoError(t, stdos.Symlink(target, link))
+	target := filepath.Join(dir, "target")
+	link := filepath.Join(dir, "link")
+	require.NoError(t, os.Mkdir(target, 0o755))
+	require.NoError(t, os.Symlink(target, link))
 
 	// Lexically the symlink and its target are distinct, so the default keeps both.
 	require.Equal(t, []string{target, link}, xfilepath.Merge([]string{target, link}))

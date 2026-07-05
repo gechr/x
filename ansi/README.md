@@ -319,6 +319,20 @@ func CursorUp(n int) string
 
 **CursorUp** returns the CUU sequence: move cursor up `n` lines.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Printf("%q\n", ansi.CursorUp(3))
+```
+
+Output:
+
+```text
+"\x1b[3A"
+```
+
+</details>
+
 <a name="DeleteCharacter"></a>
 
 ## func [DeleteCharacter](<https://github.com/gechr/x/blob/main/ansi/escape.go#L161>)
@@ -464,6 +478,22 @@ func StringWidth(s string) int
 
 **StringWidth** returns the display width of a string in cells, ignoring ANSI escape codes and accounting for wide characters. Uses grapheme clustering.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(ansi.StringWidth("\x1b[31mred\x1b[m"))
+fmt.Println(ansi.StringWidth("こんにちは"))
+```
+
+Output:
+
+```text
+3
+10
+```
+
+</details>
+
 <a name="Strip"></a>
 
 ## func [Strip](<https://github.com/gechr/x/blob/main/ansi/text.go#L15>)
@@ -473,6 +503,20 @@ func Strip(s string) string
 ```
 
 **Strip** removes ANSI escape codes from a string.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(ansi.Strip("\x1b[1mbold\x1b[m and plain"))
+```
+
+Output:
+
+```text
+bold and plain
+```
+
+</details>
 
 <a name="Truncate"></a>
 
@@ -484,6 +528,20 @@ func Truncate(s string, length int, tail string) string
 
 **Truncate** truncates a string to a given cell width, appending `tail` if the string was truncated. ANSI escape codes are preserved.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(ansi.Truncate("Hello, World!", 8, "…"))
+```
+
+Output:
+
+```text
+Hello, …
+```
+
+</details>
+
 <a name="WrapHard"></a>
 
 ## func [WrapHard](<https://github.com/gechr/x/blob/main/ansi/wrap.go#L133>)
@@ -494,6 +552,23 @@ func WrapHard(s string, width int) string
 
 **WrapHard** wraps `s` at exactly `width` columns, breaking mid-word if needed. ANSI styles are preserved.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(ansi.WrapHard("the quick brown fox", 6))
+```
+
+Output:
+
+```text
+the qu
+ick br
+own fo
+x
+```
+
+</details>
+
 <a name="WrapSoft"></a>
 
 ## func [WrapSoft](<https://github.com/gechr/x/blob/main/ansi/wrap.go#L127>)
@@ -503,6 +578,23 @@ func WrapSoft(s string, width int) string
 ```
 
 **WrapSoft** wraps `s` to fit within `width` columns, breaking at space boundaries. Words longer than `width` are hard-wrapped. ANSI styles are preserved.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(ansi.WrapSoft("the quick brown fox jumps over the lazy dog", 12))
+```
+
+Output:
+
+```text
+the quick
+brown fox
+jumps over
+the lazy dog
+```
+
+</details>
 
 <a name="ANSI"></a>
 
@@ -565,6 +657,27 @@ func (w *ANSI) Hyperlink(url, text string) string
 ```
 
 **Hyperlink** creates an OSC 8 terminal hyperlink. When the output is not a terminal, the [HyperlinkFallback](<#HyperlinkFallback>) mode controls how the link is rendered in plain text.
+
+<details><summary>Example</summary>
+
+When output is not a terminal, hyperlinks render as plain text using the configured fallback mode.
+
+```go
+w := ansi.Never()
+fmt.Println(w.Hyperlink("https://example.com", "example"))
+
+w = ansi.New(ansi.WithHyperlinkFallback(ansi.HyperlinkFallbackMarkdown))
+fmt.Println(w.Hyperlink("https://example.com", "example"))
+```
+
+Output:
+
+```text
+example (https://example.com)
+[example](https://example.com)
+```
+
+</details>
 
 <a name="ANSI.Terminal"></a>
 
@@ -732,6 +845,25 @@ func NewWrapper(opts ...WrapOption) *Wrapper
 ```
 
 **NewWrapper** creates a [Wrapper](<#Wrapper>) with the given options. Defaults: soft wrap, no additional breakpoints, ANSI style preservation enabled.
+
+<details><summary>Example</summary>
+
+Breakpoints add word-break opportunities beyond spaces, which is useful for wrapping paths or flags.
+
+```go
+w := ansi.NewWrapper(ansi.WithWidth(10), ansi.WithBreakpoints("-"))
+fmt.Println(w.Wrap("a-very-long-flag-name"))
+```
+
+Output:
+
+```text
+a-very-
+long-flag-
+name
+```
+
+</details>
 
 <a name="Wrapper.Wrap"></a>
 

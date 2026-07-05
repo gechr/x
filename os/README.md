@@ -8,9 +8,9 @@ Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
 
 ## Index
 
-- [func AtomicWrite(path string, data \[\]byte, perm stdos.FileMode) error](<#AtomicWrite>)
+- [func AtomicWrite(path string, data \[\]byte, perm os.FileMode) error](<#AtomicWrite>)
 - [func CopyFile(src, dst string) error](<#CopyFile>)
-- [func EnsureDir(dir string, perm stdos.FileMode) error](<#EnsureDir>)
+- [func EnsureDir(dir string, perm os.FileMode) error](<#EnsureDir>)
 - [func Exists(path string) (bool, error)](<#Exists>)
 - [func IsDir(path string) (bool, error)](<#IsDir>)
 - [func IsFile(path string) (bool, error)](<#IsFile>)
@@ -19,17 +19,41 @@ Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
 - [func ReadLines(path string) (\[\]string, error)](<#ReadLines>)
 - [func SameFile(a, b string) (bool, error)](<#SameFile>)
 - [func Trash(path string) error](<#Trash>)
-- [func WriteLines(path string, lines \[\]string, perm stdos.FileMode) error](<#WriteLines>)
+- [func WriteLines(path string, lines \[\]string, perm os.FileMode) error](<#WriteLines>)
 
 <a name="AtomicWrite"></a>
 
 ## func [AtomicWrite](<https://github.com/gechr/x/blob/main/os/write.go#L12>)
 
 ```go
-func AtomicWrite(path string, data []byte, perm stdos.FileMode) error
+func AtomicWrite(path string, data []byte, perm os.FileMode) error
 ```
 
 **AtomicWrite** writes `data` to `path` via a temp-file-and-rename in the same directory. The temp file is removed on any failure.
+
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "config.txt")
+if err := xos.AtomicWrite(path, []byte("hello\n"), 0o600); err != nil {
+    fmt.Println(err)
+    return
+}
+
+data, _ := os.ReadFile(path)
+fmt.Printf("%s", data)
+```
+
+Output:
+
+```text
+hello
+```
+
+</details>
 
 <a name="CopyFile"></a>
 
@@ -41,12 +65,39 @@ func CopyFile(src, dst string) error
 
 **CopyFile** copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced before close. When `src` and `dst` are the same file (including via hard link) [CopyFile](<#CopyFile>) is a no-op.
 
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+src := filepath.Join(dir, "src.txt")
+dst := filepath.Join(dir, "dst.txt")
+_ = os.WriteFile(src, []byte("hello\n"), 0o600)
+
+if err := xos.CopyFile(src, dst); err != nil {
+    fmt.Println(err)
+    return
+}
+
+data, _ := os.ReadFile(dst)
+fmt.Printf("%s", data)
+```
+
+Output:
+
+```text
+hello
+```
+
+</details>
+
 <a name="EnsureDir"></a>
 
 ## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L48>)
 
 ```go
-func EnsureDir(dir string, perm stdos.FileMode) error
+func EnsureDir(dir string, perm os.FileMode) error
 ```
 
 **EnsureDir** creates `dir` and any parents with the given permissions.
@@ -61,6 +112,30 @@ func Exists(path string) (bool, error)
 
 **Exists** reports whether `path` exists.
 
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "file.txt")
+_ = os.WriteFile(path, []byte("hello"), 0o600)
+
+exists, _ := xos.Exists(path)
+missing, _ := xos.Exists(filepath.Join(dir, "missing.txt"))
+fmt.Println(exists)
+fmt.Println(missing)
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="IsDir"></a>
 
 ## func [IsDir](<https://github.com/gechr/x/blob/main/os/stat.go#L37>)
@@ -71,6 +146,30 @@ func IsDir(path string) (bool, error)
 
 **IsDir** reports whether `path` is a directory.
 
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "file.txt")
+_ = os.WriteFile(path, []byte("hello"), 0o600)
+
+isDir, _ := xos.IsDir(dir)
+notDir, _ := xos.IsDir(path)
+fmt.Println(isDir)
+fmt.Println(notDir)
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="IsFile"></a>
 
 ## func [IsFile](<https://github.com/gechr/x/blob/main/os/stat.go#L31>)
@@ -80,6 +179,30 @@ func IsFile(path string) (bool, error)
 ```
 
 **IsFile** reports whether `path` is a regular file.
+
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "file.txt")
+_ = os.WriteFile(path, []byte("hello"), 0o600)
+
+file, _ := xos.IsFile(path)
+notFile, _ := xos.IsFile(dir)
+fmt.Println(file)
+fmt.Println(notFile)
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="IsSymlink"></a>
 
@@ -111,6 +234,33 @@ func ReadLines(path string) ([]string, error)
 
 **ReadLines** reads `path` and returns its non-empty, trimmed lines.
 
+<details><summary>Example</summary>
+
+ReadLines drops blank lines and trims surrounding whitespace.
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "lines.txt")
+_ = os.WriteFile(path, []byte("  alpha  \n\n\tbeta\n\ngamma\n"), 0o600)
+
+lines, _ := xos.ReadLines(path)
+for _, line := range lines {
+    fmt.Println(line)
+}
+```
+
+Output:
+
+```text
+alpha
+beta
+gamma
+```
+
+</details>
+
 <a name="SameFile"></a>
 
 ## func [SameFile](<https://github.com/gechr/x/blob/main/os/file.go#L13>)
@@ -120,6 +270,34 @@ func SameFile(a, b string) (bool, error)
 ```
 
 **SameFile** reports whether `a` and `b` identify the same file. Missing leaf paths are compared after resolving their parent directories, and existing files are compared with [os.SameFile](<#SameFile>) to detect hard links.
+
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "file.txt")
+_ = os.WriteFile(path, []byte("hello"), 0o600)
+link := filepath.Join(dir, "link.txt")
+_ = os.Link(path, link)
+other := filepath.Join(dir, "other.txt")
+_ = os.WriteFile(other, []byte("hello"), 0o600)
+
+same, _ := xos.SameFile(path, link)
+different, _ := xos.SameFile(path, other)
+fmt.Println(same)
+fmt.Println(different)
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="Trash"></a>
 
@@ -140,7 +318,31 @@ Where the platform cannot trash, it returns an error wrapping [errors.ErrUnsuppo
 ## func [WriteLines](<https://github.com/gechr/x/blob/main/os/lines.go#L27>)
 
 ```go
-func WriteLines(path string, lines []string, perm stdos.FileMode) error
+func WriteLines(path string, lines []string, perm os.FileMode) error
 ```
 
 **WriteLines** atomically writes `lines` to `path`, one per line, with a trailing newline.
+
+<details><summary>Example</summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "lines.txt")
+if err := xos.WriteLines(path, []string{"alpha", "beta"}, 0o600); err != nil {
+    fmt.Println(err)
+    return
+}
+
+data, _ := os.ReadFile(path)
+fmt.Printf("%q\n", data)
+```
+
+Output:
+
+```text
+"alpha\nbeta\n"
+```
+
+</details>

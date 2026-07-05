@@ -150,6 +150,22 @@ func IsKnown(name string) bool
 
 **IsKnown** reports whether `name` matches a known shell.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(shell.IsKnown("zsh"))
+fmt.Println(shell.IsKnown("cmd.exe"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="Known"></a>
 
 ## func [Known](<https://github.com/gechr/x/blob/main/shell/known.go#L49>)
@@ -159,6 +175,20 @@ func Known() []string
 ```
 
 **Known** returns the set of recognized shell names.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(shell.Known())
+```
+
+Output:
+
+```text
+[ash bash dash elvish fish ksh nu pwsh sh tcsh zsh]
+```
+
+</details>
 
 <a name="Quote"></a>
 
@@ -170,6 +200,42 @@ func Quote(s string) string
 
 **Quote** returns a shell-escaped version of `s`. The returned value can safely be used as one token in a POSIX shell command line.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(shell.Quote("safe-token_1.txt"))
+fmt.Println(shell.Quote("has spaces"))
+fmt.Println(shell.Quote("$HOME"))
+fmt.Println(shell.Quote(""))
+```
+
+Output:
+
+```text
+safe-token_1.txt
+'has spaces'
+'$HOME'
+''
+```
+
+</details>
+
+<details><summary>Example (SingleQuotes)</summary>
+
+Single quotes inside the input are escaped so the result stays one token.
+
+```go
+fmt.Println(shell.Quote("it's fine"))
+```
+
+Output:
+
+```text
+'it'"'"'s fine'
+```
+
+</details>
+
 <a name="Split"></a>
 
 ## func [Split](<https://github.com/gechr/x/blob/main/shell/split.go#L27>)
@@ -179,6 +245,59 @@ func Split(s string) ([]string, error)
 ```
 
 **Split** partitions `s` into shell-style words. Whitespace separates words, quotes preserve whitespace, backslashes escape the following rune, a backslash-newline pair is removed as a line continuation, and a "#" starts a comment when it appears where a new word could start. Inside double quotes, a backslash is special only before '$', '\`', '"', '\\', or a newline; before any other rune it is kept literally, following POSIX.
+
+<details><summary>Example</summary>
+
+```go
+words, err := shell.Split(`cp "my file.txt" backup/ # keep a copy`)
+if err != nil {
+    panic(err)
+}
+fmt.Printf("%q\n", words)
+```
+
+Output:
+
+```text
+["cp" "my file.txt" "backup/"]
+```
+
+</details>
+
+<details><summary>Example (LineContinuation)</summary>
+
+A backslash-newline pair is removed as a line continuation.
+
+```go
+words, err := shell.Split("echo one \\\ntwo")
+if err != nil {
+    panic(err)
+}
+fmt.Printf("%q\n", words)
+```
+
+Output:
+
+```text
+["echo" "one" "two"]
+```
+
+</details>
+
+<details><summary>Example (UnclosedQuote)</summary>
+
+```go
+_, err := shell.Split(`echo "unterminated`)
+fmt.Println(err)
+```
+
+Output:
+
+```text
+EOF found when expecting closing quote
+```
+
+</details>
 
 <a name="StateDir"></a>
 

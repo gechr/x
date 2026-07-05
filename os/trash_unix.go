@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	stdos "os"
-	stdpath "path/filepath"
+	"os"
+	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
@@ -58,14 +58,14 @@ func trashDir(path string, dev uint64) (string, string, error) {
 // homeTrash returns $XDG_DATA_HOME/Trash, defaulting to ~/.local/share/Trash. A
 // relative XDG_DATA_HOME is ignored, per the XDG base-directory specification.
 func homeTrash() (string, error) {
-	if dataHome := stdos.Getenv("XDG_DATA_HOME"); stdpath.IsAbs(dataHome) {
-		return stdpath.Join(dataHome, "Trash"), nil
+	if dataHome := os.Getenv("XDG_DATA_HOME"); filepath.IsAbs(dataHome) {
+		return filepath.Join(dataHome, "Trash"), nil
 	}
-	home, err := stdos.UserHomeDir()
+	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("failed to locate home directory: %w", err)
 	}
-	return stdpath.Join(home, ".local", "share", "Trash"), nil
+	return filepath.Join(home, ".local", "share", "Trash"), nil
 }
 
 // homeTrashDevice returns the device the home trash lives on, taken from the
@@ -76,7 +76,7 @@ func homeTrashDevice(root string) (uint64, error) {
 		if dev, err := device(dir); err == nil {
 			return dev, nil
 		}
-		parent := stdpath.Dir(dir)
+		parent := filepath.Dir(dir)
 		if parent == dir {
 			return 0, fmt.Errorf("cannot determine device for %q", root)
 		}
@@ -86,7 +86,7 @@ func homeTrashDevice(root string) (uint64, error) {
 
 // device returns the ID of the device `path` resides on.
 func device(path string) (uint64, error) {
-	info, err := stdos.Lstat(path)
+	info, err := os.Lstat(path)
 	if err != nil {
 		return 0, err
 	}
@@ -104,9 +104,9 @@ func device(path string) (uint64, error) {
 // a device ID with their parent (bind mounts, btrfs subvolumes); such a file is
 // trashed to a higher directory's trash on the same device, still recoverable.
 func topDirOf(path string, dev uint64) string {
-	dir := stdpath.Dir(path)
+	dir := filepath.Dir(path)
 	for {
-		parent := stdpath.Dir(dir)
+		parent := filepath.Dir(dir)
 		if parent == dir {
 			return dir
 		}
@@ -121,22 +121,22 @@ func topDirOf(path string, dev uint64) string {
 // an admin-created $top/.Trash/$uid (under a sticky, non-symlink .Trash, per the
 // spec) and otherwise creating $top/.Trash-$uid.
 func topDirTrash(top string) (string, error) {
-	uid := stdos.Getuid()
+	uid := os.Getuid()
 	name := strconv.Itoa(uid)
 
-	shared := stdpath.Join(top, ".Trash")
-	if info, err := stdos.Lstat(shared); err == nil &&
-		info.IsDir() && info.Mode()&stdos.ModeSticky != 0 {
-		root := stdpath.Join(shared, name)
-		if err := stdos.MkdirAll(root, 0o700); err == nil {
+	shared := filepath.Join(top, ".Trash")
+	if info, err := os.Lstat(shared); err == nil &&
+		info.IsDir() && info.Mode()&os.ModeSticky != 0 {
+		root := filepath.Join(shared, name)
+		if err := os.MkdirAll(root, 0o700); err == nil {
 			if err := validateTrashRoot(root, uid); err == nil {
 				return root, nil
 			}
 		}
 	}
 
-	root := stdpath.Join(top, ".Trash-"+name)
-	if err := stdos.MkdirAll(root, 0o700); err != nil {
+	root := filepath.Join(top, ".Trash-"+name)
+	if err := os.MkdirAll(root, 0o700); err != nil {
 		return "", fmt.Errorf(
 			"failed to create trash directory: %w: %w",
 			err,
@@ -154,12 +154,12 @@ func topDirTrash(top string) (string, error) {
 // be a real directory (not a planted symlink), owned by the current user, and not
 // accessible to others. A rejection wraps [errors.ErrUnsupported].
 func validateTrashRoot(root string, uid int) error {
-	info, err := stdos.Lstat(root)
+	info, err := os.Lstat(root)
 	if err != nil {
 		return fmt.Errorf("failed to stat trash directory: %w", err)
 	}
 	switch {
-	case info.Mode()&stdos.ModeSymlink != 0 || !info.IsDir():
+	case info.Mode()&os.ModeSymlink != 0 || !info.IsDir():
 		return fmt.Errorf(
 			"trash directory %q is not a real directory: %w",
 			root,
@@ -186,24 +186,24 @@ func validateTrashRoot(root string, uid int) error {
 // directory under a name unique within that trash. `topDir`, when set, is the
 // mount point the recorded path is made relative to.
 func trashInto(path, root, topDir string) error {
-	filesDir := stdpath.Join(root, "files")
-	infoDir := stdpath.Join(root, "info")
+	filesDir := filepath.Join(root, "files")
+	infoDir := filepath.Join(root, "info")
 	for _, dir := range []string{filesDir, infoDir} {
-		if err := stdos.MkdirAll(dir, 0o700); err != nil {
+		if err := os.MkdirAll(dir, 0o700); err != nil {
 			return fmt.Errorf("failed to create trash directory: %w", err)
 		}
 	}
 
-	name, infoFile, err := claimName(infoDir, filesDir, stdpath.Base(path))
+	name, infoFile, err := claimName(infoDir, filesDir, filepath.Base(path))
 	if err != nil {
 		return err
 	}
 
-	if err := stdos.WriteFile(infoFile, []byte(trashInfo(path, topDir)), 0o600); err != nil {
+	if err := os.WriteFile(infoFile, []byte(trashInfo(path, topDir)), 0o600); err != nil {
 		return fmt.Errorf("failed to write trash info: %w", err)
 	}
-	if err := move(path, stdpath.Join(filesDir, name)); err != nil {
-		_ = stdos.Remove(infoFile) // release the reserved name on failure
+	if err := move(path, filepath.Join(filesDir, name)); err != nil {
+		_ = os.Remove(infoFile) // release the reserved name on failure
 		return err
 	}
 	return nil
@@ -215,7 +215,7 @@ func trashInto(path, root, topDir string) error {
 func trashInfo(path, topDir string) string {
 	stored := path
 	if topDir != "" {
-		if rel, err := stdpath.Rel(topDir, path); err == nil {
+		if rel, err := filepath.Rel(topDir, path); err == nil {
 			stored = rel
 		}
 	}
@@ -239,16 +239,16 @@ func claimName(infoDir, filesDir, base string) (string, string, error) {
 		if i > 0 {
 			name = fmt.Sprintf("%s_%d", base, i)
 		}
-		if _, err := stdos.Lstat(stdpath.Join(filesDir, name)); err == nil {
+		if _, err := os.Lstat(filepath.Join(filesDir, name)); err == nil {
 			continue // files/<name> already occupied; try the next candidate
 		}
-		infoFile := stdpath.Join(infoDir, name+".trashinfo")
-		f, err := stdos.OpenFile(infoFile, stdos.O_CREATE|stdos.O_WRONLY|stdos.O_EXCL, 0o600)
+		infoFile := filepath.Join(infoDir, name+".trashinfo")
+		f, err := os.OpenFile(infoFile, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0o600)
 		if err == nil {
 			_ = f.Close()
 			return name, infoFile, nil
 		}
-		if !errors.Is(err, stdos.ErrExist) {
+		if !errors.Is(err, os.ErrExist) {
 			return "", "", fmt.Errorf("failed to reserve trash info: %w", err)
 		}
 	}
@@ -260,7 +260,7 @@ func claimName(infoDir, filesDir, base string) (string, string, error) {
 // rather than silently copying across the boundary (which a caller may prefer to
 // handle, e.g. by deleting instead).
 func move(src, dst string) error {
-	switch err := stdos.Rename(src, dst); {
+	switch err := os.Rename(src, dst); {
 	case err == nil:
 		return nil
 	case errors.Is(err, syscall.EXDEV):

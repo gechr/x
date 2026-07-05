@@ -65,6 +65,25 @@ func SortedNatural[T ~string](s Set[T]) []T
 
 SortedNatural is a function rather than a [Set](<#Set>) method because it requires T to be string-like, not just comparable.
 
+<details><summary>Example</summary>
+
+SortedNatural orders embedded numbers by value, so "item2" sorts before "item10".
+
+```go
+s := set.New("item10", "item2", "item1")
+fmt.Println(set.Sorted(s))
+fmt.Println(set.SortedNatural(s))
+```
+
+Output:
+
+```text
+[item1 item10 item2]
+[item1 item2 item10]
+```
+
+</details>
+
 <a name="Set"></a>
 
 ## type [Set](<https://github.com/gechr/x/blob/main/set/set.go#L13>)
@@ -85,6 +104,23 @@ func Collect[T comparable](seq iter.Seq[T]) Set[T]
 
 **Collect** returns a Set containing the values of `seq`.
 
+<details><summary>Example</summary>
+
+Collect builds a Set from any iter.Seq, such as slices.Values.
+
+```go
+s := set.Collect(slices.Values([]int{3, 1, 3, 2}))
+fmt.Println(set.Sorted(s))
+```
+
+Output:
+
+```text
+[1 2 3]
+```
+
+</details>
+
 <a name="New"></a>
 
 ### func [New](<https://github.com/gechr/x/blob/main/set/set.go#L16>)
@@ -94,6 +130,25 @@ func New[T comparable](items ...T) Set[T]
 ```
 
 **New** returns a Set containing `items`.
+
+<details><summary>Example</summary>
+
+```go
+s := set.New("a", "b", "a")
+fmt.Println(s.Len())
+fmt.Println(s.Contains("b"))
+fmt.Println(s.Contains("c"))
+```
+
+Output:
+
+```text
+2
+true
+false
+```
+
+</details>
 
 <a name="Set.Add"></a>
 
@@ -155,6 +210,22 @@ func (s Set[T]) Difference(others ...Set[T]) Set[T]
 
 **Difference** returns a new Set containing the items of `s` not present in any of `others`.
 
+<details><summary>Example</summary>
+
+```go
+a := set.New(1, 2, 3)
+b := set.New(2, 4)
+fmt.Println(set.Sorted(a.Difference(b)))
+```
+
+Output:
+
+```text
+[1 3]
+```
+
+</details>
+
 <a name="Set.Equal"></a>
 
 ### func (Set\[T\]) [Equal](<https://github.com/gechr/x/blob/main/set/set.go#L57>)
@@ -174,6 +245,22 @@ func (s Set[T]) Intersect(others ...Set[T]) Set[T]
 ```
 
 **Intersect** returns a new Set containing the items of `s` present in every one of `others`.
+
+<details><summary>Example</summary>
+
+```go
+a := set.New(1, 2, 3)
+b := set.New(2, 3, 4)
+fmt.Println(set.Sorted(a.Intersect(b)))
+```
+
+Output:
+
+```text
+[2 3]
+```
+
+</details>
 
 <a name="Set.Len"></a>
 
@@ -205,6 +292,24 @@ func (s Set[T]) SubsetOf(other Set[T]) bool
 
 **SubsetOf** returns whether every item in `s` is present in `other`.
 
+<details><summary>Example</summary>
+
+```go
+a := set.New("x", "y")
+b := set.New("x", "y", "z")
+fmt.Println(a.SubsetOf(b))
+fmt.Println(b.SubsetOf(a))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="Set.Union"></a>
 
 ### func (Set\[T\]) [Union](<https://github.com/gechr/x/blob/main/set/set.go#L83>)
@@ -214,6 +319,22 @@ func (s Set[T]) Union(others ...Set[T]) Set[T]
 ```
 
 **Union** returns a new Set containing the items of `s` and all `others`.
+
+<details><summary>Example</summary>
+
+```go
+a := set.New(1, 2)
+b := set.New(2, 3)
+fmt.Println(set.Sorted(a.Union(b)))
+```
+
+Output:
+
+```text
+[1 2 3]
+```
+
+</details>
 
 <a name="SortedSet"></a>
 
@@ -249,6 +370,25 @@ func NewSorted[T cmp.Ordered](items ...T) SortedSet[T]
 
 **NewSorted** returns a SortedSet containing `items`, sorted ascending with duplicates removed.
 
+<details><summary>Example</summary>
+
+SortedSet keeps its items in ascending order at all times, so iteration is deterministic.
+
+```go
+s := set.NewSorted(3, 1, 2, 1)
+s.Add(0)
+s.Delete(2)
+fmt.Println(s.Slice())
+```
+
+Output:
+
+```text
+[0 1 3]
+```
+
+</details>
+
 <a name="SortedSet.Add"></a>
 
 ### func (\*SortedSet\[T\]) [Add](<https://github.com/gechr/x/blob/main/set/sortedset.go#L40>)
@@ -268,6 +408,25 @@ func (s SortedSet[T]) All() iter.Seq[T]
 ```
 
 **All** returns an iterator over the items of `s`, in ascending order.
+
+<details><summary>Example</summary>
+
+```go
+s := set.NewSorted("banana", "apple", "cherry")
+for item := range s.All() {
+    fmt.Println(item)
+}
+```
+
+Output:
+
+```text
+apple
+banana
+cherry
+```
+
+</details>
 
 <a name="SortedSet.Clone"></a>
 

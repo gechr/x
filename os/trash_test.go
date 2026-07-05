@@ -1,8 +1,8 @@
 package os_test
 
 import (
-	stdos "os"
-	stdpath "path/filepath"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -15,11 +15,11 @@ func TestTrash(t *testing.T) {
 	dataHome := t.TempDir()
 	t.Setenv("XDG_DATA_HOME", dataHome)
 
-	file, err := stdos.CreateTemp(t.TempDir(), "xos-trash-*")
+	file, err := os.CreateTemp(t.TempDir(), "xos-trash-*")
 	require.NoError(t, err)
 	require.NoError(t, file.Close())
 	path := file.Name()
-	t.Cleanup(func() { cleanupTrash(dataHome, stdpath.Base(path)) })
+	t.Cleanup(func() { cleanupTrash(dataHome, filepath.Base(path)) })
 
 	require.NoError(t, xos.Trash(path))
 
@@ -37,8 +37,8 @@ func TestTrashSpacesAndSpecialChars(t *testing.T) {
 	// No shell is involved (exec passes argv directly; the other platforms move
 	// the file via syscalls), so spaces and shell metacharacters must survive.
 	base := "a file with spaces & 'quotes'.txt"
-	path := stdpath.Join(t.TempDir(), base)
-	require.NoError(t, stdos.WriteFile(path, []byte("x"), 0o600))
+	path := filepath.Join(t.TempDir(), base)
+	require.NoError(t, os.WriteFile(path, []byte("x"), 0o600))
 	t.Cleanup(func() { cleanupTrash(dataHome, base) })
 
 	require.NoError(t, xos.Trash(path))
@@ -51,7 +51,7 @@ func TestTrashSpacesAndSpecialChars(t *testing.T) {
 func TestTrashMissing(t *testing.T) {
 	t.Parallel()
 
-	err := xos.Trash(stdpath.Join(t.TempDir(), "does-not-exist"))
+	err := xos.Trash(filepath.Join(t.TempDir(), "does-not-exist"))
 	require.Error(t, err)
 }
 
@@ -59,12 +59,12 @@ func TestTrashMissing(t *testing.T) {
 // Trash. It covers the Unix home trash (under the redirected XDG_DATA_HOME) and
 // the macOS ~/.Trash, which NSFileManager uses regardless of XDG.
 func cleanupTrash(dataHome, base string) {
-	dirs := []string{stdpath.Join(dataHome, "Trash", "files")}
-	if home, err := stdos.UserHomeDir(); err == nil {
-		dirs = append(dirs, stdpath.Join(home, ".Trash"))
+	dirs := []string{filepath.Join(dataHome, "Trash", "files")}
+	if home, err := os.UserHomeDir(); err == nil {
+		dirs = append(dirs, filepath.Join(home, ".Trash"))
 	}
 	for _, dir := range dirs {
-		entries, err := stdos.ReadDir(dir)
+		entries, err := os.ReadDir(dir)
 		if err != nil {
 			continue
 		}
@@ -72,7 +72,7 @@ func cleanupTrash(dataHome, base string) {
 			// The trash may disambiguate a collision (e.g. "name 2"), so match on
 			// prefix, not just the exact base name.
 			if strings.HasPrefix(entry.Name(), base) {
-				_ = stdos.RemoveAll(stdpath.Join(dir, entry.Name()))
+				_ = os.RemoveAll(filepath.Join(dir, entry.Name()))
 			}
 		}
 	}

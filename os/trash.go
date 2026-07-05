@@ -2,8 +2,8 @@ package os
 
 import (
 	"fmt"
-	stdos "os"
-	stdpath "path/filepath"
+	"os"
+	"path/filepath"
 )
 
 // Trash asks the operating system to move `path` to its trash (or recycle bin)
@@ -22,12 +22,12 @@ import (
 // (e.g. fall back to [os.Remove]). This covers a macOS older than 15 (which lacks
 // the system trash tool) and a Unix file with no usable same-device trash.
 func Trash(path string) error {
-	abs, err := stdpath.Abs(path)
+	abs, err := filepath.Abs(path)
 	if err != nil {
 		return fmt.Errorf("failed to resolve path: %w", err)
 	}
 	// Lstat, not Stat: a symlink is trashed as itself, never followed.
-	if _, err := stdos.Lstat(abs); err != nil {
+	if _, err := os.Lstat(abs); err != nil {
 		return err
 	}
 	return trash(abs)

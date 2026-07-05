@@ -1,7 +1,7 @@
 package sync_test
 
 import (
-	stdsync "sync"
+	"sync"
 	"sync/atomic"
 	"testing"
 
@@ -27,7 +27,7 @@ func TestParallelBoundsWorkers(t *testing.T) {
 
 	const workers = 4
 	var inFlight, peak atomic.Int64
-	var mu stdsync.Mutex
+	var mu sync.Mutex
 	xsync.Parallel(workers, 64, func(int) {
 		cur := inFlight.Add(1)
 		defer inFlight.Add(-1)

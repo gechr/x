@@ -80,6 +80,22 @@ func IsKnown(name string) bool
 
 **IsKnown** reports whether `name` matches a known terminal emulator.
 
+<details><summary>Example</summary>
+
+```go
+fmt.Println(emulator.IsKnown(emulator.Kitty))
+fmt.Println(emulator.IsKnown("xterm-256color"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="Known"></a>
 
 ## func [Known](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L97>)
@@ -89,6 +105,20 @@ func Known() []string
 ```
 
 **Known** returns the set of recognized terminal emulator names.
+
+<details><summary>Example</summary>
+
+```go
+fmt.Println(emulator.Known())
+```
+
+Output:
+
+```text
+[alacritty apple-terminal conemu contour foot ghostty gnome-terminal hyper iterm2 jetbrains kitty konsole mintty rio screen st tabby terminator termux tilix tmux urxvt vscode warp wezterm windows-terminal zed]
+```
+
+</details>
 
 <a name="SupportsGraphemes"></a>
 
