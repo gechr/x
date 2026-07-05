@@ -74,9 +74,16 @@ var termValues = map[string]string{
 // Detect returns the terminal emulator hosting the process, or empty if it
 // cannot be determined. Detection is best-effort, based on environment
 // variables inherited from the emulator.
-// Priority: `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables,
-// `TERM`.
+// Priority: `TERM`, `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific
+// variables. `TERM` wins because the innermost emulator always sets it fresh
+// for its own session, whereas `TERM_PROGRAM` and marker variables leak
+// through from an outer terminal when one emulator is launched from another
+// that does not scrub them (e.g. kitty launched from iTerm2 inherits both
+// `TERM_PROGRAM=iTerm.app` and `ITERM_SESSION_ID`).
 func Detect() string {
+	if name, ok := termValues[normalizeTerm(os.Getenv(EnvTerm))]; ok {
+		return name
+	}
 	program := strings.ToLower(strings.TrimSpace(os.Getenv(EnvTermProgram)))
 	if name, ok := termPrograms[program]; ok {
 		return name
@@ -89,9 +96,6 @@ func Detect() string {
 		if os.Getenv(m.env) != "" {
 			return m.name
 		}
-	}
-	if name, ok := termValues[normalizeTerm(os.Getenv(EnvTerm))]; ok {
-		return name
 	}
 	return ""
 }

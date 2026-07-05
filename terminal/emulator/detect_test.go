@@ -116,19 +116,37 @@ func TestDetect_TerminalEmulatorUnknownIgnored(t *testing.T) {
 	require.Empty(t, emulator.Detect())
 }
 
-func TestDetect_TermProgramTakesPrecedence(t *testing.T) {
+// TestDetect_TermTakesPrecedence: TERM names the innermost emulator; an
+// inherited TERM_PROGRAM or marker variable from the launching terminal must
+// not override it. TERM=xterm-kitty alongside TERM_PROGRAM=ghostty means
+// kitty was launched from Ghostty (kitty sets TERM but scrubs neither).
+func TestDetect_TermTakesPrecedence(t *testing.T) {
 	clearDetectEnv(t)
 	t.Setenv(emulator.EnvTermProgram, "ghostty")
 	t.Setenv("ITERM_SESSION_ID", "w0t0p0")
 	t.Setenv(emulator.EnvTerm, "xterm-kitty")
 
-	require.Equal(t, emulator.Ghostty, emulator.Detect())
+	require.Equal(t, emulator.Kitty, emulator.Detect())
 }
 
-func TestDetect_MarkerTakesPrecedenceOverTerm(t *testing.T) {
+// TestDetect_KittyLaunchedFromITerm2 mirrors the environment observed in a
+// real kitty 0.47.4 instance launched from iTerm2: kitty sets TERM and its
+// own markers but inherits iTerm2's TERM_PROGRAM and ITERM_SESSION_ID.
+func TestDetect_KittyLaunchedFromITerm2(t *testing.T) {
 	clearDetectEnv(t)
-	t.Setenv("ITERM_SESSION_ID", "w0t0p0")
+	t.Setenv(emulator.EnvTermProgram, "iTerm.app")
+	t.Setenv("ITERM_SESSION_ID", "w0t1p1:FACC5BAE")
+	t.Setenv("KITTY_WINDOW_ID", "1")
 	t.Setenv(emulator.EnvTerm, "xterm-kitty")
+
+	require.Equal(t, emulator.Kitty, emulator.Detect())
+}
+
+func TestDetect_TermProgramTakesPrecedenceOverMarkers(t *testing.T) {
+	clearDetectEnv(t)
+	t.Setenv(emulator.EnvTermProgram, "iTerm.app")
+	t.Setenv("KITTY_WINDOW_ID", "1")
+	t.Setenv(emulator.EnvTerm, "xterm-256color")
 
 	require.Equal(t, emulator.ITerm2, emulator.Detect())
 }

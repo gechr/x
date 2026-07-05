@@ -60,13 +60,13 @@ const (
 
 <a name="Detect"></a>
 
-## func [Detect](<https://github.com/gechr/x/blob/main/terminal/emulator/detect.go#L79>)
+## func [Detect](<https://github.com/gechr/x/blob/main/terminal/emulator/detect.go#L83>)
 
 ```go
 func Detect() string
 ```
 
-**Detect** returns the terminal emulator hosting the process, or empty if it cannot be determined. Detection is best-effort, based on environment variables inherited from the emulator. Priority: `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables, `TERM`.
+**Detect** returns the terminal emulator hosting the process, or empty if it cannot be determined. Detection is best-effort, based on environment variables inherited from the emulator. Priority: `TERM`, `TERM_PROGRAM`, `TERMINAL_EMULATOR`, emulator-specific variables. `TERM` wins because the innermost emulator always sets it fresh for its own session, whereas `TERM_PROGRAM` and marker variables leak through from an outer terminal when one emulator is launched from another that does not scrub them (e.g. kitty launched from iTerm2 inherits both `TERM_PROGRAM=iTerm.app` and `ITERM_SESSION_ID`).
 
 <a name="IsKnown"></a>
 
@@ -90,7 +90,7 @@ func Known() []string
 
 <a name="SupportsGraphemes"></a>
 
-## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L17>)
+## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L20>)
 
 ```go
 func SupportsGraphemes() bool
