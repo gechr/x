@@ -14,6 +14,7 @@ Package `os` provides OS helpers: file probes, safe writes, copy, and line I/O.
 - [func EnsureFile(path string, perm os.FileMode) error](<#EnsureFile>)
 - [func Exists(path string) (bool, error)](<#Exists>)
 - [func IsDir(path string) (bool, error)](<#IsDir>)
+- [func IsExecutable(path string) (bool, error)](<#IsExecutable>)
 - [func IsFile(path string) (bool, error)](<#IsFile>)
 - [func IsSymlink(path string) (bool, error)](<#IsSymlink>)
 - [func IsWritableDir(dir string) bool](<#IsWritableDir>)
@@ -167,7 +168,7 @@ true
 
 <a name="Exists"></a>
 
-## func [Exists](<https://github.com/gechr/x/blob/main/os/stat.go#L26>)
+## func [Exists](<https://github.com/gechr/x/blob/main/os/stat.go#L28>)
 
 ```go
 func Exists(path string) (bool, error)
@@ -201,7 +202,7 @@ false
 
 <a name="IsDir"></a>
 
-## func [IsDir](<https://github.com/gechr/x/blob/main/os/stat.go#L38>)
+## func [IsDir](<https://github.com/gechr/x/blob/main/os/stat.go#L40>)
 
 ```go
 func IsDir(path string) (bool, error)
@@ -233,9 +234,19 @@ false
 
 </details>
 
+<a name="IsExecutable"></a>
+
+## func [IsExecutable](<https://github.com/gechr/x/blob/main/os/stat.go#L66>)
+
+```go
+func IsExecutable(path string) (bool, error)
+```
+
+**IsExecutable** reports whether `path`, with every symlink resolved, is a regular file that the current process can run as a binary. It answers the practical question rather than merely inspecting the permission bits: on Unix via `access(2)` with `X_OK` (so the owner/group/other bit that actually applies to this process is used), and on Windows via the resolved file's extension appearing in `%PATHEXT%` (Windows has no execute bit). A non-existent path reports false; a directory is traversable, not runnable, so it also reports false.
+
 <a name="IsFile"></a>
 
-## func [IsFile](<https://github.com/gechr/x/blob/main/os/stat.go#L32>)
+## func [IsFile](<https://github.com/gechr/x/blob/main/os/stat.go#L34>)
 
 ```go
 func IsFile(path string) (bool, error)
@@ -269,7 +280,7 @@ false
 
 <a name="IsSymlink"></a>
 
-## func [IsSymlink](<https://github.com/gechr/x/blob/main/os/stat.go#L44>)
+## func [IsSymlink](<https://github.com/gechr/x/blob/main/os/stat.go#L46>)
 
 ```go
 func IsSymlink(path string) (bool, error)
@@ -305,7 +316,7 @@ false
 
 <a name="IsWritableDir"></a>
 
-## func [IsWritableDir](<https://github.com/gechr/x/blob/main/os/stat.go#L59>)
+## func [IsWritableDir](<https://github.com/gechr/x/blob/main/os/stat.go#L84>)
 
 ```go
 func IsWritableDir(dir string) bool
