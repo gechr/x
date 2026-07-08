@@ -8,6 +8,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestHexEqual(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xstrings.HexEqual("0x1234", "0x1234"), "equal with prefix")
+	require.True(t, xstrings.HexEqual("1234", "1234"), "equal without prefix")
+	require.True(t, xstrings.HexEqual("0x1234aBcD", "1234abcd"), "prefix and case differ")
+	require.True(t, xstrings.HexEqual("  0xDEAD ", "dead"), "surrounding whitespace")
+	require.True(t, xstrings.HexEqual("", ""), "both blank")
+	require.False(t, xstrings.HexEqual("0x1234", "0x5678"), "different values")
+	require.False(t, xstrings.HexEqual("0x1234", "0x123456"), "different lengths")
+	require.False(t, xstrings.HexEqual("", "0x1234"), "blank vs non-blank")
+}
+
 func TestIsHex(t *testing.T) {
 	t.Parallel()
 

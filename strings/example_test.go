@@ -126,6 +126,14 @@ func ExampleEqualNatural() {
 	// false
 }
 
+func ExampleHexEqual() {
+	fmt.Println(xstrings.HexEqual("0xDEADbeef", "deadbeef"))
+	fmt.Println(xstrings.HexEqual("0x1234", "0x5678"))
+	// Output:
+	// true
+	// false
+}
+
 func ExampleIsBlank() {
 	fmt.Println(xstrings.IsBlank(" \t\n"))
 	fmt.Println(xstrings.IsBlank("x"))

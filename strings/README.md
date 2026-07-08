@@ -19,6 +19,7 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func Dedent(s string) string](<#Dedent>)
 - [func EnsureTrailingNewline(s string) string](<#EnsureTrailingNewline>)
 - [func EqualNatural(a, b string) bool](<#EqualNatural>)
+- [func HexEqual(a, b string) bool](<#HexEqual>)
 - [func Indent(s, prefix string) string](<#Indent>)
 - [func IsBlank(s string) bool](<#IsBlank>)
 - [func IsDigits(s string) bool](<#IsDigits>)
@@ -334,6 +335,32 @@ false
 
 </details>
 
+<a name="HexEqual"></a>
+
+## func [HexEqual](<https://github.com/gechr/x/blob/main/strings/hex.go#L8>)
+
+```go
+func HexEqual(a, b string) bool
+```
+
+**HexEqual** reports whether `a` and `b` denote the same hexadecimal value, ignoring surrounding whitespace, an optional "0x" (or "0X") prefix, and case. Two blank strings are equal; a blank string never equals a non-blank one.
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.HexEqual("0xDEADbeef", "deadbeef"))
+fmt.Println(xstrings.HexEqual("0x1234", "0x5678"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
 <a name="Indent"></a>
 
 ## func [Indent](<https://github.com/gechr/x/blob/main/strings/indent.go#L11>)
@@ -421,7 +448,7 @@ false
 
 <a name="IsGitCommit"></a>
 
-## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L23>)
+## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L40>)
 
 ```go
 func IsGitCommit(s string) bool
@@ -447,7 +474,7 @@ false
 
 <a name="IsHex"></a>
 
-## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L5>)
+## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L22>)
 
 ```go
 func IsHex(s string) bool
@@ -473,7 +500,7 @@ false
 
 <a name="IsHexChar"></a>
 
-## func [IsHexChar](<https://github.com/gechr/x/blob/main/strings/hex.go#L18>)
+## func [IsHexChar](<https://github.com/gechr/x/blob/main/strings/hex.go#L35>)
 
 ```go
 func IsHexChar(c rune) bool
@@ -503,7 +530,7 @@ false
 
 <a name="IsSHA256"></a>
 
-## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L28>)
+## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L45>)
 
 ```go
 func IsSHA256(s string) bool
