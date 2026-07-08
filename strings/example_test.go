@@ -71,6 +71,38 @@ func ExampleAppendCSV() {
 	// ["x" "a" "b" "c"]
 }
 
+func ExampleAnyEmpty() {
+	fmt.Println(xstrings.AnyEmpty("alpha", "", "beta"))
+	fmt.Println(xstrings.AnyEmpty("alpha", "beta"))
+	// Output:
+	// true
+	// false
+}
+
+func ExampleAnyNonEmpty() {
+	fmt.Println(xstrings.AnyNonEmpty("", "alpha", ""))
+	fmt.Println(xstrings.AnyNonEmpty("", ""))
+	// Output:
+	// true
+	// false
+}
+
+func ExampleAllEmpty() {
+	fmt.Println(xstrings.AllEmpty("", ""))
+	fmt.Println(xstrings.AllEmpty("", "alpha"))
+	// Output:
+	// true
+	// false
+}
+
+func ExampleAllNonEmpty() {
+	fmt.Println(xstrings.AllNonEmpty("alpha", "beta", "charlie"))
+	fmt.Println(xstrings.AllNonEmpty("alpha", ""))
+	// Output:
+	// true
+	// false
+}
+
 func ExampleCompactLines() {
 	fmt.Println(xstrings.CompactLines("  foo \n\nbar\nfoo\n", ", "))
 	// Output:

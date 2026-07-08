@@ -8,6 +8,10 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 
 ## Index
 
+- [func AllEmpty(values ...string) bool](<#AllEmpty>)
+- [func AllNonEmpty(values ...string) bool](<#AllNonEmpty>)
+- [func AnyEmpty(values ...string) bool](<#AnyEmpty>)
+- [func AnyNonEmpty(values ...string) bool](<#AnyNonEmpty>)
 - [func AppendCSV(dst \[\]string, raw string) \[\]string](<#AppendCSV>)
 - [func Closest(target string, candidates \[\]string) string](<#Closest>)
 - [func CompactLines(s, sep string) string](<#CompactLines>)
@@ -41,6 +45,110 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func TruncateMiddle(s string, n int, marker string) string](<#TruncateMiddle>)
 - [func TruncateRight(s string, n int, marker string) string](<#TruncateRight>)
 - [func Unwrap(s, prefix, suffix string) (string, bool)](<#Unwrap>)
+
+<a name="AllEmpty"></a>
+
+## func [AllEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L31>)
+
+```go
+func AllEmpty(values ...string) bool
+```
+
+**AllEmpty** reports whether every given string is empty.
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.AllEmpty("", ""))
+fmt.Println(xstrings.AllEmpty("", "alpha"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
+<a name="AllNonEmpty"></a>
+
+## func [AllNonEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L41>)
+
+```go
+func AllNonEmpty(values ...string) bool
+```
+
+**AllNonEmpty** reports whether every given string is non-empty.
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.AllNonEmpty("alpha", "beta", "charlie"))
+fmt.Println(xstrings.AllNonEmpty("alpha", ""))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
+<a name="AnyEmpty"></a>
+
+## func [AnyEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L11>)
+
+```go
+func AnyEmpty(values ...string) bool
+```
+
+**AnyEmpty** reports whether any of the given strings is empty.
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.AnyEmpty("alpha", "", "beta"))
+fmt.Println(xstrings.AnyEmpty("alpha", "beta"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
+<a name="AnyNonEmpty"></a>
+
+## func [AnyNonEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L21>)
+
+```go
+func AnyNonEmpty(values ...string) bool
+```
+
+**AnyNonEmpty** reports whether any of the given strings is non-empty.
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.AnyNonEmpty("", "alpha", ""))
+fmt.Println(xstrings.AnyNonEmpty("", ""))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
 
 <a name="AppendCSV"></a>
 
@@ -448,7 +556,7 @@ false
 
 <a name="IsGitCommit"></a>
 
-## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L40>)
+## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L43>)
 
 ```go
 func IsGitCommit(s string) bool
@@ -474,7 +582,7 @@ false
 
 <a name="IsHex"></a>
 
-## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L22>)
+## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L25>)
 
 ```go
 func IsHex(s string) bool
@@ -500,7 +608,7 @@ false
 
 <a name="IsHexChar"></a>
 
-## func [IsHexChar](<https://github.com/gechr/x/blob/main/strings/hex.go#L35>)
+## func [IsHexChar](<https://github.com/gechr/x/blob/main/strings/hex.go#L38>)
 
 ```go
 func IsHexChar(c rune) bool
@@ -530,7 +638,7 @@ false
 
 <a name="IsSHA256"></a>
 
-## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L45>)
+## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L48>)
 
 ```go
 func IsSHA256(s string) bool
