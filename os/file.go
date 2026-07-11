@@ -1,4 +1,5 @@
-// Package os provides OS helpers: file probes, safe writes, copy, and line I/O.
+// Package os provides OS helpers: file probes, safe writes, copy, line I/O, and
+// platform/architecture detection.
 package os
 
 import (

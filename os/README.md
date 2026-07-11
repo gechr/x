@@ -4,24 +4,78 @@
 import "github.com/gechr/x/os"
 ```
 
-Package `os` provides OS helpers: file probes, safe writes, copy, and line I/O.
+Package `os` provides OS helpers: file probes, safe writes, copy, line I/O, and platform/architecture detection.
 
 ## Index
 
+- [Constants](<#constants>)
 - [func AtomicWrite(path string, data \[\]byte, perm os.FileMode) error](<#AtomicWrite>)
 - [func CopyFile(src, dst string) error](<#CopyFile>)
 - [func EnsureDir(dir string, perm os.FileMode) error](<#EnsureDir>)
 - [func EnsureFile(path string, perm os.FileMode) error](<#EnsureFile>)
 - [func Exists(path string) (bool, error)](<#Exists>)
+- [func IsAndroid() bool](<#IsAndroid>)
+- [func IsBSD() bool](<#IsBSD>)
+- [func IsDarwin() bool](<#IsDarwin>)
 - [func IsDir(path string) (bool, error)](<#IsDir>)
 - [func IsExecutable(path string) (bool, error)](<#IsExecutable>)
 - [func IsFile(path string) (bool, error)](<#IsFile>)
+- [func IsIOS() bool](<#IsIOS>)
+- [func IsLinux() bool](<#IsLinux>)
 - [func IsSymlink(path string) (bool, error)](<#IsSymlink>)
+- [func IsUnix() bool](<#IsUnix>)
+- [func IsWasm() bool](<#IsWasm>)
+- [func IsWindows() bool](<#IsWindows>)
 - [func IsWritableDir(dir string) bool](<#IsWritableDir>)
 - [func ReadLines(path string) (\[\]string, error)](<#ReadLines>)
 - [func SameFile(a, b string) (bool, error)](<#SameFile>)
 - [func Trash(path string) error](<#Trash>)
 - [func WriteLines(path string, lines \[\]string, perm os.FileMode) error](<#WriteLines>)
+
+## Constants
+
+<a name="Arch386"></a>Arch constants are the recognized [runtime.GOARCH](<https://pkg.go.dev/runtime#GOARCH>) values. Go exposes GOARCH only as a string, so these name the tokens to avoid scattering string literals across build-time comparisons.
+
+```go
+const (
+    Arch386      = "386"
+    ArchAMD64    = "amd64"
+    ArchARM      = "arm"
+    ArchARM64    = "arm64"
+    ArchLoong64  = "loong64"
+    ArchMIPS     = "mips"
+    ArchMIPS64   = "mips64"
+    ArchMIPS64LE = "mips64le"
+    ArchMIPSLE   = "mipsle"
+    ArchPPC64    = "ppc64"
+    ArchPPC64LE  = "ppc64le"
+    ArchRISCV64  = "riscv64"
+    ArchS390X    = "s390x"
+    ArchWASM     = "wasm"
+)
+```
+
+<a name="PlatformAIX"></a>Platform constants are the recognized [runtime.GOOS](<https://pkg.go.dev/runtime#GOOS>) values. Go exposes GOOS only as a string, so these name the tokens to avoid scattering string literals across build-time comparisons.
+
+```go
+const (
+    PlatformAIX       = "aix"
+    PlatformAndroid   = "android"
+    PlatformDarwin    = "darwin"
+    PlatformDragonfly = "dragonfly"
+    PlatformFreeBSD   = "freebsd"
+    PlatformIllumos   = "illumos"
+    PlatformIOS       = "ios"
+    PlatformJS        = "js"
+    PlatformLinux     = "linux"
+    PlatformNetBSD    = "netbsd"
+    PlatformOpenBSD   = "openbsd"
+    PlatformPlan9     = "plan9"
+    PlatformSolaris   = "solaris"
+    PlatformWASIP1    = "wasip1"
+    PlatformWindows   = "windows"
+)
+```
 
 <a name="AtomicWrite"></a>
 
@@ -200,6 +254,36 @@ false
 
 </details>
 
+<a name="IsAndroid"></a>
+
+## func [IsAndroid](<https://github.com/gechr/x/blob/main/os/platform.go#L44>)
+
+```go
+func IsAndroid() bool
+```
+
+**IsAndroid** reports whether the program is running on Android. Android is its own GOOS but is also Unix-like, so it additionally satisfies [IsUnix](<#IsUnix>).
+
+<a name="IsBSD"></a>
+
+## func [IsBSD](<https://github.com/gechr/x/blob/main/os/platform.go#L60>)
+
+```go
+func IsBSD() bool
+```
+
+**IsBSD** reports whether the program is running on a BSD-family OS: FreeBSD, NetBSD, OpenBSD, or DragonFly BSD. Go has no `bsd` build constraint, so this is a fixed GOOS set. macOS is deliberately excluded even though Darwin is BSD-derived; use [IsDarwin](<#IsDarwin>) for it. Every OS reported here is also Unix-like, so it satisfies [IsUnix](<#IsUnix>).
+
+<a name="IsDarwin"></a>
+
+## func [IsDarwin](<https://github.com/gechr/x/blob/main/os/platform.go#L33>)
+
+```go
+func IsDarwin() bool
+```
+
+**IsDarwin** reports whether the program is running on macOS. It matches Go's `darwin` GOOS token; iOS is a separate GOOS (see [IsIOS](<#IsIOS>)) and reports false.
+
 <a name="IsDir"></a>
 
 ## func [IsDir](<https://github.com/gechr/x/blob/main/os/stat.go#L40>)
@@ -278,6 +362,26 @@ false
 
 </details>
 
+<a name="IsIOS"></a>
+
+## func [IsIOS](<https://github.com/gechr/x/blob/main/os/platform.go#L51>)
+
+```go
+func IsIOS() bool
+```
+
+**IsIOS** reports whether the program is running on iOS. iOS is its own GOOS - distinct from macOS (see [IsDarwin](<#IsDarwin>)) - but is also Unix-like, so it additionally satisfies [IsUnix](<#IsUnix>).
+
+<a name="IsLinux"></a>
+
+## func [IsLinux](<https://github.com/gechr/x/blob/main/os/platform.go#L38>)
+
+```go
+func IsLinux() bool
+```
+
+**IsLinux** reports whether the program is running on Linux.
+
 <a name="IsSymlink"></a>
 
 ## func [IsSymlink](<https://github.com/gechr/x/blob/main/os/stat.go#L46>)
@@ -313,6 +417,36 @@ false
 ```
 
 </details>
+
+<a name="IsUnix"></a>
+
+## func [IsUnix](<https://github.com/gechr/x/blob/main/os/platform.go#L73>)
+
+```go
+func IsUnix() bool
+```
+
+**IsUnix** reports whether the program is running on a Unix-like OS. It mirrors Go's `unix` build constraint - which spans Linux, macOS, the BSDs, and mobile GOOSes, among others - rather than any single GOOS, so [IsLinux](<#IsLinux>), [IsDarwin](<#IsDarwin>), [IsAndroid](<#IsAndroid>), [IsIOS](<#IsIOS>), and [IsBSD](<#IsBSD>) all imply IsUnix.
+
+<a name="IsWasm"></a>
+
+## func [IsWasm](<https://github.com/gechr/x/blob/main/os/arch.go#L28>)
+
+```go
+func IsWasm() bool
+```
+
+**IsWasm** reports whether the program was compiled to WebAssembly. Unlike the OS predicates it checks the architecture ([runtime.GOARCH](<https://pkg.go.dev/runtime#GOARCH>)), not the OS, since WebAssembly runs under either the `js` or `wasip1` GOOS.
+
+<a name="IsWindows"></a>
+
+## func [IsWindows](<https://github.com/gechr/x/blob/main/os/platform.go#L27>)
+
+```go
+func IsWindows() bool
+```
+
+**IsWindows** reports whether the program is running on Windows.
 
 <a name="IsWritableDir"></a>
 
@@ -384,7 +518,7 @@ gamma
 
 <a name="SameFile"></a>
 
-## func [SameFile](<https://github.com/gechr/x/blob/main/os/file.go#L13>)
+## func [SameFile](<https://github.com/gechr/x/blob/main/os/file.go#L14>)
 
 ```go
 func SameFile(a, b string) (bool, error)
