@@ -11,10 +11,10 @@ Package `maps` provides map helpers: sorted iteration, grouping, and inversion.
 - [func Group\[K comparable, V any\](seq iter.Seq2\[K, V\]) map\[K\]\[\]V](<#Group>)
 - [func GroupFunc\[K comparable, V any\](seq iter.Seq\[V\], key func(V) K) map\[K\]\[\]V](<#GroupFunc>)
 - [func Invert\[M ~map\[K\]V, K, V comparable\](m M) map\[V\]K](<#Invert>)
-- [func KeysSlice\[M ~map\[K\]V, K comparable, V any\](m M) \[\]K](<#KeysSlice>)
+- [func Keys\[M ~map\[K\]V, K comparable, V any\](m M) \[\]K](<#Keys>)
 - [func Sorted\[M ~map\[K\]V, K cmp.Ordered, V any\](m M) iter.Seq2\[K, V\]](<#Sorted>)
 - [func SortedFunc\[M ~map\[K\]V, K comparable, V any\](m M, compare func(x, y K) int) iter.Seq2\[K, V\]](<#SortedFunc>)
-- [func ValuesSlice\[M ~map\[K\]V, K comparable, V any\](m M) \[\]V](<#ValuesSlice>)
+- [func Values\[M ~map\[K\]V, K comparable, V any\](m M) \[\]V](<#Values>)
 
 <a name="Group"></a>
 
@@ -115,21 +115,21 @@ Output:
 
 </details>
 
-<a name="KeysSlice"></a>
+<a name="Keys"></a>
 
-## func [KeysSlice](<https://github.com/gechr/x/blob/main/maps/keys.go#L4>)
+## func [Keys](<https://github.com/gechr/x/blob/main/maps/keys.go#L4>)
 
 ```go
-func KeysSlice[M ~map[K]V, K comparable, V any](m M) []K
+func Keys[M ~map[K]V, K comparable, V any](m M) []K
 ```
 
-**KeysSlice** returns the keys of `m` as a slice, in indeterminate order.
+**Keys** returns the keys of `m` as a slice, in indeterminate order.
 
 <details><summary><b>Example</b></summary>
 
 ```go
 m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
-keys := xmaps.KeysSlice(m)
+keys := xmaps.Keys(m)
 slices.Sort(keys)
 fmt.Println(strings.Join(keys, ", "))
 ```
@@ -203,21 +203,21 @@ Output:
 
 </details>
 
-<a name="ValuesSlice"></a>
+<a name="Values"></a>
 
-## func [ValuesSlice](<https://github.com/gechr/x/blob/main/maps/keys.go#L13>)
+## func [Values](<https://github.com/gechr/x/blob/main/maps/keys.go#L13>)
 
 ```go
-func ValuesSlice[M ~map[K]V, K comparable, V any](m M) []V
+func Values[M ~map[K]V, K comparable, V any](m M) []V
 ```
 
-**ValuesSlice** returns the values of `m` as a slice, in indeterminate order.
+**Values** returns the values of `m` as a slice, in indeterminate order.
 
 <details><summary><b>Example</b></summary>
 
 ```go
 m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
-values := xmaps.ValuesSlice(m)
+values := xmaps.Values(m)
 slices.Sort(values)
 fmt.Println(values)
 ```

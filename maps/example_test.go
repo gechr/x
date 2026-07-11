@@ -79,18 +79,18 @@ func ExampleInvert() {
 	// 3 c
 }
 
-func ExampleKeysSlice() {
+func ExampleKeys() {
 	m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
-	keys := xmaps.KeysSlice(m)
+	keys := xmaps.Keys(m)
 	slices.Sort(keys)
 	fmt.Println(strings.Join(keys, ", "))
 	// Output:
 	// alpha, beta, charlie
 }
 
-func ExampleValuesSlice() {
+func ExampleValues() {
 	m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
-	values := xmaps.ValuesSlice(m)
+	values := xmaps.Values(m)
 	slices.Sort(values)
 	fmt.Println(values)
 	// Output:
