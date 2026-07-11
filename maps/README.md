@@ -12,9 +12,11 @@ Package `maps` provides map helpers: sorted iteration, grouping, and inversion.
 - [func GroupFunc\[K comparable, V any\](seq iter.Seq\[V\], key func(V) K) map\[K\]\[\]V](<#GroupFunc>)
 - [func Invert\[M ~map\[K\]V, K, V comparable\](m M) map\[V\]K](<#Invert>)
 - [func Keys\[M ~map\[K\]V, K comparable, V any\](m M) \[\]K](<#Keys>)
+- [func KeysNatural\[M ~map\[K\]V, K ~string, V any\](m M) \[\]K](<#KeysNatural>)
 - [func Sorted\[M ~map\[K\]V, K cmp.Ordered, V any\](m M) iter.Seq2\[K, V\]](<#Sorted>)
 - [func SortedFunc\[M ~map\[K\]V, K comparable, V any\](m M, compare func(x, y K) int) iter.Seq2\[K, V\]](<#SortedFunc>)
 - [func Values\[M ~map\[K\]V, K comparable, V any\](m M) \[\]V](<#Values>)
+- [func ValuesNatural\[M ~map\[K\]V, K comparable, V ~string\](m M) \[\]V](<#ValuesNatural>)
 
 <a name="Group"></a>
 
@@ -117,7 +119,7 @@ Output:
 
 <a name="Keys"></a>
 
-## func [Keys](<https://github.com/gechr/x/blob/main/maps/keys.go#L4>)
+## func [Keys](<https://github.com/gechr/x/blob/main/maps/keys.go#L8>)
 
 ```go
 func Keys[M ~map[K]V, K comparable, V any](m M) []K
@@ -138,6 +140,31 @@ Output:
 
 ```text
 alpha, beta, charlie
+```
+
+</details>
+
+<a name="KeysNatural"></a>
+
+## func [KeysNatural](<https://github.com/gechr/x/blob/main/maps/keys.go#L19>)
+
+```go
+func KeysNatural[M ~map[K]V, K ~string, V any](m M) []K
+```
+
+**KeysNatural** returns the string keys of `m` as a slice, sorted in natural order ("item2" before "item10"). See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
+
+<details><summary><b>Example</b></summary>
+
+```go
+m := map[string]int{"item10": 10, "item2": 2, "item1": 1}
+fmt.Println(strings.Join(xmaps.KeysNatural(m), ", "))
+```
+
+Output:
+
+```text
+item1, item2, item10
 ```
 
 </details>
@@ -205,7 +232,7 @@ Output:
 
 <a name="Values"></a>
 
-## func [Values](<https://github.com/gechr/x/blob/main/maps/keys.go#L13>)
+## func [Values](<https://github.com/gechr/x/blob/main/maps/keys.go#L26>)
 
 ```go
 func Values[M ~map[K]V, K comparable, V any](m M) []V
@@ -226,6 +253,31 @@ Output:
 
 ```text
 [1 2 3]
+```
+
+</details>
+
+<a name="ValuesNatural"></a>
+
+## func [ValuesNatural](<https://github.com/gechr/x/blob/main/maps/keys.go#L37>)
+
+```go
+func ValuesNatural[M ~map[K]V, K comparable, V ~string](m M) []V
+```
+
+**ValuesNatural** returns the string values of `m` as a slice, sorted in natural order ("item2" before "item10"). See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
+
+<details><summary><b>Example</b></summary>
+
+```go
+m := map[int]string{10: "item10", 2: "item2", 1: "item1"}
+fmt.Println(strings.Join(xmaps.ValuesNatural(m), ", "))
+```
+
+Output:
+
+```text
+item1, item2, item10
 ```
 
 </details>

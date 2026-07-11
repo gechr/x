@@ -88,6 +88,13 @@ func ExampleKeys() {
 	// alpha, beta, charlie
 }
 
+func ExampleKeysNatural() {
+	m := map[string]int{"item10": 10, "item2": 2, "item1": 1}
+	fmt.Println(strings.Join(xmaps.KeysNatural(m), ", "))
+	// Output:
+	// item1, item2, item10
+}
+
 func ExampleValues() {
 	m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
 	values := xmaps.Values(m)
@@ -95,4 +102,11 @@ func ExampleValues() {
 	fmt.Println(values)
 	// Output:
 	// [1 2 3]
+}
+
+func ExampleValuesNatural() {
+	m := map[int]string{10: "item10", 2: "item2", 1: "item1"}
+	fmt.Println(strings.Join(xmaps.ValuesNatural(m), ", "))
+	// Output:
+	// item1, item2, item10
 }
