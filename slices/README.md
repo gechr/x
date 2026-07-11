@@ -17,6 +17,7 @@ Package `slices` provides slice helpers.
 - [func Intersect\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Intersect>)
 - [func LastIndex\[S ~\[\]E, E comparable\](items S, target E) int](<#LastIndex>)
 - [func LastIndexFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#LastIndexFunc>)
+- [func Map\[S ~\[\]E, E, R any\](items S, fn func(E) R) \[\]R](<#Map>)
 - [func Partition\[S ~\[\]E, E any\](items S, match func(E) bool) (S, S)](<#Partition>)
 - [func SortNatural\[S ~\[\]E, E ~string\](s S)](<#SortNatural>)
 - [func Trim\[S ~\[\]E, E comparable\](items, cutset S) S](<#Trim>)
@@ -273,6 +274,16 @@ Output:
 ```
 
 </details>
+
+<a name="Map"></a>
+
+## func [Map](<https://github.com/gechr/x/blob/main/slices/map.go#L5>)
+
+```go
+func Map[S ~[]E, E, R any](items S, fn func(E) R) []R
+```
+
+**Map** returns a new slice containing the result of applying `fn` to each element of `items`, preserving order.
 
 <a name="Partition"></a>
 

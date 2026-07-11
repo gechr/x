@@ -48,7 +48,7 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 
 <a name="AllEmpty"></a>
 
-## func [AllEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L31>)
+## func [AllEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L29>)
 
 ```go
 func AllEmpty(values ...string) bool
@@ -74,7 +74,7 @@ false
 
 <a name="AllNonEmpty"></a>
 
-## func [AllNonEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L41>)
+## func [AllNonEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L39>)
 
 ```go
 func AllNonEmpty(values ...string) bool
@@ -100,7 +100,7 @@ false
 
 <a name="AnyEmpty"></a>
 
-## func [AnyEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L11>)
+## func [AnyEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L14>)
 
 ```go
 func AnyEmpty(values ...string) bool
@@ -126,7 +126,7 @@ false
 
 <a name="AnyNonEmpty"></a>
 
-## func [AnyNonEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L21>)
+## func [AnyNonEmpty](<https://github.com/gechr/x/blob/main/strings/blank.go#L19>)
 
 ```go
 func AnyNonEmpty(values ...string) bool
@@ -502,7 +502,7 @@ Output:
 
 <a name="IsBlank"></a>
 
-## func [IsBlank](<https://github.com/gechr/x/blob/main/strings/blank.go#L6>)
+## func [IsBlank](<https://github.com/gechr/x/blob/main/strings/blank.go#L9>)
 
 ```go
 func IsBlank(s string) bool
