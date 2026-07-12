@@ -152,7 +152,7 @@ alpha, beta, charlie
 func KeysNatural[M ~map[K]V, K ~string, V any](m M) []K
 ```
 
-**KeysNatural** returns the string keys of `m` as a slice, sorted in natural order ("item2" before "item10"). See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
+**KeysNatural** returns the string keys of `m` as a slice, sorted in natural order (`item2` before `item10`). See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
 <details><summary><b>Example</b></summary>
 
@@ -265,7 +265,7 @@ Output:
 func ValuesNatural[M ~map[K]V, K comparable, V ~string](m M) []V
 ```
 
-**ValuesNatural** returns the string values of `m` as a slice, sorted in natural order ("item2" before "item10"). See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
+**ValuesNatural** returns the string values of `m` as a slice, sorted in natural order (`item2` before `item10`). See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
 <details><summary><b>Example</b></summary>
 

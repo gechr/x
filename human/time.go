@@ -43,7 +43,7 @@ func FormatTimeAgoFrom(t, now time.Time) string {
 	)
 }
 
-// FormatTimeAgoCompact formats a time as a compact relative string (e.g. "15m ago").
+// FormatTimeAgoCompact formats a time as a compact relative string (e.g. `15m ago`).
 func FormatTimeAgoCompact(t time.Time) string {
 	return FormatTimeAgoCompactFrom(t, time.Now().UTC())
 }

@@ -27,8 +27,8 @@ const (
 // multiple children can safely branch off a shared prefix - handy in
 // recursive document walkers.
 //
-// A nil *Path is the empty path: it renders as "" and addresses the document
-// itself in lookups. All methods are nil-safe.
+// A nil `*Path` is the empty path: it renders as `""` and addresses the
+// document itself in lookups. All methods are nil-safe.
 type Path struct {
 	parent *Path
 	kind   segmentKind
@@ -44,9 +44,9 @@ func NewPath(name string, moreNames ...string) *Path {
 }
 
 // Child returns `p` extended with `name` (and `moreNames`) as nested field
-// segments. Names render in dot notation (".name"), or bracket-quoted
-// (`["a.b"]`) when they contain characters other than letters, digits, '_',
-// and '-'.
+// segments. Names render in dot notation (`.name`), or bracket-quoted
+// (`["a.b"]`) when they contain characters other than letters, digits, `_`,
+// and `-`.
 func (p *Path) Child(name string, moreNames ...string) *Path {
 	child := &Path{parent: p, kind: segmentChild, name: name}
 	for _, n := range moreNames {
@@ -55,7 +55,7 @@ func (p *Path) Child(name string, moreNames ...string) *Path {
 	return child
 }
 
-// Index returns `p` extended with an array index segment, rendered as "[3]".
+// Index returns `p` extended with an array index segment, rendered as `[3]`.
 func (p *Path) Index(index int) *Path {
 	return &Path{parent: p, kind: segmentIndex, index: index}
 }
@@ -67,16 +67,16 @@ func (p *Path) Key(key string) *Path {
 	return &Path{parent: p, kind: segmentKey, name: key}
 }
 
-// Wildcard returns `p` extended with a "[*]" segment matching every element
+// Wildcard returns `p` extended with a `[*]` segment matching every element
 // of an array or every value of a map. [Path.LookupAll] fans out at wildcard
 // segments; [Path.Lookup] cannot resolve them.
 func (p *Path) Wildcard() *Path {
 	return &Path{parent: p, kind: segmentWildcard}
 }
 
-// Render returns the path in dot/bracket notation, e.g. "items[0].foo.bar[*]".
+// Render returns the path in dot/bracket notation, e.g. `items[0].foo.bar[*]`.
 // Names that cannot appear in dot notation are bracket-quoted: `spec["a.b"]`.
-// Pass [WithRoot] to prefix a JSONPath-style root marker: "$.items[0]". The
+// Pass [WithRoot] to prefix a JSONPath-style root marker: `$.items[0]`. The
 // output is a human-readable diagnostic notation, not strict RFC 9535
 // JSONPath (bare names are broader, and quoting follows Go syntax).
 func (p *Path) Render(opts ...RenderOption) string {
@@ -100,7 +100,7 @@ func (p *Path) String() string {
 }
 
 // render writes the segment to `sb`. `dot` says whether a dot-notation name
-// needs a leading '.' - false only for the first segment of an unrooted path.
+// needs a leading `.` - false only for the first segment of an unrooted path.
 func (p *Path) render(sb *strings.Builder, dot bool) {
 	switch p.kind {
 	case segmentChild:
@@ -136,8 +136,8 @@ func (p *Path) segments() []*Path {
 }
 
 // isBareName reports whether `name` can render unquoted in dot notation: one
-// or more letters, digits, '_', or '-', with combining marks allowed after
-// the first rune (so decomposed accents, as in NFD "café", stay bare).
+// or more letters, digits, `_`, or `-`, with combining marks allowed after
+// the first rune (so decomposed accents, as in NFD `café`, stay bare).
 func isBareName(name string) bool {
 	if name == "" {
 		return false

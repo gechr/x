@@ -131,7 +131,7 @@ Output:
 func FormatDuration(d time.Duration) string
 ```
 
-**FormatDuration** formats `d` as up to two adjacent units with no separator (e.g. "2h15m", "1w2d", "1y5w"). Years are 365 days, weeks are 7 days. Durations >= 1s are rounded to the nearest second.
+**FormatDuration** formats `d` as up to two adjacent units with no separator (e.g. `2h15m`, `1w2d`, `1y5w`). Years are 365 days, weeks are 7 days. Durations >= 1s are rounded to the nearest second.
 
 ```go
 FormatDuration(90 * time.Second)             // "1m30s"
@@ -234,7 +234,7 @@ Output:
 func FormatNumberCompact(n int64) string
 ```
 
-**FormatNumberCompact** renders `n` in a compact, abbreviated form using K, M, B, and T suffixes (powers of 1000), with up to one decimal place and a trailing ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim. Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and magnitudes beyond a trillion stay in "T".
+**FormatNumberCompact** renders `n` in a compact, abbreviated form using K, M, B, and T suffixes (powers of 1000), with up to one decimal place and a trailing `.0` trimmed. Values whose magnitude is below 1000 are returned verbatim. Values that round up to the next unit are promoted (e.g. 999999 → `1M`), and magnitudes beyond a trillion stay in `T`.
 
 ```go
 FormatNumberCompact(950)      // "950"
@@ -360,7 +360,7 @@ Output:
 func FormatTimeAgoCompact(t time.Time) string
 ```
 
-**FormatTimeAgoCompact** formats a time as a compact relative string (e.g. "15m ago").
+**FormatTimeAgoCompact** formats a time as a compact relative string (e.g. `15m ago`).
 
 <details><summary><b>Example</b></summary>
 
@@ -448,7 +448,7 @@ in 2 hours
 func ParseByteSize(s string) float64
 ```
 
-**ParseByteSize** parses a human-readable byte size string like "27.61 MiB" or "1.5 GB" into a byte count. Supports both IEC (KiB, MiB, GiB, TiB, PiB, EiB) and SI (KB, MB, GB, TB, PB, EB) units. Returns 0 for empty or unparseable input.
+**ParseByteSize** parses a human-readable byte size string like `27.61 MiB` or `1.5 GB` into a byte count. Supports both IEC (KiB, MiB, GiB, TiB, PiB, EiB) and SI (KB, MB, GB, TB, PB, EB) units. Returns 0 for empty or unparseable input.
 
 <details><summary><b>Example</b></summary>
 
@@ -474,7 +474,7 @@ Output:
 func ParseDuration(s string) (time.Duration, error)
 ```
 
-**ParseDuration** parses a human duration string into a [time.Duration](<https://pkg.go.dev/time#Duration>). It is the inverse of [FormatDuration](<#FormatDuration>), accepting the units that function emits: y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size, so "1y2w", "2h15m", and "90s" are valid while a repeated ("5w5w") or out-of-order ("1w1y") unit is an error. An optional leading - negates the result, and "0" parses to zero.
+**ParseDuration** parses a human duration string into a [time.Duration](<https://pkg.go.dev/time#Duration>). It is the inverse of [FormatDuration](<#FormatDuration>), accepting the units that function emits: y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size, so `1y2w`, `2h15m`, and `90s` are valid while a repeated (`5w5w`) or out-of-order (`1w1y`) unit is an error. An optional leading - negates the result, and `0` parses to zero.
 
 ```go
 ParseDuration("2h15m")  // 2*time.Hour + 15*time.Minute

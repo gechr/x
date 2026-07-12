@@ -24,3 +24,19 @@ func TestIsDigits(t *testing.T) {
 		require.Equal(t, want, xstrings.IsDigits(in), "IsDigits(%q)", in)
 	}
 }
+
+func TestIsDigitChar(t *testing.T) {
+	t.Parallel()
+
+	cases := map[rune]bool{
+		'0': true,
+		'9': true,
+		'a': false,
+		'-': false,
+		' ': false,
+		'٢': false, // non-ASCII digit
+	}
+	for in, want := range cases {
+		require.Equal(t, want, xstrings.IsDigitChar(in), "IsDigitChar(%q)", in)
+	}
+}

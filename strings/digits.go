@@ -7,9 +7,14 @@ func IsDigits(s string) bool {
 		return false
 	}
 	for _, c := range s {
-		if c < '0' || c > '9' {
+		if !IsDigitChar(c) {
 			return false
 		}
 	}
 	return true
+}
+
+// IsDigitChar reports whether `c` is an ASCII digit (0-9).
+func IsDigitChar(c rune) bool {
+	return c >= '0' && c <= '9'
 }

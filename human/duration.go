@@ -12,7 +12,7 @@ import (
 )
 
 // FormatDuration formats `d` as up to two adjacent units with no separator
-// (e.g. "2h15m", "1w2d", "1y5w"). Years are 365 days, weeks are 7 days.
+// (e.g. `2h15m`, `1w2d`, `1y5w`). Years are 365 days, weeks are 7 days.
 // Durations >= 1s are rounded to the nearest second.
 //
 //	FormatDuration(90 * time.Second)             // "1m30s"
@@ -96,9 +96,9 @@ func FormatDuration(d time.Duration) string {
 // inverse of [FormatDuration], accepting the units that function emits: y, w, d,
 // h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7
 // days. Units may be combined but each may appear at most once and must run in
-// descending order of size, so "1y2w", "2h15m", and "90s" are valid while a
-// repeated ("5w5w") or out-of-order ("1w1y") unit is an error. An optional
-// leading - negates the result, and "0" parses to zero.
+// descending order of size, so `1y2w`, `2h15m`, and `90s` are valid while a
+// repeated (`5w5w`) or out-of-order (`1w1y`) unit is an error. An optional
+// leading - negates the result, and `0` parses to zero.
 //
 //	ParseDuration("2h15m")  // 2*time.Hour + 15*time.Minute
 //	ParseDuration("1w2d")   // 9 * 24 * time.Hour

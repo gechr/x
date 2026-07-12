@@ -18,7 +18,7 @@ func Sorted[T cmp.Ordered](s Set[T]) []T {
 }
 
 // SortedNatural returns the items of `s` as a slice in natural order, so
-// embedded numbers compare by value ("item2" before "item10") rather than
+// embedded numbers compare by value (`item2` before `item10`) rather than
 // lexically. See [github.com/gechr/x/strings.CompareNatural].
 //
 // SortedNatural is a function rather than a [Set] method because it

@@ -34,12 +34,12 @@ var termPrograms = map[string]string{
 // muxVars lists multiplexer-specific environment variables. Multiplexers own
 // the screen model of everything running inside them, so they are checked
 // before anything else - including `TERM`, because tmux configs commonly set
-// `TERM` to "screen-256color".
+// `TERM` to `screen-256color`.
 //
 // Neither tmux nor screen scrubs the other's variable, so when multiplexers
 // are nested both markers are present and the environment cannot identify
 // the innermost one; tmux is reported as the more common case. `TERM` cannot
-// break the tie either: both muxes commonly use "screen-256color".
+// break the tie either: both muxes commonly use `screen-256color`.
 var muxVars = []struct {
 	env  string
 	name string
@@ -114,7 +114,7 @@ func Detect() string {
 	if name, ok := termPrograms[program]; ok {
 		return name
 	}
-	// JetBrains IDEs identify via `TERMINAL_EMULATOR`, e.g. "JetBrains-JediTerm".
+	// JetBrains IDEs identify via `TERMINAL_EMULATOR`, e.g. `JetBrains-JediTerm`.
 	if strings.HasPrefix(os.Getenv(EnvTerminalEmulator), "JetBrains") {
 		return JetBrains
 	}
@@ -126,8 +126,8 @@ func Detect() string {
 	return ""
 }
 
-// normalizeTerm strips color/variant suffixes so values like "st-256color",
-// "foot-extra", and "alacritty-direct" match their base [termValues] entry.
+// normalizeTerm strips color/variant suffixes so values like `st-256color`,
+// `foot-extra`, and `alacritty-direct` match their base [termValues] entry.
 func normalizeTerm(term string) string {
 	for {
 		base := term

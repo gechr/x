@@ -10,7 +10,7 @@ import (
 
 // processName returns the name of the process with the given PID using the
 // Win32 process image path on Windows. The returned name is the bare base
-// name without directory or ".exe" suffix, matching the darwin and linux
+// name without directory or `.exe` suffix, matching the darwin and linux
 // implementations (so it compares against the known shell names).
 func processName(pid int) string {
 	h, err := windows.OpenProcess(windows.PROCESS_QUERY_LIMITED_INFORMATION, false, uint32(pid))

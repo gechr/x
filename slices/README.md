@@ -321,7 +321,7 @@ Output:
 func SortNatural[S ~[]E, E ~string](s S)
 ```
 
-**SortNatural** sorts a string slice in place in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
+**SortNatural** sorts a string slice in place in natural order, so embedded numbers compare by value (`item2` before `item10`) rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
 <details><summary><b>Example</b></summary>
 

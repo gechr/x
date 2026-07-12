@@ -7,9 +7,9 @@ const closestMaxDistanceDivisor = 3
 
 // Closest returns the candidate nearest to `target`, suitable for a "did you
 // mean?" suggestion. Distance is the Damerau-Levenshtein (optimal string
-// alignment) edit distance, so an adjacent transposition like "verfiy" counts
+// alignment) edit distance, so an adjacent transposition like `verfiy` counts
 // as one edit, not two - the common typo plain Levenshtein over-penalizes. It
-// returns "" when the nearest candidate is further than a third of `target`'s
+// returns `""` when the nearest candidate is further than a third of `target`'s
 // length in edits, so an unrelated word is never suggested. An empty `target`
 // carries no signal and suggests nothing. Ties resolve to the first candidate.
 //

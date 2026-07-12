@@ -48,7 +48,7 @@ false
 func NextLink(h http.Header) string
 ```
 
-**NextLink** returns the rel="next" target from an RFC 8288 Link header, or "" when none. The target is returned as written - possibly relative - so a caller that needs an absolute URL resolves it against the request URL. All Link header lines are searched, an unquoted rel token is tolerated, and a quoted rel list (e.g. rel="next last") matches on any member.
+**NextLink** returns the `rel="next"` target from an RFC 8288 Link header, or `""` when none. The target is returned as written - possibly relative - so a caller that needs an absolute URL resolves it against the request URL. All Link header lines are searched, an unquoted rel token is tolerated, and a quoted rel list (e.g. `rel="next last"`) matches on any member.
 
 <details><summary><b>Example</b></summary>
 
@@ -99,7 +99,7 @@ true
 func Status(code int) string
 ```
 
-**Status** returns a human-readable form of an HTTP status code, pairing the numeric code with its canonical reason phrase, e.g. "404 Not Found".
+**Status** returns a human-readable form of an HTTP status code, pairing the numeric code with its canonical reason phrase, e.g. `404 Not Found`.
 
 <details><summary><b>Example</b></summary>
 

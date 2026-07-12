@@ -9,7 +9,7 @@ import (
 const maxServerErrorStatus = 599
 
 // Status returns a human-readable form of an HTTP status code, pairing the
-// numeric code with its canonical reason phrase, e.g. "404 Not Found".
+// numeric code with its canonical reason phrase, e.g. `404 Not Found`.
 func Status(code int) string {
 	return fmt.Sprintf("%d %s", code, http.StatusText(code))
 }

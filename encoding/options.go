@@ -8,8 +8,8 @@ type renderConfig struct {
 	root   bool
 }
 
-// WithRoot prefixes the rendered path with a root marker: '$' by default
-// ("$.items[0]"), or `marker` if given (WithRoot('@') renders "@.items[0]").
+// WithRoot prefixes the rendered path with a root marker: `$` by default
+// (`$.items[0]`), or `marker` if given (`WithRoot('@')` renders `@.items[0]`).
 func WithRoot(marker ...rune) RenderOption {
 	return func(cfg *renderConfig) {
 		cfg.root = true

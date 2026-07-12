@@ -20,7 +20,7 @@ const (
 
 // Split partitions `s` into shell-style words. Whitespace separates words,
 // quotes preserve whitespace, backslashes escape the following rune, a
-// backslash-newline pair is removed as a line continuation, and a "#" starts a
+// backslash-newline pair is removed as a line continuation, and a `#` starts a
 // comment when it appears where a new word could start. Inside double quotes,
 // a backslash is special only before '$', '`', '"', '\', or a newline; before
 // any other rune it is kept literally, following POSIX.

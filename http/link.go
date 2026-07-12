@@ -8,11 +8,11 @@ import (
 	xstrings "github.com/gechr/x/strings"
 )
 
-// NextLink returns the rel="next" target from an RFC 8288 Link header, or ""
+// NextLink returns the `rel="next"` target from an RFC 8288 Link header, or `""`
 // when none. The target is returned as written - possibly relative - so a
 // caller that needs an absolute URL resolves it against the request URL. All
 // Link header lines are searched, an unquoted rel token is tolerated, and a
-// quoted rel list (e.g. rel="next last") matches on any member.
+// quoted rel list (e.g. `rel="next last"`) matches on any member.
 func NextLink(h http.Header) string {
 	for _, value := range h.Values("Link") {
 		for _, link := range splitLinks(value) {

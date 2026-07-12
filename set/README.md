@@ -78,7 +78,7 @@ Output:
 func SortedNatural[T ~string](s Set[T]) []T
 ```
 
-**SortedNatural** returns the items of `s` as a slice in natural order, so embedded numbers compare by value ("item2" before "item10") rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
+**SortedNatural** returns the items of `s` as a slice in natural order, so embedded numbers compare by value (`item2` before `item10`) rather than lexically. See [strings.CompareNatural](<../strings/README.md#CompareNatural>).
 
 SortedNatural is a function rather than a [Set](<#Set>) method because it requires `T` to be string-like, not just comparable.
 

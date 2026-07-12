@@ -25,12 +25,20 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func EqualNatural(a, b string) bool](<#EqualNatural>)
 - [func HexEqual(a, b string) bool](<#HexEqual>)
 - [func Indent(s, prefix string) string](<#Indent>)
+- [func IsASCII(s string) bool](<#IsASCII>)
+- [func IsAlpha(s string) bool](<#IsAlpha>)
+- [func IsAlphaChar(c rune) bool](<#IsAlphaChar>)
+- [func IsAlphanumeric(s string) bool](<#IsAlphanumeric>)
+- [func IsAlphanumericChar(c rune) bool](<#IsAlphanumericChar>)
 - [func IsBlank(s string) bool](<#IsBlank>)
+- [func IsDigitChar(c rune) bool](<#IsDigitChar>)
 - [func IsDigits(s string) bool](<#IsDigits>)
 - [func IsGitCommit(s string) bool](<#IsGitCommit>)
 - [func IsHex(s string) bool](<#IsHex>)
 - [func IsHexChar(c rune) bool](<#IsHexChar>)
 - [func IsSHA256(s string) bool](<#IsSHA256>)
+- [func IsSlug(s string) bool](<#IsSlug>)
+- [func IsSlugLenient(s string) bool](<#IsSlugLenient>)
 - [func LessNatural(a, b string) bool](<#LessNatural>)
 - [func PadCenter(s string, width int) string](<#PadCenter>)
 - [func PadLeft(s string, width int) string](<#PadLeft>)
@@ -184,7 +192,7 @@ Output:
 func Closest(target string, candidates []string) string
 ```
 
-**Closest** returns the candidate nearest to `target`, suitable for a "did you mean?" suggestion. Distance is the Damerau-Levenshtein (optimal string alignment) edit distance, so an adjacent transposition like "verfiy" counts as one edit, not two - the common typo plain Levenshtein over-penalizes. It returns "" when the nearest candidate is further than a third of `target`'s length in edits, so an unrelated word is never suggested. An empty `target` carries no signal and suggests nothing. Ties resolve to the first candidate.
+**Closest** returns the candidate nearest to `target`, suitable for a "did you mean?" suggestion. Distance is the Damerau-Levenshtein (optimal string alignment) edit distance, so an adjacent transposition like `verfiy` counts as one edit, not two - the common typo plain Levenshtein over-penalizes. It returns `""` when the nearest candidate is further than a third of `target`'s length in edits, so an unrelated word is never suggested. An empty `target` carries no signal and suggests nothing. Ties resolve to the first candidate.
 
 ```go
 Closest("verfiy", []string{"verify", "deep"}) // "verify"
@@ -267,7 +275,7 @@ Output:
 func CompareNatural(a, b string) int
 ```
 
-**CompareNatural** orders `a` and `b` the way a human reads them, treating each run of digits as a single decimal number so "x2" sorts before "x10". It returns -1, 0, or +1 and allocates nothing, handling numbers of any length without overflow.
+**CompareNatural** orders `a` and `b` the way a human reads them, treating each run of digits as a single decimal number so `x2` sorts before `x10`. It returns -1, 0, or +1 and allocates nothing, handling numbers of any length without overflow.
 
 <details><summary><b>Example</b></summary>
 
@@ -399,7 +407,7 @@ baz
 func EnsureTrailingNewline(s string) string
 ```
 
-**EnsureTrailingNewline** trims any trailing newlines from `s` and appends exactly one, so the result always ends in a single "\\n". An empty string becomes "\\n".
+**EnsureTrailingNewline** trims any trailing newlines from `s` and appends exactly one, so the result always ends in a single `\n`. An empty string becomes `\n`.
 
 <details><summary><b>Example</b></summary>
 
@@ -425,7 +433,7 @@ Output:
 func EqualNatural(a, b string) bool
 ```
 
-**EqualNatural** reports whether `a` and `b` compare equal in natural order, as decided by [CompareNatural](<#CompareNatural>). This can differ from `a == b`, since a numeric run followed by more to compare matches regardless of leading zeros (for example "a00b00" and "a0b00").
+**EqualNatural** reports whether `a` and `b` compare equal in natural order, as decided by [CompareNatural](<#CompareNatural>). This can differ from `a == b`, since a numeric run followed by more to compare matches regardless of leading zeros (for example `a00b00` and `a0b00`).
 
 <details><summary><b>Example</b></summary>
 
@@ -453,7 +461,7 @@ false
 func HexEqual(a, b string) bool
 ```
 
-**HexEqual** reports whether `a` and `b` denote the same hexadecimal value, ignoring surrounding whitespace, an optional "0x" (or "0X") prefix, and case. Two blank strings are equal; a blank string never equals a non-blank one.
+**HexEqual** reports whether `a` and `b` denote the same hexadecimal value, ignoring surrounding whitespace, an optional `0x` (or `0X`) prefix, and case. Two blank strings are equal; a blank string never equals a non-blank one.
 
 <details><summary><b>Example</b></summary>
 
@@ -502,6 +510,56 @@ Output:
 
 </details>
 
+<a name="IsASCII"></a>
+
+## func [IsASCII](<https://github.com/gechr/x/blob/main/strings/alpha.go#L7>)
+
+```go
+func IsASCII(s string) bool
+```
+
+**IsASCII** reports whether `s` is non-empty and consists entirely of ASCII characters (code points 0-127). An empty string is not ASCII.
+
+<a name="IsAlpha"></a>
+
+## func [IsAlpha](<https://github.com/gechr/x/blob/main/strings/alpha.go#L21>)
+
+```go
+func IsAlpha(s string) bool
+```
+
+**IsAlpha** reports whether `s` is non-empty and consists entirely of ASCII letters (a-z, A-Z). An empty string is not alpha.
+
+<a name="IsAlphaChar"></a>
+
+## func [IsAlphaChar](<https://github.com/gechr/x/blob/main/strings/alpha.go#L34>)
+
+```go
+func IsAlphaChar(c rune) bool
+```
+
+**IsAlphaChar** reports whether `c` is an ASCII letter (a-z, A-Z).
+
+<a name="IsAlphanumeric"></a>
+
+## func [IsAlphanumeric](<https://github.com/gechr/x/blob/main/strings/alpha.go#L41>)
+
+```go
+func IsAlphanumeric(s string) bool
+```
+
+**IsAlphanumeric** reports whether `s` is non-empty and consists entirely of ASCII letters (a-z, A-Z) or digits (0-9). An empty string is not alphanumeric.
+
+<a name="IsAlphanumericChar"></a>
+
+## func [IsAlphanumericChar](<https://github.com/gechr/x/blob/main/strings/alpha.go#L55>)
+
+```go
+func IsAlphanumericChar(c rune) bool
+```
+
+**IsAlphanumericChar** reports whether `c` is an ASCII letter (a-z, A-Z) or digit (0-9).
+
 <a name="IsBlank"></a>
 
 ## func [IsBlank](<https://github.com/gechr/x/blob/main/strings/blank.go#L9>)
@@ -527,6 +585,16 @@ false
 ```
 
 </details>
+
+<a name="IsDigitChar"></a>
+
+## func [IsDigitChar](<https://github.com/gechr/x/blob/main/strings/digits.go#L18>)
+
+```go
+func IsDigitChar(c rune) bool
+```
+
+**IsDigitChar** reports whether `c` is an ASCII digit (0-9).
 
 <a name="IsDigits"></a>
 
@@ -665,6 +733,26 @@ false
 ```
 
 </details>
+
+<a name="IsSlug"></a>
+
+## func [IsSlug](<https://github.com/gechr/x/blob/main/strings/slug.go#L8>)
+
+```go
+func IsSlug(s string) bool
+```
+
+**IsSlug** reports whether `s` is a valid slug: a non-empty, URL-friendly identifier of lowercase alphanumerics and '-', starting and ending with an alphanumeric (e.g. `my-service`). Underscores are not permitted; `-` is the only allowed separator, and it may not appear consecutively. Every valid slug is therefore a fixed point of slugification. An empty string is not a slug.
+
+<a name="IsSlugLenient"></a>
+
+## func [IsSlugLenient](<https://github.com/gechr/x/blob/main/strings/slug.go#L34>)
+
+```go
+func IsSlugLenient(s string) bool
+```
+
+**IsSlugLenient** reports whether `s` is a valid lenient slug: a non-empty identifier of lowercase alphanumerics, '-', and '\_', starting and ending with an alphanumeric (e.g. `my-service`, `my_service`, `a--b__c`). Unlike [IsSlug](<#IsSlug>), underscores are permitted and separators may appear consecutively or mixed; only leading and trailing separators are rejected. An empty string is not a slug.
 
 <a name="LessNatural"></a>
 

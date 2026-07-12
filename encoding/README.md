@@ -33,7 +33,7 @@ NewPath("items").Index(0).Child("foo", "bar").Wildcard() // items[0].foo.bar[*]
 
 Each method allocates a new Path referencing its receiver as parent, so multiple children can safely branch off a shared prefix - handy in recursive document walkers.
 
-A nil \*Path is the empty path: it renders as "" and addresses the document itself in lookups. All methods are nil-safe.
+A nil `*Path` is the empty path: it renders as `""` and addresses the document itself in lookups. All methods are nil-safe.
 
 ```go
 type Path struct {
@@ -74,7 +74,7 @@ items[0].foo.bar[*]
 func (p *Path) Child(name string, moreNames ...string) *Path
 ```
 
-**Child** returns `p` extended with `name` (and `moreNames`) as nested field segments. Names render in dot notation (".name"), or bracket-quoted (`["a.b"]`) when they contain characters other than letters, digits, '\_', and '-'.
+**Child** returns `p` extended with `name` (and `moreNames`) as nested field segments. Names render in dot notation (`.name`), or bracket-quoted (`["a.b"]`) when they contain characters other than letters, digits, `_`, and `-`.
 
 <details><summary><b>Example</b></summary>
 
@@ -101,7 +101,7 @@ metadata.labels["kubernetes.io/hostname"]
 func (p *Path) Index(index int) *Path
 ```
 
-**Index** returns `p` extended with an array index segment, rendered as "\[3\]".
+**Index** returns `p` extended with an array index segment, rendered as `[3]`.
 
 <a name="Path.Key"></a>
 
@@ -121,7 +121,7 @@ func (p *Path) Key(key string) *Path
 func (p *Path) Lookup(doc any) (any, bool)
 ```
 
-**Lookup** resolves `p` against `doc`, a document decoded into generic Go values (map\[string\]any, map\[any\]any, \[\]any), and returns the value it addresses. It reports false when a segment is missing, an index is out of range, or the path contains a wildcard segment (use [Path.LookupAll](<#Path.LookupAll>)).
+**Lookup** resolves `p` against `doc`, a document decoded into generic Go values (`map[string]any`, `map[any]any`, `[]any`), and returns the value it addresses. It reports false when a segment is missing, an index is out of range, or the path contains a wildcard segment (use [Path.LookupAll](<#Path.LookupAll>)).
 
 <details><summary><b>Example</b></summary>
 
@@ -176,7 +176,7 @@ Output:
 func (p *Path) Render(opts ...RenderOption) string
 ```
 
-**Render** returns the path in dot/bracket notation, e.g. "items\[0\].foo.bar\[\*\]". Names that cannot appear in dot notation are bracket-quoted: `spec["a.b"]`. Pass [WithRoot](<#WithRoot>) to prefix a JSONPath-style root marker: "$.items\[0\]". The output is a human-readable diagnostic notation, not strict RFC 9535 JSONPath (bare names are broader, and quoting follows Go syntax).
+**Render** returns the path in dot/bracket notation, e.g. `items[0].foo.bar[*]`. Names that cannot appear in dot notation are bracket-quoted: `spec["a.b"]`. Pass [WithRoot](<#WithRoot>) to prefix a JSONPath-style root marker: `$.items[0]`. The output is a human-readable diagnostic notation, not strict RFC 9535 JSONPath (bare names are broader, and quoting follows Go syntax).
 
 <details><summary><b>Example</b></summary>
 
@@ -215,7 +215,7 @@ func (p *Path) String() string
 func (p *Path) Wildcard() *Path
 ```
 
-**Wildcard** returns `p` extended with a "\[\*\]" segment matching every element of an array or every value of a map. [Path.LookupAll](<#Path.LookupAll>) fans out at wildcard segments; [Path.Lookup](<#Path.Lookup>) cannot resolve them.
+**Wildcard** returns `p` extended with a `[*]` segment matching every element of an array or every value of a map. [Path.LookupAll](<#Path.LookupAll>) fans out at wildcard segments; [Path.Lookup](<#Path.Lookup>) cannot resolve them.
 
 <a name="RenderOption"></a>
 
@@ -235,4 +235,4 @@ type RenderOption func(*renderConfig)
 func WithRoot(marker ...rune) RenderOption
 ```
 
-**WithRoot** prefixes the rendered path with a root marker: '$' by default ("$.items\[0\]"), or `marker` if given (WithRoot('@') renders "@.items\[0\]").
+**WithRoot** prefixes the rendered path with a root marker: `$` by default (`$.items[0]`), or `marker` if given (`WithRoot('@')` renders `@.items[0]`).

@@ -93,8 +93,8 @@ func IsWithin(base string, targets ...string) bool {
 }
 
 // contains reports whether `inner` is equal to or nested under `outer`. Both must be
-// absolute, cleaned paths. The separator appended to the prefix stops "a" from
-// matching a sibling "ab".
+// absolute, cleaned paths. The separator appended to the prefix stops `a` from
+// matching a sibling `ab`.
 func contains(outer, inner string) bool {
 	if equalPath(inner, outer) {
 		return true

@@ -703,9 +703,9 @@ type HyperlinkFallback int
 
 ```go
 const (
-    // HyperlinkFallbackExpanded renders "text (url)".
+    // HyperlinkFallbackExpanded renders `text (url)`.
     HyperlinkFallbackExpanded HyperlinkFallback = iota
-    // HyperlinkFallbackMarkdown renders "[text](url)".
+    // HyperlinkFallbackMarkdown renders `[text](url)`.
     HyperlinkFallbackMarkdown
     // HyperlinkFallbackText renders only the display text, discarding the URL.
     HyperlinkFallbackText

@@ -75,9 +75,9 @@ var compactUnits = []string{"K", "M", "B", "T"}
 
 // FormatNumberCompact renders `n` in a compact, abbreviated form using K, M, B,
 // and T suffixes (powers of 1000), with up to one decimal place and a trailing
-// ".0" trimmed. Values whose magnitude is below 1000 are returned verbatim.
-// Values that round up to the next unit are promoted (e.g. 999999 → "1M"), and
-// magnitudes beyond a trillion stay in "T".
+// `.0` trimmed. Values whose magnitude is below 1000 are returned verbatim.
+// Values that round up to the next unit are promoted (e.g. 999999 → `1M`), and
+// magnitudes beyond a trillion stay in `T`.
 //
 //	FormatNumberCompact(950)      // "950"
 //	FormatNumberCompact(1234)     // "1.2K"
@@ -96,8 +96,8 @@ func FormatNumberCompact(n int64) string {
 	}
 
 	// Scale into the largest unit whose rounded value stays below the base,
-	// so a value just under a boundary promotes ("1M") instead of rendering
-	// as "1000K".
+	// so a value just under a boundary promotes (`1M`) instead of rendering
+	// as `1000K`.
 	v /= compactBase
 	unit := compactUnits[0]
 	for i := range compactUnits[:len(compactUnits)-1] {

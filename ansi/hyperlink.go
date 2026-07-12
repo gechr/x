@@ -6,9 +6,9 @@ import xansi "github.com/charmbracelet/x/ansi"
 type HyperlinkFallback int
 
 const (
-	// HyperlinkFallbackExpanded renders "text (url)".
+	// HyperlinkFallbackExpanded renders `text (url)`.
 	HyperlinkFallbackExpanded HyperlinkFallback = iota
-	// HyperlinkFallbackMarkdown renders "[text](url)".
+	// HyperlinkFallbackMarkdown renders `[text](url)`.
 	HyperlinkFallbackMarkdown
 	// HyperlinkFallbackText renders only the display text, discarding the URL.
 	HyperlinkFallbackText

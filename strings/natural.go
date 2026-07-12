@@ -6,7 +6,7 @@ import (
 )
 
 // CompareNatural orders `a` and `b` the way a human reads them, treating each run of
-// digits as a single decimal number so "x2" sorts before "x10". It returns -1,
+// digits as a single decimal number so `x2` sorts before `x10`. It returns -1,
 // 0, or +1 and allocates nothing, handling numbers of any length without
 // overflow.
 func CompareNatural(a, b string) int {
@@ -27,7 +27,7 @@ func CompareNatural(a, b string) int {
 		}
 
 		// Equal numeric value: descend past both runs only when each has more to
-		// compare, otherwise the leading zeros decide it (e.g. "01" < "1").
+		// compare, otherwise the leading zeros decide it (e.g. `01` < `1`).
 		if da == len(a) || db == len(b) {
 			return strings.Compare(a, b)
 		}
@@ -45,7 +45,7 @@ func LessNatural(a, b string) bool {
 // EqualNatural reports whether `a` and `b` compare equal in natural order, as
 // decided by [CompareNatural]. This can differ from `a == b`, since a numeric
 // run followed by more to compare matches regardless of leading zeros (for
-// example "a00b00" and "a0b00").
+// example `a00b00` and `a0b00`).
 func EqualNatural(a, b string) bool {
 	return CompareNatural(a, b) == 0
 }
@@ -84,7 +84,7 @@ func compareNumbers(a, b string) int {
 	return strings.Compare(a, b)
 }
 
-// trimLeadingZeros drops leading '0' bytes, yielding "" for an all-zero string
+// trimLeadingZeros drops leading `0` bytes, yielding `""` for an all-zero string
 // so it ranks below any nonzero magnitude.
 func trimLeadingZeros(s string) string {
 	for i := range len(s) {

@@ -44,8 +44,8 @@ const (
 	UnitEiB = "EiB"
 )
 
-// ParseByteSize parses a human-readable byte size string like "27.61 MiB" or
-// "1.5 GB" into a byte count. Supports both IEC (KiB, MiB, GiB, TiB, PiB, EiB)
+// ParseByteSize parses a human-readable byte size string like `27.61 MiB` or
+// `1.5 GB` into a byte count. Supports both IEC (KiB, MiB, GiB, TiB, PiB, EiB)
 // and SI (KB, MB, GB, TB, PB, EB) units. Returns 0 for empty or unparseable input.
 func ParseByteSize(s string) float64 {
 	s = strings.TrimSpace(s)
@@ -110,8 +110,8 @@ func FormatIECBytes(b float64) string {
 }
 
 // formatBytes scales `b` into the largest unit whose rounded value stays below
-// `base`, so values just under a boundary promote to the next unit ("1.00 MB")
-// instead of rounding to it ("1000.00 KB").
+// `base`, so values just under a boundary promote to the next unit (`1.00 MB`)
+// instead of rounding to it (`1000.00 KB`).
 func formatBytes(b, base float64, units []string) string {
 	if b < base {
 		return fmt.Sprintf("%.0f %s", b, UnitB)

@@ -12,7 +12,7 @@ import (
 )
 
 // Lookup resolves `p` against `doc`, a document decoded into generic Go
-// values (map[string]any, map[any]any, []any), and returns the value it
+// values (`map[string]any`, `map[any]any`, `[]any`), and returns the value it
 // addresses. It reports false when a segment is missing, an index is out of
 // range, or the path contains a wildcard segment (use [Path.LookupAll]).
 func (p *Path) Lookup(doc any) (any, bool) {
@@ -73,9 +73,9 @@ func (p *Path) lookup(value any) (any, bool) {
 }
 
 // lookupKey returns the value of key `name` in `value` when it is a map. For
-// map[any]any, an exact string key wins; otherwise any key whose string form
-// (fmt.Sprint) equals `name` matches, so numeric keys from legacy YAML
-// decoders ("2: two") are addressable as Child("2"). Colliding stringified
+// `map[any]any`, an exact string key wins; otherwise any key whose string form
+// (`fmt.Sprint`) equals `name` matches, so numeric keys from legacy YAML
+// decoders (`2: two`) are addressable as `Child("2")`. Colliding stringified
 // keys resolve to the lexically smallest Go type name, for determinism.
 func lookupKey(value any, name string) (any, bool) {
 	switch m := value.(type) {
@@ -119,7 +119,7 @@ func elements(value any) []any {
 	case map[any]any:
 		// Pair each key with its value during iteration: re-fetching by key
 		// after sorting would miss keys that are not equal to themselves
-		// (math.NaN()).
+		// (`math.NaN()`).
 		type entry struct {
 			key     string
 			keyType string
@@ -138,7 +138,7 @@ func elements(value any) []any {
 }
 
 // compareKeys orders map keys naturally, falling back to lexical order when
-// distinct keys compare naturally equal (e.g. "a0" vs "a00") so fan-out order
+// distinct keys compare naturally equal (e.g. `a0` vs `a00`) so fan-out order
 // does not inherit randomized map iteration.
 func compareKeys(a, b string) int {
 	return cmp.Or(xstrings.CompareNatural(a, b), strings.Compare(a, b))
