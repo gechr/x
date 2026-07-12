@@ -40,6 +40,8 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func SplitCSV(s string) \[\]string](<#SplitCSV>)
 - [func SplitLines(s string) \[\]string](<#SplitLines>)
 - [func SplitLinesRaw(s string) \[\]string](<#SplitLinesRaw>)
+- [func TrimPrefixes(s string, prefixes ...string) string](<#TrimPrefixes>)
+- [func TrimSuffixes(s string, suffixes ...string) string](<#TrimSuffixes>)
 - [func Truncate(s string, n int, marker string) string](<#Truncate>)
 - [func TruncateLeft(s string, n int, marker string) string](<#TruncateLeft>)
 - [func TruncateMiddle(s string, n int, marker string) string](<#TruncateMiddle>)
@@ -897,6 +899,26 @@ Output:
 ```
 
 </details>
+
+<a name="TrimPrefixes"></a>
+
+## func [TrimPrefixes](<https://github.com/gechr/x/blob/main/strings/trim.go#L8>)
+
+```go
+func TrimPrefixes(s string, prefixes ...string) string
+```
+
+**TrimPrefixes** returns `s` with the first matching prefix in `prefixes` removed. At most one prefix is removed; if none match, `s` is returned unchanged.
+
+<a name="TrimSuffixes"></a>
+
+## func [TrimSuffixes](<https://github.com/gechr/x/blob/main/strings/trim.go#L20>)
+
+```go
+func TrimSuffixes(s string, suffixes ...string) string
+```
+
+**TrimSuffixes** returns `s` with the first matching suffix in `suffixes` removed. At most one suffix is removed; if none match, `s` is returned unchanged.
 
 <a name="Truncate"></a>
 
