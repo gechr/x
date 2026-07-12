@@ -11,6 +11,7 @@ go get github.com/gechr/x@latest
 | Package                                    | Description                                                      |
 | ------------------------------------------ | ---------------------------------------------------------------- |
 | [`ansi`](./ansi)                           | ANSI-aware text wrapping, hyperlinks, and TTY fallback           |
+| [`encoding`](./encoding)                   | Structured-document helpers: field paths for JSON/YAML           |
 | [`filepath`](./filepath)                   | Path helpers: symlink resolution and containment checks          |
 | [`http`](./http)                           | HTTP helpers: retryable status codes, status text, Link headers  |
 | [`human`](./human)                         | Human-readable bytes, durations, counts, numbers, ordinals       |
