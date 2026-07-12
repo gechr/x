@@ -10,6 +10,8 @@ Package `terminal` provides terminal detection and size queries.
 
 - [func Height(f \*os.File) int](<#Height>)
 - [func Is(f \*os.File) bool](<#Is>)
+- [func IsDark() (bool, bool)](<#IsDark>)
+- [func IsLight() (bool, bool)](<#IsLight>)
 - [func Size(f \*os.File) (int, int)](<#Size>)
 - [func Width(f \*os.File) int](<#Width>)
 
@@ -75,6 +77,50 @@ false
 ```
 
 </details>
+
+<a name="IsDark"></a>
+
+## func [IsDark](<https://github.com/gechr/x/blob/main/terminal/background.go#L16>)
+
+```go
+func IsDark() (bool, bool)
+```
+
+**IsDark** reports (dark, ok) for the controlling terminal. `ok` is false if no standard stream is a terminal or the terminal does not respond to the background-color query, in which case the first result is meaningless.
+
+<details><summary><b>Example</b></summary>
+
+**IsDark** reports ok=false when no standard stream is connected to a terminal, since there is no background to query.
+
+```go
+dark, ok := terminal.IsDark()
+switch {
+case !ok:
+    fmt.Println("no terminal detected")
+case dark:
+    fmt.Println("dark")
+default:
+    fmt.Println("light")
+}
+```
+
+Output:
+
+```text
+no terminal detected
+```
+
+</details>
+
+<a name="IsLight"></a>
+
+## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L23>)
+
+```go
+func IsLight() (bool, bool)
+```
+
+**IsLight** reports (light, ok) for the controlling terminal. `ok` is false if no standard stream is a terminal or the terminal does not respond to the background-color query, in which case the first result is meaningless.
 
 <a name="Size"></a>
 

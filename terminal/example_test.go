@@ -25,6 +25,22 @@ func ExampleIs() {
 	// false
 }
 
+// IsDark reports ok=false when no standard stream is connected to a terminal,
+// since there is no background to query.
+func ExampleIsDark() {
+	dark, ok := terminal.IsDark()
+	switch {
+	case !ok:
+		fmt.Println("no terminal detected")
+	case dark:
+		fmt.Println("dark")
+	default:
+		fmt.Println("light")
+	}
+	// Output:
+	// no terminal detected
+}
+
 // Size returns (0, 0) when the file is nil or not connected to a terminal.
 func ExampleSize() {
 	w, h := terminal.Size(nil)
