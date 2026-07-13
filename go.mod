@@ -1,6 +1,6 @@
 module github.com/gechr/x
 
-go 1.26.0
+go 1.26.4
 
 tool (
 	github.com/gechr/coauthor

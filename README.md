@@ -12,6 +12,7 @@ go get github.com/gechr/x@latest
 | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
 | [`ansi`](https://github.com/gechr/x/tree/main/ansi#readme)                           | ANSI-aware text wrapping, hyperlinks, and TTY fallback           |
 | [`encoding`](https://github.com/gechr/x/tree/main/encoding#readme)                   | Structured-document helpers: field paths for JSON/YAML           |
+| [`errors`](https://github.com/gechr/x/tree/main/errors#readme)                       | Error matching helpers                                           |
 | [`filepath`](https://github.com/gechr/x/tree/main/filepath#readme)                   | Path helpers: symlink resolution and containment checks          |
 | [`http`](https://github.com/gechr/x/tree/main/http#readme)                           | HTTP helpers: retryable status codes, status text, Link headers  |
 | [`human`](https://github.com/gechr/x/tree/main/human#readme)                         | Human-readable bytes, durations, counts, numbers, ordinals       |

@@ -1,17 +1,17 @@
 package os
 
 import (
-	"errors"
 	"os"
 	"syscall"
 
+	xerrors "github.com/gechr/x/errors"
 	xfilepath "github.com/gechr/x/filepath"
 )
 
 // notExist reports whether `err` means the path does not exist, including
 // [syscall.ENOTDIR] (a non-directory component partway through the path).
 func notExist(err error) bool {
-	return errors.Is(err, os.ErrNotExist) || errors.Is(err, syscall.ENOTDIR)
+	return xerrors.IsAny(err, os.ErrNotExist, syscall.ENOTDIR)
 }
 
 // stat returns the [os.FileInfo] for `path`, or (nil, nil) if it does not
