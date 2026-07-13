@@ -7,27 +7,27 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestContainsAny(t *testing.T) {
-	t.Parallel()
-
-	require.True(t, xslices.ContainsAny("beta", []string{"alpha", "beta"}))
-	require.True(t, xslices.ContainsAny("beta", []string{"alpha"}, []string{"beta"}))
-	require.True(t, xslices.ContainsAny(2, []int{1}, []int{2, 3}))
-
-	require.False(t, xslices.ContainsAny("gamma", []string{"alpha"}, []string{"beta"}))
-	require.False(t, xslices.ContainsAny("alpha", []string(nil), []string{}))
-	require.False(t, xslices.ContainsAny[[]string]("alpha"))
-}
-
 func TestContainsAll(t *testing.T) {
 	t.Parallel()
 
-	require.True(t, xslices.ContainsAll("beta", []string{"alpha", "beta"}))
-	require.True(t, xslices.ContainsAll("beta", []string{"beta"}, []string{"beta", "gamma"}))
-	require.True(t, xslices.ContainsAll[[]string]("alpha")) // vacuously true
+	require.True(t, xslices.ContainsAll([]string{"alpha", "beta"}, "alpha"))
+	require.True(t, xslices.ContainsAll([]string{"alpha", "beta"}, "alpha", "beta"))
+	require.True(t, xslices.ContainsAll([]string{"alpha", "beta"})) // vacuously true
 
-	require.False(t, xslices.ContainsAll("beta", []string{"beta"}, []string{"alpha"}))
-	require.False(t, xslices.ContainsAll("beta", []string(nil), []string{"beta"}))
+	require.False(t, xslices.ContainsAll([]string{"alpha", "beta"}, "alpha", "gamma"))
+	require.False(t, xslices.ContainsAll([]string(nil), "alpha"))
+}
+
+func TestContainsAny(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xslices.ContainsAny([]string{"alpha", "beta"}, "beta"))
+	require.True(t, xslices.ContainsAny([]string{"alpha", "beta"}, "gamma", "beta"))
+	require.True(t, xslices.ContainsAny([]int{1, 2, 3}, 2, 4))
+
+	require.False(t, xslices.ContainsAny([]string{"alpha", "beta"}, "gamma", "delta"))
+	require.False(t, xslices.ContainsAny([]string(nil), "alpha"))
+	require.False(t, xslices.ContainsAny([]string{"alpha"}))
 }
 
 func TestContainsFold(t *testing.T) {

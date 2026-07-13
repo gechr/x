@@ -8,8 +8,8 @@ Package `slices` provides slice helpers.
 
 ## Index
 
-- [func ContainsAll\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainsAll>)
-- [func ContainsAny\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainsAny>)
+- [func ContainsAll\[S ~\[\]E, E comparable\](items S, targets ...E) bool](<#ContainsAll>)
+- [func ContainsAny\[S ~\[\]E, E comparable\](items S, targets ...E) bool](<#ContainsAny>)
 - [func ContainsFold\[S ~\[\]E, E ~string\](items S, target E) bool](<#ContainsFold>)
 - [func Count\[S ~\[\]E, E comparable\](items S, target E) int](<#Count>)
 - [func CountFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#CountFunc>)
@@ -31,22 +31,22 @@ Package `slices` provides slice helpers.
 
 <a name="ContainsAll"></a>
 
-## func [ContainsAll](<https://github.com/gechr/x/blob/main/slices/contains.go#L18>)
+## func [ContainsAll](<https://github.com/gechr/x/blob/main/slices/contains.go#L11>)
 
 ```go
-func ContainsAll[S ~[]E, E comparable](target E, lists ...S) bool
+func ContainsAll[S ~[]E, E comparable](items S, targets ...E) bool
 ```
 
-**ContainsAll** reports whether every one of the given `lists` contains `target`. It returns true when no `lists` are given.
+**ContainsAll** reports whether `items` contains every one of `targets`. It returns true when no `targets` are given.
 
 <details><summary><b>Example</b></summary>
 
-Every list must contain the target; no lists reports true.
+Every target must occur in the slice; no targets reports true.
 
 ```go
-fmt.Println(xslices.ContainsAll("a", []string{"a", "b"}, []string{"c", "a"}))
-fmt.Println(xslices.ContainsAll("b", []string{"a", "b"}, []string{"c", "a"}))
-fmt.Println(xslices.ContainsAll[[]string]("a"))
+fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}, "a", "c"))
+fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}, "a", "z"))
+fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}))
 ```
 
 Output:
@@ -61,22 +61,22 @@ true
 
 <a name="ContainsAny"></a>
 
-## func [ContainsAny](<https://github.com/gechr/x/blob/main/slices/contains.go#L10>)
+## func [ContainsAny](<https://github.com/gechr/x/blob/main/slices/contains.go#L18>)
 
 ```go
-func ContainsAny[S ~[]E, E comparable](target E, lists ...S) bool
+func ContainsAny[S ~[]E, E comparable](items S, targets ...E) bool
 ```
 
-**ContainsAny** reports whether any of the given `lists` contains `target`.
+**ContainsAny** reports whether `items` contains any one of `targets`.
 
 <details><summary><b>Example</b></summary>
 
-A single list containing the target suffices; no lists reports false.
+A single matching target suffices; no targets reports false.
 
 ```go
-fmt.Println(xslices.ContainsAny("b", []string{"a", "b"}, []string{"c", "d"}))
-fmt.Println(xslices.ContainsAny("z", []string{"a", "b"}, []string{"c", "d"}))
-fmt.Println(xslices.ContainsAny[[]string]("a"))
+fmt.Println(xslices.ContainsAny([]string{"a", "b", "c"}, "b", "z"))
+fmt.Println(xslices.ContainsAny([]string{"a", "b", "c"}, "x", "z"))
+fmt.Println(xslices.ContainsAny([]string{"a", "b", "c"}))
 ```
 
 Output:

@@ -91,22 +91,22 @@ func ExampleUniqueFunc() {
 	// [{alice 30} {bob 25}]
 }
 
-// Every list must contain the target; no lists reports true.
+// Every target must occur in the slice; no targets reports true.
 func ExampleContainsAll() {
-	fmt.Println(xslices.ContainsAll("a", []string{"a", "b"}, []string{"c", "a"}))
-	fmt.Println(xslices.ContainsAll("b", []string{"a", "b"}, []string{"c", "a"}))
-	fmt.Println(xslices.ContainsAll[[]string]("a"))
+	fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}, "a", "c"))
+	fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}, "a", "z"))
+	fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}))
 	// Output:
 	// true
 	// false
 	// true
 }
 
-// A single list containing the target suffices; no lists reports false.
+// A single matching target suffices; no targets reports false.
 func ExampleContainsAny() {
-	fmt.Println(xslices.ContainsAny("b", []string{"a", "b"}, []string{"c", "d"}))
-	fmt.Println(xslices.ContainsAny("z", []string{"a", "b"}, []string{"c", "d"}))
-	fmt.Println(xslices.ContainsAny[[]string]("a"))
+	fmt.Println(xslices.ContainsAny([]string{"a", "b", "c"}, "b", "z"))
+	fmt.Println(xslices.ContainsAny([]string{"a", "b", "c"}, "x", "z"))
+	fmt.Println(xslices.ContainsAny([]string{"a", "b", "c"}))
 	// Output:
 	// true
 	// false
