@@ -357,7 +357,7 @@ Output:
 
 ## type [SortedSet](<https://github.com/gechr/x/blob/main/set/sortedset.go#L17-L19>)
 
-**SortedSet** is a set of ordered items, kept in ascending sorted order at all times: [SortedSet.Add](<#SortedSet.Add>) inserts in sorted position, and combining sets ([SortedSet.Union](<#SortedSet.Union>)/[SortedSet.Intersect](<#SortedSet.Intersect>)/[SortedSet.Difference](<#SortedSet.Difference>)) always yields a sorted result. Unlike [Set](<#Set>), [SortedSet.Slice](<#SortedSet.Slice>) and [SortedSet.All](<#SortedSet.All>) iterate in deterministic ascending order rather than indeterminate map order.
+**SortedSet** is a set of ordered items, kept in ascending sorted order at all times: [SortedSet.Add](<#SortedSet.Add>) preserves sorted order, and combining sets ([SortedSet.Union](<#SortedSet.Union>)/[SortedSet.Intersect](<#SortedSet.Intersect>)/[SortedSet.Difference](<#SortedSet.Difference>)) always yields a sorted result. Unlike [Set](<#Set>), [SortedSet.Slice](<#SortedSet.Slice>) and [SortedSet.All](<#SortedSet.All>) iterate in deterministic ascending order rather than indeterminate map order.
 
 The zero value is an empty, usable [SortedSet](<#SortedSet>).
 
@@ -369,7 +369,7 @@ type SortedSet[T cmp.Ordered] struct {
 
 <a name="CollectSorted"></a>
 
-### func [CollectSorted](<https://github.com/gechr/x/blob/main/set/sortedset.go#L30>)
+### func [CollectSorted](<https://github.com/gechr/x/blob/main/set/sortedset.go#L22>)
 
 ```go
 func CollectSorted[T cmp.Ordered](seq iter.Seq[T]) SortedSet[T]
@@ -396,7 +396,7 @@ Output:
 
 <a name="NewSorted"></a>
 
-### func [NewSorted](<https://github.com/gechr/x/blob/main/set/sortedset.go#L23>)
+### func [NewSorted](<https://github.com/gechr/x/blob/main/set/sortedset.go#L28>)
 
 ```go
 func NewSorted[T cmp.Ordered](items ...T) SortedSet[T]
@@ -425,17 +425,17 @@ Output:
 
 <a name="SortedSet.Add"></a>
 
-### func (\*SortedSet\[T\]) [Add](<https://github.com/gechr/x/blob/main/set/sortedset.go#L40>)
+### func (\*SortedSet\[T\]) [Add](<https://github.com/gechr/x/blob/main/set/sortedset.go#L33>)
 
 ```go
 func (s *SortedSet[T]) Add(items ...T)
 ```
 
-**Add** adds `items` to `s`, inserting each in sorted position and ignoring duplicates.
+**Add** adds `items` to `s`, preserving sorted order and ignoring duplicates.
 
 <a name="SortedSet.All"></a>
 
-### func (SortedSet\[T\]) [All](<https://github.com/gechr/x/blob/main/set/sortedset.go#L128>)
+### func (SortedSet\[T\]) [All](<https://github.com/gechr/x/blob/main/set/sortedset.go#L41>)
 
 ```go
 func (s SortedSet[T]) All() iter.Seq[T]
@@ -464,7 +464,7 @@ cherry
 
 <a name="SortedSet.Clone"></a>
 
-### func (SortedSet\[T\]) [Clone](<https://github.com/gechr/x/blob/main/set/sortedset.go#L118>)
+### func (SortedSet\[T\]) [Clone](<https://github.com/gechr/x/blob/main/set/sortedset.go#L46>)
 
 ```go
 func (s SortedSet[T]) Clone() SortedSet[T]
@@ -474,7 +474,7 @@ func (s SortedSet[T]) Clone() SortedSet[T]
 
 <a name="SortedSet.Contains"></a>
 
-### func (SortedSet\[T\]) [Contains](<https://github.com/gechr/x/blob/main/set/sortedset.go#L59>)
+### func (SortedSet\[T\]) [Contains](<https://github.com/gechr/x/blob/main/set/sortedset.go#L51>)
 
 ```go
 func (s SortedSet[T]) Contains(item T) bool
@@ -484,7 +484,7 @@ func (s SortedSet[T]) Contains(item T) bool
 
 <a name="SortedSet.Delete"></a>
 
-### func (\*SortedSet\[T\]) [Delete](<https://github.com/gechr/x/blob/main/set/sortedset.go#L50>)
+### func (\*SortedSet\[T\]) [Delete](<https://github.com/gechr/x/blob/main/set/sortedset.go#L57>)
 
 ```go
 func (s *SortedSet[T]) Delete(items ...T)
@@ -494,7 +494,7 @@ func (s *SortedSet[T]) Delete(items ...T)
 
 <a name="SortedSet.Difference"></a>
 
-### func (SortedSet\[T\]) [Difference](<https://github.com/gechr/x/blob/main/set/sortedset.go#L93>)
+### func (SortedSet\[T\]) [Difference](<https://github.com/gechr/x/blob/main/set/sortedset.go#L66>)
 
 ```go
 func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T]
@@ -504,7 +504,7 @@ func (s SortedSet[T]) Difference(others ...SortedSet[T]) SortedSet[T]
 
 <a name="SortedSet.Equal"></a>
 
-### func (SortedSet\[T\]) [Equal](<https://github.com/gechr/x/blob/main/set/sortedset.go#L70>)
+### func (SortedSet\[T\]) [Equal](<https://github.com/gechr/x/blob/main/set/sortedset.go#L75>)
 
 ```go
 func (s SortedSet[T]) Equal(other SortedSet[T]) bool
@@ -514,7 +514,7 @@ func (s SortedSet[T]) Equal(other SortedSet[T]) bool
 
 <a name="SortedSet.Intersect"></a>
 
-### func (SortedSet\[T\]) [Intersect](<https://github.com/gechr/x/blob/main/set/sortedset.go#L87>)
+### func (SortedSet\[T\]) [Intersect](<https://github.com/gechr/x/blob/main/set/sortedset.go#L83>)
 
 ```go
 func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T]
@@ -524,7 +524,7 @@ func (s SortedSet[T]) Intersect(others ...SortedSet[T]) SortedSet[T]
 
 <a name="SortedSet.Len"></a>
 
-### func (SortedSet\[T\]) [Len](<https://github.com/gechr/x/blob/main/set/sortedset.go#L65>)
+### func (SortedSet\[T\]) [Len](<https://github.com/gechr/x/blob/main/set/sortedset.go#L92>)
 
 ```go
 func (s SortedSet[T]) Len() int
@@ -534,7 +534,7 @@ func (s SortedSet[T]) Len() int
 
 <a name="SortedSet.Slice"></a>
 
-### func (SortedSet\[T\]) [Slice](<https://github.com/gechr/x/blob/main/set/sortedset.go#L123>)
+### func (SortedSet\[T\]) [Slice](<https://github.com/gechr/x/blob/main/set/sortedset.go#L97>)
 
 ```go
 func (s SortedSet[T]) Slice() []T
@@ -544,7 +544,7 @@ func (s SortedSet[T]) Slice() []T
 
 <a name="SortedSet.SubsetOf"></a>
 
-### func (SortedSet\[T\]) [SubsetOf](<https://github.com/gechr/x/blob/main/set/sortedset.go#L75>)
+### func (SortedSet\[T\]) [SubsetOf](<https://github.com/gechr/x/blob/main/set/sortedset.go#L102>)
 
 ```go
 func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool
@@ -554,7 +554,7 @@ func (s SortedSet[T]) SubsetOf(other SortedSet[T]) bool
 
 <a name="SortedSet.Union"></a>
 
-### func (SortedSet\[T\]) [Union](<https://github.com/gechr/x/blob/main/set/sortedset.go#L81>)
+### func (SortedSet\[T\]) [Union](<https://github.com/gechr/x/blob/main/set/sortedset.go#L120>)
 
 ```go
 func (s SortedSet[T]) Union(others ...SortedSet[T]) SortedSet[T]

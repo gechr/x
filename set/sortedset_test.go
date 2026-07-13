@@ -1,6 +1,7 @@
 package set_test
 
 import (
+	"math"
 	"slices"
 	"testing"
 
@@ -31,6 +32,24 @@ func TestSortedSetNewAddDelete(t *testing.T) {
 	require.Equal(t, 0, zero.Len())
 	zero.Add("a")
 	require.Equal(t, []string{"a"}, zero.Slice())
+}
+
+func TestSortedSetOrderedEdgeCases(t *testing.T) {
+	t.Parallel()
+
+	// Construction does not reorder the caller's slice.
+	items := []int{3, 1, 2, 2}
+	s := set.NewSorted(items...)
+	require.Equal(t, []int{3, 1, 2, 2}, items)
+	require.Equal(t, []int{1, 2, 3}, s.Slice())
+
+	// NaNs compare equal under cmp.Compare, matching slices.Sort and
+	// slices.BinarySearch semantics for ordered values.
+	nan := math.NaN()
+	nans := set.NewSorted(nan, nan)
+	require.Equal(t, 1, nans.Len())
+	require.True(t, nans.Contains(nan))
+	require.True(t, nans.Equal(set.NewSorted(nan)))
 }
 
 func TestCollectSorted(t *testing.T) {
