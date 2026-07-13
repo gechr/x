@@ -14,6 +14,7 @@ Package `slices` provides slice helpers.
 - [func Count\[S ~\[\]E, E comparable\](items S, target E) int](<#Count>)
 - [func CountFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#CountFunc>)
 - [func Difference\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Difference>)
+- [func Filter\[S ~\[\]E, E any\](items S, keep func(E) bool) S](<#Filter>)
 - [func Intersect\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Intersect>)
 - [func LastIndex\[S ~\[\]E, E comparable\](items S, target E) int](<#LastIndex>)
 - [func LastIndexFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#LastIndexFunc>)
@@ -192,6 +193,31 @@ Output:
 ```text
 [1 1 3]
 [1]
+```
+
+</details>
+
+<a name="Filter"></a>
+
+## func [Filter](<https://github.com/gechr/x/blob/main/slices/filter.go#L5>)
+
+```go
+func Filter[S ~[]E, E any](items S, keep func(E) bool) S
+```
+
+**Filter** returns the elements of `items` satisfying `keep`, preserving their original order.
+
+<details><summary><b>Example</b></summary>
+
+```go
+items := []int{1, 2, 3, 4, 5, 6}
+fmt.Println(xslices.Filter(items, func(n int) bool { return n%2 == 0 }))
+```
+
+Output:
+
+```text
+[2 4 6]
 ```
 
 </details>
