@@ -91,6 +91,28 @@ func ExampleUniqueFunc() {
 	// [{alice 30} {bob 25}]
 }
 
+// Every slice must contain the target; no slices reports true.
+func ExampleContainedByAll() {
+	fmt.Println(xslices.ContainedByAll("a", []string{"a", "b"}, []string{"c", "a"}))
+	fmt.Println(xslices.ContainedByAll("b", []string{"a", "b"}, []string{"c", "a"}))
+	fmt.Println(xslices.ContainedByAll[[]string]("a"))
+	// Output:
+	// true
+	// false
+	// true
+}
+
+// A single slice containing the target suffices; no slices reports false.
+func ExampleContainedByAny() {
+	fmt.Println(xslices.ContainedByAny("b", []string{"a", "b"}, []string{"c", "d"}))
+	fmt.Println(xslices.ContainedByAny("z", []string{"a", "b"}, []string{"c", "d"}))
+	fmt.Println(xslices.ContainedByAny[[]string]("a"))
+	// Output:
+	// true
+	// false
+	// false
+}
+
 // Every target must occur in the slice; no targets reports true.
 func ExampleContainsAll() {
 	fmt.Println(xslices.ContainsAll([]string{"a", "b", "c"}, "a", "c"))

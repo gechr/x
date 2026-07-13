@@ -8,6 +8,8 @@ Package `slices` provides slice helpers.
 
 ## Index
 
+- [func ContainedByAll\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainedByAll>)
+- [func ContainedByAny\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainedByAny>)
 - [func ContainsAll\[S ~\[\]E, E comparable\](items S, targets ...E) bool](<#ContainsAll>)
 - [func ContainsAny\[S ~\[\]E, E comparable\](items S, targets ...E) bool](<#ContainsAny>)
 - [func ContainsFold\[S ~\[\]E, E ~string\](items S, target E) bool](<#ContainsFold>)
@@ -29,9 +31,69 @@ Package `slices` provides slice helpers.
 - [func UniqueFold\[S ~\[\]E, E ~string\](items S) S](<#UniqueFold>)
 - [func UniqueFunc\[S ~\[\]E, E any, K comparable\](items S, key func(E) K) S](<#UniqueFunc>)
 
+<a name="ContainedByAll"></a>
+
+## func [ContainedByAll](<https://github.com/gechr/x/blob/main/slices/contains.go#L11>)
+
+```go
+func ContainedByAll[S ~[]E, E comparable](target E, lists ...S) bool
+```
+
+**ContainedByAll** reports whether `target` occurs in every one of `lists`. It returns true when no `lists` are given.
+
+<details><summary><b>Example</b></summary>
+
+Every slice must contain the target; no slices reports true.
+
+```go
+fmt.Println(xslices.ContainedByAll("a", []string{"a", "b"}, []string{"c", "a"}))
+fmt.Println(xslices.ContainedByAll("b", []string{"a", "b"}, []string{"c", "a"}))
+fmt.Println(xslices.ContainedByAll[[]string]("a"))
+```
+
+Output:
+
+```text
+true
+false
+true
+```
+
+</details>
+
+<a name="ContainedByAny"></a>
+
+## func [ContainedByAny](<https://github.com/gechr/x/blob/main/slices/contains.go#L18>)
+
+```go
+func ContainedByAny[S ~[]E, E comparable](target E, lists ...S) bool
+```
+
+**ContainedByAny** reports whether `target` occurs in any one of `lists`.
+
+<details><summary><b>Example</b></summary>
+
+A single slice containing the target suffices; no slices reports false.
+
+```go
+fmt.Println(xslices.ContainedByAny("b", []string{"a", "b"}, []string{"c", "d"}))
+fmt.Println(xslices.ContainedByAny("z", []string{"a", "b"}, []string{"c", "d"}))
+fmt.Println(xslices.ContainedByAny[[]string]("a"))
+```
+
+Output:
+
+```text
+true
+false
+false
+```
+
+</details>
+
 <a name="ContainsAll"></a>
 
-## func [ContainsAll](<https://github.com/gechr/x/blob/main/slices/contains.go#L11>)
+## func [ContainsAll](<https://github.com/gechr/x/blob/main/slices/contains.go#L26>)
 
 ```go
 func ContainsAll[S ~[]E, E comparable](items S, targets ...E) bool
@@ -61,7 +123,7 @@ true
 
 <a name="ContainsAny"></a>
 
-## func [ContainsAny](<https://github.com/gechr/x/blob/main/slices/contains.go#L18>)
+## func [ContainsAny](<https://github.com/gechr/x/blob/main/slices/contains.go#L33>)
 
 ```go
 func ContainsAny[S ~[]E, E comparable](items S, targets ...E) bool
@@ -91,7 +153,7 @@ false
 
 <a name="ContainsFold"></a>
 
-## func [ContainsFold](<https://github.com/gechr/x/blob/main/slices/contains.go#L26>)
+## func [ContainsFold](<https://github.com/gechr/x/blob/main/slices/contains.go#L41>)
 
 ```go
 func ContainsFold[S ~[]E, E ~string](items S, target E) bool

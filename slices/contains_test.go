@@ -7,6 +7,29 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestContainedByAll(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xslices.ContainedByAll("beta", []string{"alpha", "beta"}))
+	require.True(t, xslices.ContainedByAll("beta", []string{"beta"}, []string{"beta", "gamma"}))
+	require.True(t, xslices.ContainedByAll[[]string]("alpha")) // vacuously true
+
+	require.False(t, xslices.ContainedByAll("beta", []string{"beta"}, []string{"alpha"}))
+	require.False(t, xslices.ContainedByAll("beta", []string(nil), []string{"beta"}))
+}
+
+func TestContainedByAny(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xslices.ContainedByAny("beta", []string{"alpha", "beta"}))
+	require.True(t, xslices.ContainedByAny("beta", []string{"alpha"}, []string{"beta"}))
+	require.True(t, xslices.ContainedByAny(2, []int{1}, []int{2, 3}))
+
+	require.False(t, xslices.ContainedByAny("gamma", []string{"alpha"}, []string{"beta"}))
+	require.False(t, xslices.ContainedByAny("alpha", []string(nil), []string{}))
+	require.False(t, xslices.ContainedByAny[[]string]("alpha"))
+}
+
 func TestContainsAll(t *testing.T) {
 	t.Parallel()
 

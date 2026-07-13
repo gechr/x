@@ -6,6 +6,21 @@ import (
 	"strings"
 )
 
+// ContainedByAll reports whether `target` occurs in every one of `lists`.
+// It returns true when no `lists` are given.
+func ContainedByAll[S ~[]E, E comparable](target E, lists ...S) bool {
+	return !slices.ContainsFunc(lists, func(items S) bool {
+		return !slices.Contains(items, target)
+	})
+}
+
+// ContainedByAny reports whether `target` occurs in any one of `lists`.
+func ContainedByAny[S ~[]E, E comparable](target E, lists ...S) bool {
+	return slices.ContainsFunc(lists, func(items S) bool {
+		return slices.Contains(items, target)
+	})
+}
+
 // ContainsAll reports whether `items` contains every one of `targets`.
 // It returns true when no `targets` are given.
 func ContainsAll[S ~[]E, E comparable](items S, targets ...E) bool {
