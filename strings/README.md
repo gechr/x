@@ -19,10 +19,13 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func CompareNatural(a, b string) int](<#CompareNatural>)
 - [func ContainsAll(s string, substrings ...string) bool](<#ContainsAll>)
 - [func ContainsAny(s string, substrings ...string) bool](<#ContainsAny>)
+- [func ContainsFold(s, substr string) bool](<#ContainsFold>)
 - [func CountAny(s, chars string) int](<#CountAny>)
 - [func Dedent(s string) string](<#Dedent>)
 - [func EnsureTrailingNewline(s string) string](<#EnsureTrailingNewline>)
 - [func EqualNatural(a, b string) bool](<#EqualNatural>)
+- [func HasPrefixFold(s, prefix string) bool](<#HasPrefixFold>)
+- [func HasSuffixFold(s, suffix string) bool](<#HasSuffixFold>)
 - [func HexEqual(a, b string) bool](<#HexEqual>)
 - [func Indent(s, prefix string) string](<#Indent>)
 - [func IsASCII(s string) bool](<#IsASCII>)
@@ -241,7 +244,7 @@ foo, bar
 
 <a name="CompareFold"></a>
 
-## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L13>)
+## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L14>)
 
 ```go
 func CompareFold(a, b string) int
@@ -334,6 +337,32 @@ func ContainsAny(s string, substrings ...string) bool
 ```go
 fmt.Println(xstrings.ContainsAny("hello world", "moon", "world"))
 fmt.Println(xstrings.ContainsAny("hello world", "moon", "sun"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
+<a name="ContainsFold"></a>
+
+## func [ContainsFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L28>)
+
+```go
+func ContainsFold(s, substr string) bool
+```
+
+**ContainsFold** reports whether `s` contains `substr`, case-insensitively using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.ContainsFold("Hello, World", "WORLD"))
+fmt.Println(xstrings.ContainsFold("Hello, World", "moon"))
 ```
 
 Output:
@@ -442,6 +471,58 @@ Leading zeros are ignored when more text follows the numeric run.
 ```go
 fmt.Println(xstrings.EqualNatural("a00b00", "a0b00"))
 fmt.Println(xstrings.EqualNatural("a1", "a2"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
+<a name="HasPrefixFold"></a>
+
+## func [HasPrefixFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L44>)
+
+```go
+func HasPrefixFold(s, prefix string) bool
+```
+
+**HasPrefixFold** reports whether `s` begins with `prefix`, case-insensitively using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.HasPrefixFold("Hello, World", "HELLO"))
+fmt.Println(xstrings.HasPrefixFold("Hello, World", "world"))
+```
+
+Output:
+
+```text
+true
+false
+```
+
+</details>
+
+<a name="HasSuffixFold"></a>
+
+## func [HasSuffixFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L51>)
+
+```go
+func HasSuffixFold(s, suffix string) bool
+```
+
+**HasSuffixFold** reports whether `s` ends with `suffix`, case-insensitively using the same simple case-folding as [strings.EqualFold](<https://pkg.go.dev/strings#EqualFold>).
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xstrings.HasSuffixFold("Hello, World", "WORLD"))
+fmt.Println(xstrings.HasSuffixFold("Hello, World", "hello"))
 ```
 
 Output:

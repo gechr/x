@@ -35,3 +35,38 @@ func TestCompareFold(t *testing.T) {
 			"EqualFold(%q, %q) mismatch", a, b)
 	}
 }
+
+func TestContainsFold(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xstrings.ContainsFold("Hello, World", "WORLD"))
+	require.True(t, xstrings.ContainsFold("aKb", "KB"))
+	require.True(t, xstrings.ContainsFold("ΟΔΟΣ", "δος"))
+	require.True(t, xstrings.ContainsFold("anything", ""))
+
+	require.False(t, xstrings.ContainsFold("Hello, World", "moon"))
+	require.False(t, xstrings.ContainsFold("Straße", "STRASSE"))
+	require.False(t, xstrings.ContainsFold("", "x"))
+}
+
+func TestHasPrefixFold(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xstrings.HasPrefixFold("Hello, World", "HELLO"))
+	require.True(t, xstrings.HasPrefixFold("Kelvin", "kel"))
+	require.True(t, xstrings.HasPrefixFold("anything", ""))
+
+	require.False(t, xstrings.HasPrefixFold("Hello, World", "world"))
+	require.False(t, xstrings.HasPrefixFold("short", "shorter"))
+}
+
+func TestHasSuffixFold(t *testing.T) {
+	t.Parallel()
+
+	require.True(t, xstrings.HasSuffixFold("Hello, World", "WORLD"))
+	require.True(t, xstrings.HasSuffixFold("ΟΔΟΣ", "δος"))
+	require.True(t, xstrings.HasSuffixFold("anything", ""))
+
+	require.False(t, xstrings.HasSuffixFold("Hello, World", "hello"))
+	require.False(t, xstrings.HasSuffixFold("short", "longer-short"))
+}

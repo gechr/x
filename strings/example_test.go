@@ -135,6 +135,14 @@ func ExampleContainsAny() {
 	// false
 }
 
+func ExampleContainsFold() {
+	fmt.Println(xstrings.ContainsFold("Hello, World", "WORLD"))
+	fmt.Println(xstrings.ContainsFold("Hello, World", "moon"))
+	// Output:
+	// true
+	// false
+}
+
 func ExampleCountAny() {
 	fmt.Println(xstrings.CountAny("hello world", "lo"))
 	// Output:
@@ -161,6 +169,22 @@ func ExampleEqualNatural() {
 func ExampleHexEqual() {
 	fmt.Println(xstrings.HexEqual("0xDEADbeef", "deadbeef"))
 	fmt.Println(xstrings.HexEqual("0x1234", "0x5678"))
+	// Output:
+	// true
+	// false
+}
+
+func ExampleHasPrefixFold() {
+	fmt.Println(xstrings.HasPrefixFold("Hello, World", "HELLO"))
+	fmt.Println(xstrings.HasPrefixFold("Hello, World", "world"))
+	// Output:
+	// true
+	// false
+}
+
+func ExampleHasSuffixFold() {
+	fmt.Println(xstrings.HasSuffixFold("Hello, World", "WORLD"))
+	fmt.Println(xstrings.HasSuffixFold("Hello, World", "hello"))
 	// Output:
 	// true
 	// false
