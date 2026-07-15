@@ -14,11 +14,13 @@ func ExampleFormatDuration() {
 	fmt.Println(human.FormatDuration(2*time.Hour + 15*time.Minute))
 	fmt.Println(human.FormatDuration(400 * 24 * time.Hour))
 	fmt.Println(human.FormatDuration(50 * time.Millisecond))
+	fmt.Println(human.FormatDuration(5200 * time.Millisecond))
 	// Output:
 	// 1m30s
 	// 2h15m
 	// 1y5w
 	// 50ms
+	// 5.2s
 }
 
 // ParseDuration is the inverse of [human.FormatDuration], accepting the y, w,

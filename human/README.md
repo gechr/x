@@ -10,7 +10,7 @@ Package `human` formats bytes, durations, counts, numbers, and ordinals for huma
 
 - [Constants](<#constants>)
 - [func ContractHome(path string) string](<#ContractHome>)
-- [func FormatDuration(d time.Duration) string](<#FormatDuration>)
+- [func FormatDuration(d time.Duration, options ...DurationFormatOptions) string](<#FormatDuration>)
 - [func FormatIECBytes(b float64) string](<#FormatIECBytes>)
 - [func FormatNumber(n int64, sep string) string](<#FormatNumber>)
 - [func FormatNumberCompact(n int64) string](<#FormatNumberCompact>)
@@ -24,6 +24,7 @@ Package `human` formats bytes, durations, counts, numbers, and ordinals for huma
 - [func ParseDuration(s string) (time.Duration, error)](<#ParseDuration>)
 - [func Plural(n int, singular, plural string) string](<#Plural>)
 - [func Pluralize(n int, singular, plural string) string](<#Pluralize>)
+- [type DurationFormatOptions](<#DurationFormatOptions>)
 
 ## Constants
 
@@ -125,13 +126,13 @@ Output:
 
 <a name="FormatDuration"></a>
 
-## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L23>)
+## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L43>)
 
 ```go
-func FormatDuration(d time.Duration) string
+func FormatDuration(d time.Duration, options ...DurationFormatOptions) string
 ```
 
-**FormatDuration** formats `d` as up to two adjacent units with no separator (e.g. `2h15m`, `1w2d`, `1y5w`). Years are 365 days, weeks are 7 days. Durations >= 1s are rounded to the nearest second.
+**FormatDuration** formats d as up to two adjacent units with no separator (e.g. "5.2s", "2h15m", "1w2d"). Years are 365 days, weeks are 7 days. With no options it uses magnitude-based resolution: the largest exact sub-second unit, one decimal place below ten seconds, and whole seconds thereafter. When multiple options values are supplied, the last applies.
 
 ```go
 FormatDuration(90 * time.Second)             // "1m30s"
@@ -139,6 +140,7 @@ FormatDuration(2*time.Hour + 15*time.Minute) // "2h15m"
 FormatDuration(8 * 24 * time.Hour)           // "1w1d"
 FormatDuration(400 * 24 * time.Hour)         // "1y5w"
 FormatDuration(50 * time.Millisecond)        // "50ms"
+FormatDuration(5200 * time.Millisecond)      // "5.2s"
 ```
 
 <details><summary><b>Example</b></summary>
@@ -148,6 +150,7 @@ fmt.Println(human.FormatDuration(90 * time.Second))
 fmt.Println(human.FormatDuration(2*time.Hour + 15*time.Minute))
 fmt.Println(human.FormatDuration(400 * 24 * time.Hour))
 fmt.Println(human.FormatDuration(50 * time.Millisecond))
+fmt.Println(human.FormatDuration(5200 * time.Millisecond))
 ```
 
 Output:
@@ -157,6 +160,7 @@ Output:
 2h15m
 1y5w
 50ms
+5.2s
 ```
 
 </details>
@@ -468,17 +472,18 @@ Output:
 
 <a name="ParseDuration"></a>
 
-## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L106>)
+## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L179>)
 
 ```go
 func ParseDuration(s string) (time.Duration, error)
 ```
 
-**ParseDuration** parses a human duration string into a [time.Duration](<https://pkg.go.dev/time#Duration>). It is the inverse of [FormatDuration](<#FormatDuration>), accepting the units that function emits: y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size, so `1y2w`, `2h15m`, and `90s` are valid while a repeated (`5w5w`) or out-of-order (`1w1y`) unit is an error. An optional leading - negates the result, and `0` parses to zero.
+**ParseDuration** parses a human duration string into a [time.Duration](<https://pkg.go.dev/time#Duration>). It is the inverse of [FormatDuration](<#FormatDuration>), accepting decimal values and the units y, w, d, h, m, s, ms, µs (or us), and ns, where a year is 365 days and a week is 7 days. Units may be combined but each may appear at most once and must run in descending order of size. A decimal value must be the final component. An optional leading - negates the result, and `0` parses to zero.
 
 ```go
 ParseDuration("2h15m")  // 2*time.Hour + 15*time.Minute
 ParseDuration("1w2d")   // 9 * 24 * time.Hour
+ParseDuration("5.2s")   // 5200 * time.Millisecond
 ParseDuration("-1m30s") // -90 * time.Second
 ```
 
@@ -566,3 +571,21 @@ Output:
 ```
 
 </details>
+
+<a name="DurationFormatOptions"></a>
+
+## type [DurationFormatOptions](<https://github.com/gechr/x/blob/main/human/duration.go#L21-L29>)
+
+**DurationFormatOptions** controls duration rounding and fractional display.
+
+```go
+type DurationFormatOptions struct {
+    // Precision is the number of decimal places used for durations below one
+    // minute.
+    Precision int
+    // Round is the rounding granularity. Zero disables pre-format rounding.
+    Round time.Duration
+    // TrimTrailingZeros removes trailing zeroes from the fractional part.
+    TrimTrailingZeros bool
+}
+```
