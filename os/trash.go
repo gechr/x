@@ -1,6 +1,7 @@
 package os
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -21,6 +22,11 @@ import (
 // [errors.ErrUnsupported], so a caller can detect the case and decide what to do
 // (e.g. fall back to [os.Remove]). This covers a macOS older than 15 (which lacks
 // the system trash tool) and a Unix file with no usable same-device trash.
+//
+// A `path` that is already gone yields an error wrapping [os.ErrNotExist], both
+// when it is missing up front and when it vanishes mid-trash (e.g. a concurrent
+// process trashing the same file wins the race). A caller for which the file's
+// absence is the intended end state can treat that with [errors.Is] as success.
 func Trash(path string) error {
 	abs, err := filepath.Abs(path)
 	if err != nil {
@@ -28,8 +34,18 @@ func Trash(path string) error {
 	}
 	// [os.Lstat], not [os.Stat]: a symlink is trashed as itself, never
 	// followed.
-	if _, err := os.Lstat(abs); err != nil {
+	if _, err = os.Lstat(abs); err != nil {
 		return err
 	}
-	return trash(abs)
+	if err = trash(abs); err != nil {
+		// A concurrent trasher may have removed the file between the Lstat above
+		// and the platform trash: re-stat to distinguish that benign race (the
+		// file is now gone regardless) from a genuine trash failure. Reported as
+		// [os.ErrNotExist] so a caller can treat it uniformly with the missing
+		// up-front case, without parsing platform-specific error text.
+		if _, statErr := os.Lstat(abs); errors.Is(statErr, os.ErrNotExist) {
+			return statErr
+		}
+	}
+	return err
 }

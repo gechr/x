@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	xos "github.com/gechr/x/os"
@@ -52,7 +53,46 @@ func TestTrashMissing(t *testing.T) {
 	t.Parallel()
 
 	err := xos.Trash(filepath.Join(t.TempDir(), "does-not-exist"))
-	require.Error(t, err)
+	require.ErrorIs(t, err, os.ErrNotExist)
+}
+
+func TestTrashConcurrentRace(t *testing.T) {
+	// Not parallel: redirects XDG_DATA_HOME so the Unix trash stays hermetic.
+	dataHome := t.TempDir()
+	t.Setenv("XDG_DATA_HOME", dataHome)
+
+	base := "contended.txt"
+	path := filepath.Join(t.TempDir(), base)
+	require.NoError(t, os.WriteFile(path, []byte("x"), 0o600))
+	t.Cleanup(func() { cleanupTrash(dataHome, base) })
+
+	// Several callers trashing the same file at once: exactly one wins, and every
+	// loser sees the file already gone rather than an opaque platform failure.
+	const racers = 8
+	errs := make(chan error, racers)
+	var start sync.WaitGroup
+	start.Add(1)
+	for range racers {
+		go func() {
+			start.Wait()
+			errs <- xos.Trash(path)
+		}()
+	}
+	start.Done()
+
+	won := 0
+	for range racers {
+		if err := <-errs; err == nil {
+			won++
+		} else {
+			require.ErrorIs(t, err, os.ErrNotExist)
+		}
+	}
+	require.Equal(t, 1, won)
+
+	exists, err := xos.Exists(path)
+	require.NoError(t, err)
+	require.False(t, exists)
 }
 
 // cleanupTrash removes a trashed entry so a real run does not pollute the user's
