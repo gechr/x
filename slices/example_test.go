@@ -27,6 +27,17 @@ func ExamplePartition() {
 	// [1 3 5]
 }
 
+// Scalar arguments repeat for every element; the shortest slice determines
+// the result length.
+func ExampleFormat() {
+	names := []string{"Valentina", "Ander", "Olivia", "Sam"}
+	fmt.Println(xslices.Format("Hello, %s!", names))
+	fmt.Println(xslices.Format("%s, %s!", "Salutations", names))
+	// Output:
+	// [Hello, Valentina! Hello, Ander! Hello, Olivia! Hello, Sam!]
+	// [Salutations, Valentina! Salutations, Ander! Salutations, Olivia! Salutations, Sam!]
+}
+
 func ExampleFilter() {
 	items := []int{1, 2, 3, 4, 5, 6}
 	fmt.Println(xslices.Filter(items, func(n int) bool { return n%2 == 0 }))

@@ -17,6 +17,7 @@ Package `slices` provides slice helpers.
 - [func CountFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#CountFunc>)
 - [func Difference\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Difference>)
 - [func Filter\[S ~\[\]E, E any\](items S, keep func(E) bool) S](<#Filter>)
+- [func Format(format string, args ...any) \[\]string](<#Format>)
 - [func Intersect\[S ~\[\]E, E comparable\](items S, others ...S) S](<#Intersect>)
 - [func LastIndex\[S ~\[\]E, E comparable\](items S, target E) int](<#LastIndex>)
 - [func LastIndexFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#LastIndexFunc>)
@@ -280,6 +281,37 @@ Output:
 
 ```text
 [2 4 6]
+```
+
+</details>
+
+<a name="Format"></a>
+
+## func [Format](<https://github.com/gechr/x/blob/main/slices/format.go#L15>)
+
+```go
+func Format(format string, args ...any) []string
+```
+
+**Format** returns the result of applying fmt.Sprintf(format, ...) once per element of the shortest slice in args, substituting each slice argument with its i'th element while repeating non-slice arguments unchanged. If args contains no slices, it returns a single formatted string.
+
+Byte slices (\[\]byte and named types with that underlying type) are treated as scalars rather than iterated, so they format as a single value.
+
+<details><summary><b>Example</b></summary>
+
+Scalar arguments repeat for every element; the shortest slice determines the result length.
+
+```go
+names := []string{"Valentina", "Ander", "Olivia", "Sam"}
+fmt.Println(xslices.Format("Hello, %s!", names))
+fmt.Println(xslices.Format("%s, %s!", "Salutations", names))
+```
+
+Output:
+
+```text
+[Hello, Valentina! Hello, Ander! Hello, Olivia! Hello, Sam!]
+[Salutations, Valentina! Salutations, Ander! Salutations, Olivia! Salutations, Sam!]
 ```
 
 </details>
