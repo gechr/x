@@ -1,6 +1,8 @@
 package sync_test
 
 import (
+	"errors"
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -61,4 +63,37 @@ func TestParallelZeroCalls(t *testing.T) {
 	called := false
 	xsync.Parallel(4, 0, func(int) { called = true })
 	require.False(t, called)
+}
+
+func TestParallelErr(t *testing.T) {
+	t.Parallel()
+
+	errOdd := errors.New("odd")
+	var calls atomic.Int64
+	err := xsync.ParallelErr(4, 10, func(i int) error {
+		calls.Add(1)
+		if i%2 == 1 {
+			return errOdd
+		}
+		return nil
+	})
+	require.Equal(t, int64(10), calls.Load(), "a failure must not cancel other tasks")
+	require.ErrorIs(t, err, errOdd)
+	for _, i := range []int{1, 3, 5, 7, 9} {
+		require.ErrorContains(t, err, fmt.Sprintf("task %d: odd", i))
+	}
+}
+
+func TestParallelErrAllSucceed(t *testing.T) {
+	t.Parallel()
+
+	err := xsync.ParallelErr(4, 10, func(int) error { return nil })
+	require.NoError(t, err)
+}
+
+func TestParallelErrZeroCalls(t *testing.T) {
+	t.Parallel()
+
+	err := xsync.ParallelErr(4, 0, func(int) error { return errors.New("unreachable") })
+	require.NoError(t, err)
 }
