@@ -1,6 +1,10 @@
 package shell
 
-import "slices"
+import (
+	"slices"
+
+	"github.com/gechr/x/set"
+)
 
 // Recognized shell names, as returned by [Known].
 const (
@@ -31,19 +35,7 @@ var knownShells = []string{
 	Zsh,
 }
 
-var knownShellSet = map[string]struct{}{
-	Ash:    {},
-	Bash:   {},
-	Dash:   {},
-	Elvish: {},
-	Fish:   {},
-	Ksh:    {},
-	Nu:     {},
-	Pwsh:   {},
-	Sh:     {},
-	Tcsh:   {},
-	Zsh:    {},
-}
+var knownShellSet = set.New(knownShells...)
 
 // Known returns the set of recognized shell names.
 func Known() []string {
@@ -52,6 +44,5 @@ func Known() []string {
 
 // IsKnown reports whether `name` matches a known shell.
 func IsKnown(name string) bool {
-	_, ok := knownShellSet[name]
-	return ok
+	return knownShellSet.Contains(name)
 }

@@ -1,6 +1,10 @@
 package emulator
 
-import "slices"
+import (
+	"slices"
+
+	"github.com/gechr/x/set"
+)
 
 // Recognized terminal emulator names, as returned by [Detect].
 const (
@@ -63,35 +67,7 @@ var knownEmulators = []string{
 	Zed,
 }
 
-var knownEmulatorSet = map[string]struct{}{
-	Alacritty:       {},
-	AppleTerminal:   {},
-	ConEmu:          {},
-	Contour:         {},
-	Foot:            {},
-	Ghostty:         {},
-	GNOMETerminal:   {},
-	Hyper:           {},
-	ITerm2:          {},
-	JetBrains:       {},
-	Kitty:           {},
-	Konsole:         {},
-	Mintty:          {},
-	Rio:             {},
-	Screen:          {},
-	ST:              {},
-	Tabby:           {},
-	Terminator:      {},
-	Termux:          {},
-	Tilix:           {},
-	Tmux:            {},
-	URxvt:           {},
-	VSCode:          {},
-	Warp:            {},
-	WezTerm:         {},
-	WindowsTerminal: {},
-	Zed:             {},
-}
+var knownEmulatorSet = set.New(knownEmulators...)
 
 // Known returns the set of recognized terminal emulator names.
 func Known() []string {
@@ -100,6 +76,5 @@ func Known() []string {
 
 // IsKnown reports whether `name` matches a known terminal emulator.
 func IsKnown(name string) bool {
-	_, ok := knownEmulatorSet[name]
-	return ok
+	return knownEmulatorSet.Contains(name)
 }

@@ -142,7 +142,7 @@ func DetectFromProcess() string
 
 <a name="IsKnown"></a>
 
-## func [IsKnown](<https://github.com/gechr/x/blob/main/shell/known.go#L54>)
+## func [IsKnown](<https://github.com/gechr/x/blob/main/shell/known.go#L46>)
 
 ```go
 func IsKnown(name string) bool
@@ -168,7 +168,7 @@ false
 
 <a name="Known"></a>
 
-## func [Known](<https://github.com/gechr/x/blob/main/shell/known.go#L49>)
+## func [Known](<https://github.com/gechr/x/blob/main/shell/known.go#L41>)
 
 ```go
 func Known() []string

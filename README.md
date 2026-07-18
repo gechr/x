@@ -10,6 +10,7 @@ go get github.com/gechr/x@latest
 
 | Package                                                                              | Description                                                      |
 | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| [`agent`](https://github.com/gechr/x/tree/main/agent#readme)                         | AI coding agent detection (Claude Code, Codex, Cursor, …)        |
 | [`ansi`](https://github.com/gechr/x/tree/main/ansi#readme)                           | ANSI-aware text wrapping, hyperlinks, and TTY fallback           |
 | [`encoding`](https://github.com/gechr/x/tree/main/encoding#readme)                   | Structured-document helpers: field paths for JSON/YAML           |
 | [`errors`](https://github.com/gechr/x/tree/main/errors#readme)                       | Error matching helpers                                           |

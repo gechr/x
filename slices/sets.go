@@ -1,17 +1,17 @@
 package slices
 
+import "github.com/gechr/x/set"
+
 // Difference returns the elements of `items` not present in any of `others`,
 // preserving order and duplicates from `items`.
 func Difference[S ~[]E, E comparable](items S, others ...S) S {
-	drop := make(map[E]struct{})
+	drop := make(set.Set[E])
 	for _, other := range others {
-		for item := range toSet(other) {
-			drop[item] = struct{}{}
-		}
+		drop.Add(other...)
 	}
 	diff := make(S, 0, len(items))
 	for _, item := range items {
-		if _, ok := drop[item]; !ok {
+		if !drop.Contains(item) {
 			diff = append(diff, item)
 		}
 	}
@@ -21,15 +21,15 @@ func Difference[S ~[]E, E comparable](items S, others ...S) S {
 // Intersect returns the elements of `items` also present in every one of
 // `others`, preserving order and duplicates from `items`.
 func Intersect[S ~[]E, E comparable](items S, others ...S) S {
-	sets := make([]map[E]struct{}, len(others))
+	sets := make([]set.Set[E], len(others))
 	for i, other := range others {
-		sets[i] = toSet(other)
+		sets[i] = set.New(other...)
 	}
 	both := make(S, 0, len(items))
 	for _, item := range items {
 		inAll := true
-		for _, set := range sets {
-			if _, ok := set[item]; !ok {
+		for _, s := range sets {
+			if !s.Contains(item) {
 				inAll = false
 				break
 			}
@@ -50,12 +50,4 @@ func Union[S ~[]E, E comparable](items S, others ...S) S {
 		all = append(all, other...)
 	}
 	return Unique(all)
-}
-
-func toSet[S ~[]E, E comparable](items S) map[E]struct{} {
-	set := make(map[E]struct{}, len(items))
-	for _, item := range items {
-		set[item] = struct{}{}
-	}
-	return set
 }

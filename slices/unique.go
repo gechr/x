@@ -3,17 +3,19 @@ package slices
 import (
 	"strings"
 	"unicode"
+
+	"github.com/gechr/x/set"
 )
 
 // Unique returns `items` in first-seen order with duplicates removed.
 func Unique[S ~[]E, E comparable](items S) S {
-	seen := make(map[E]struct{}, len(items))
+	seen := make(set.Set[E], len(items))
 	unique := make(S, 0, len(items))
 	for _, item := range items {
-		if _, ok := seen[item]; ok {
+		if seen.Contains(item) {
 			continue
 		}
-		seen[item] = struct{}{}
+		seen.Add(item)
 		unique = append(unique, item)
 	}
 	return unique
@@ -22,14 +24,14 @@ func Unique[S ~[]E, E comparable](items S) S {
 // UniqueFunc returns `items` in first-seen order with duplicates removed,
 // where two items are duplicates when `key` reports the same value for both.
 func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S {
-	seen := make(map[K]struct{}, len(items))
+	seen := make(set.Set[K], len(items))
 	unique := make(S, 0, len(items))
 	for _, item := range items {
 		k := key(item)
-		if _, ok := seen[k]; ok {
+		if seen.Contains(k) {
 			continue
 		}
-		seen[k] = struct{}{}
+		seen.Add(k)
 		unique = append(unique, item)
 	}
 	return unique
@@ -39,14 +41,14 @@ func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S {
 // case-insensitively, using the same simple case-folding as
 // [strings.EqualFold].
 func UniqueFold[S ~[]E, E ~string](items S) S {
-	seen := make(map[string]struct{}, len(items))
+	seen := make(set.Set[string], len(items))
 	unique := make(S, 0, len(items))
 	for _, item := range items {
 		key := foldKey(string(item))
-		if _, ok := seen[key]; ok {
+		if seen.Contains(key) {
 			continue
 		}
-		seen[key] = struct{}{}
+		seen.Add(key)
 		unique = append(unique, item)
 	}
 	return unique

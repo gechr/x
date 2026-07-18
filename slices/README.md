@@ -234,7 +234,7 @@ Output:
 
 <a name="Difference"></a>
 
-## func [Difference](<https://github.com/gechr/x/blob/main/slices/sets.go#L5>)
+## func [Difference](<https://github.com/gechr/x/blob/main/slices/sets.go#L7>)
 
 ```go
 func Difference[S ~[]E, E comparable](items S, others ...S) S
@@ -463,7 +463,7 @@ Output:
 
 <a name="Trim"></a>
 
-## func [Trim](<https://github.com/gechr/x/blob/main/slices/trim.go#L6>)
+## func [Trim](<https://github.com/gechr/x/blob/main/slices/trim.go#L8>)
 
 ```go
 func Trim[S ~[]E, E comparable](items, cutset S) S
@@ -489,7 +489,7 @@ Output:
 
 <a name="TrimLeft"></a>
 
-## func [TrimLeft](<https://github.com/gechr/x/blob/main/slices/trim.go#L12>)
+## func [TrimLeft](<https://github.com/gechr/x/blob/main/slices/trim.go#L14>)
 
 ```go
 func TrimLeft[S ~[]E, E comparable](items, cutset S) S
@@ -513,7 +513,7 @@ Output:
 
 <a name="TrimRight"></a>
 
-## func [TrimRight](<https://github.com/gechr/x/blob/main/slices/trim.go#L26>)
+## func [TrimRight](<https://github.com/gechr/x/blob/main/slices/trim.go#L28>)
 
 ```go
 func TrimRight[S ~[]E, E comparable](items, cutset S) S
@@ -561,7 +561,7 @@ Output:
 
 <a name="Unique"></a>
 
-## func [Unique](<https://github.com/gechr/x/blob/main/slices/unique.go#L9>)
+## func [Unique](<https://github.com/gechr/x/blob/main/slices/unique.go#L11>)
 
 ```go
 func Unique[S ~[]E, E comparable](items S) S
@@ -585,7 +585,7 @@ Output:
 
 <a name="UniqueFold"></a>
 
-## func [UniqueFold](<https://github.com/gechr/x/blob/main/slices/unique.go#L41>)
+## func [UniqueFold](<https://github.com/gechr/x/blob/main/slices/unique.go#L43>)
 
 ```go
 func UniqueFold[S ~[]E, E ~string](items S) S
@@ -613,7 +613,7 @@ Output:
 
 <a name="UniqueFunc"></a>
 
-## func [UniqueFunc](<https://github.com/gechr/x/blob/main/slices/unique.go#L24>)
+## func [UniqueFunc](<https://github.com/gechr/x/blob/main/slices/unique.go#L26>)
 
 ```go
 func UniqueFunc[S ~[]E, E any, K comparable](items S, key func(E) K) S

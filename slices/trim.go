@@ -1,5 +1,7 @@
 package slices
 
+import "github.com/gechr/x/set"
+
 // Trim returns `items` with all leading and trailing elements contained in
 // `cutset` removed. The result is a subslice of `items`, sharing its backing
 // array.
@@ -10,10 +12,10 @@ func Trim[S ~[]E, E comparable](items, cutset S) S {
 // TrimLeft returns `items` with all leading elements contained in `cutset`
 // removed. The result is a subslice of `items`, sharing its backing array.
 func TrimLeft[S ~[]E, E comparable](items, cutset S) S {
-	drop := toSet(cutset)
+	drop := set.New(cutset...)
 	start := 0
 	for start < len(items) {
-		if _, ok := drop[items[start]]; !ok {
+		if !drop.Contains(items[start]) {
 			break
 		}
 		start++
@@ -24,10 +26,10 @@ func TrimLeft[S ~[]E, E comparable](items, cutset S) S {
 // TrimRight returns `items` with all trailing elements contained in `cutset`
 // removed. The result is a subslice of `items`, sharing its backing array.
 func TrimRight[S ~[]E, E comparable](items, cutset S) S {
-	drop := toSet(cutset)
+	drop := set.New(cutset...)
 	end := len(items)
 	for end > 0 {
-		if _, ok := drop[items[end-1]]; !ok {
+		if !drop.Contains(items[end-1]) {
 			break
 		}
 		end--

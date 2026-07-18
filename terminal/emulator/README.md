@@ -72,7 +72,7 @@ func Detect() string
 
 <a name="IsKnown"></a>
 
-## func [IsKnown](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L102>)
+## func [IsKnown](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L78>)
 
 ```go
 func IsKnown(name string) bool
@@ -98,7 +98,7 @@ false
 
 <a name="Known"></a>
 
-## func [Known](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L97>)
+## func [Known](<https://github.com/gechr/x/blob/main/terminal/emulator/known.go#L73>)
 
 ```go
 func Known() []string
@@ -122,7 +122,7 @@ Output:
 
 <a name="SupportsGraphemes"></a>
 
-## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L21>)
+## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L23>)
 
 ```go
 func SupportsGraphemes() bool

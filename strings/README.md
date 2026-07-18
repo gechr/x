@@ -36,12 +36,14 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func IsBlank(s string) bool](<#IsBlank>)
 - [func IsDigitChar(c rune) bool](<#IsDigitChar>)
 - [func IsDigits(s string) bool](<#IsDigits>)
+- [func IsFalsy(s string) bool](<#IsFalsy>)
 - [func IsGitCommit(s string) bool](<#IsGitCommit>)
 - [func IsHex(s string) bool](<#IsHex>)
 - [func IsHexChar(c rune) bool](<#IsHexChar>)
 - [func IsSHA256(s string) bool](<#IsSHA256>)
 - [func IsSlug(s string) bool](<#IsSlug>)
 - [func IsSlugLenient(s string) bool](<#IsSlugLenient>)
+- [func IsTruthy(s string) bool](<#IsTruthy>)
 - [func LessNatural(a, b string) bool](<#LessNatural>)
 - [func PadCenter(s string, width int) string](<#PadCenter>)
 - [func PadLeft(s string, width int) string](<#PadLeft>)
@@ -705,6 +707,16 @@ false
 
 </details>
 
+<a name="IsFalsy"></a>
+
+## func [IsFalsy](<https://github.com/gechr/x/blob/main/strings/truthy.go#L22>)
+
+```go
+func IsFalsy(s string) bool
+```
+
+**IsFalsy** reports whether `s` is a negative boolean token: `0`, `false`, `no`, or `off`, case-insensitively and ignoring surrounding whitespace. The empty string is not falsy: it signals absence, not refusal - use IsFalsy alongside a presence check when the distinction matters.
+
 <a name="IsGitCommit"></a>
 
 ## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L43>)
@@ -834,6 +846,16 @@ func IsSlugLenient(s string) bool
 ```
 
 **IsSlugLenient** reports whether `s` is a valid lenient slug: a non-empty identifier of lowercase alphanumerics, '-', and '\_', starting and ending with an alphanumeric (e.g. `my-service`, `my_service`, `a--b__c`). Unlike [IsSlug](<#IsSlug>), underscores are permitted and separators may appear consecutively or mixed; only leading and trailing separators are rejected. An empty string is not a slug.
+
+<a name="IsTruthy"></a>
+
+## func [IsTruthy](<https://github.com/gechr/x/blob/main/strings/truthy.go#L9>)
+
+```go
+func IsTruthy(s string) bool
+```
+
+**IsTruthy** reports whether `s` is an affirmative boolean token: `1`, `true`, `yes`, or `on`, case-insensitively and ignoring surrounding whitespace. IsTruthy is not the complement of [IsFalsy](<#IsFalsy>): a value like `banana` is neither truthy nor falsy.
 
 <a name="LessNatural"></a>
 
