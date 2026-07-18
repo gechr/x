@@ -222,7 +222,7 @@ Output:
 
 <a name="CompactLines"></a>
 
-## func [CompactLines](<https://github.com/gechr/x/blob/main/strings/compact.go#L7>)
+## func [CompactLines](<https://github.com/gechr/x/blob/main/strings/compact.go#L11>)
 
 ```go
 func CompactLines(s, sep string) string
@@ -274,7 +274,7 @@ Output:
 
 <a name="CompareNatural"></a>
 
-## func [CompareNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L12>)
+## func [CompareNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L9>)
 
 ```go
 func CompareNatural(a, b string) int
@@ -458,7 +458,7 @@ Output:
 
 <a name="EqualNatural"></a>
 
-## func [EqualNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L49>)
+## func [EqualNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L24>)
 
 ```go
 func EqualNatural(a, b string) bool
@@ -859,7 +859,7 @@ func IsTruthy(s string) bool
 
 <a name="LessNatural"></a>
 
-## func [LessNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L41>)
+## func [LessNatural](<https://github.com/gechr/x/blob/main/strings/natural.go#L16>)
 
 ```go
 func LessNatural(a, b string) bool

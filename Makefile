@@ -6,7 +6,7 @@ all: doc fmt lint test
 
 .PHONY: doc
 doc:
-	@$(GO) tool coauthor ./...
+	@$(GO) tool coauthor --exclude=internal/ ./...
 	@rumdl fmt --quiet
 
 .PHONY: fmt

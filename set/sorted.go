@@ -4,7 +4,7 @@ import (
 	"cmp"
 	"slices"
 
-	xstrings "github.com/gechr/x/strings"
+	"github.com/gechr/x/internal/natural"
 )
 
 // Sorted returns the items of `s` as a slice in ascending order.
@@ -26,7 +26,7 @@ func Sorted[T cmp.Ordered](s Set[T]) []T {
 func SortedNatural[T ~string](s Set[T]) []T {
 	items := s.Slice()
 	slices.SortFunc(items, func(a, b T) int {
-		return xstrings.CompareNatural(string(a), string(b))
+		return natural.Compare(string(a), string(b))
 	})
 	return items
 }
