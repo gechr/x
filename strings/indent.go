@@ -19,7 +19,7 @@ func Indent(s, prefix string) string {
 		if i > 0 {
 			b.WriteByte('\n')
 		}
-		if strings.TrimSpace(line) == "" {
+		if IsBlank(line) {
 			continue
 		}
 		b.WriteString(prefix)
@@ -41,7 +41,7 @@ func Dedent(s string) string {
 	prefix := ""
 	first := true
 	for _, line := range lines {
-		if strings.TrimSpace(line) == "" {
+		if IsBlank(line) {
 			continue
 		}
 		lead := line[:len(line)-len(strings.TrimLeft(line, " \t"))]
@@ -58,7 +58,7 @@ func Dedent(s string) string {
 
 	if prefix == "" {
 		for i, line := range lines {
-			if strings.TrimSpace(line) == "" {
+			if IsBlank(line) {
 				lines[i] = ""
 			}
 		}
@@ -66,7 +66,7 @@ func Dedent(s string) string {
 	}
 
 	for i, line := range lines {
-		if strings.TrimSpace(line) == "" {
+		if IsBlank(line) {
 			lines[i] = ""
 			continue
 		}

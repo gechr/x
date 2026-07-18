@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	xstrings "github.com/gechr/x/strings"
 )
 
 // ReadLines reads `path` and returns its non-empty, trimmed lines.
@@ -12,14 +14,7 @@ func ReadLines(path string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
-	raw := strings.Split(string(data), "\n")
-	lines := make([]string, 0, len(raw))
-	for _, line := range raw {
-		if trimmed := strings.TrimSpace(line); trimmed != "" {
-			lines = append(lines, trimmed)
-		}
-	}
-	return lines, nil
+	return xstrings.SplitLines(string(data)), nil
 }
 
 // WriteLines atomically writes `lines` to `path`, one per line, with a trailing

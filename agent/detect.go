@@ -49,7 +49,7 @@ var markerVars = []struct {
 // mirroring the `CI=false` escape hatch.
 func Is() bool {
 	for _, env := range standardVars {
-		if v := os.Getenv(env); strings.TrimSpace(v) != "" {
+		if v := os.Getenv(env); !xstrings.IsBlank(v) {
 			return !xstrings.IsFalsy(v)
 		}
 	}

@@ -5,7 +5,9 @@ package os
 import (
 	"os"
 	"path/filepath"
-	"strings"
+
+	xslices "github.com/gechr/x/slices"
+	xstrings "github.com/gechr/x/strings"
 )
 
 // executable reports whether Windows would run `path` as a program. Windows has
@@ -21,10 +23,5 @@ func executable(path string) bool {
 	if ext == "" {
 		return false
 	}
-	for _, e := range strings.Split(exts, ";") {
-		if strings.EqualFold(strings.TrimSpace(e), ext) {
-			return true
-		}
-	}
-	return false
+	return xslices.ContainsFold(xstrings.SplitBy(exts, ";"), ext)
 }

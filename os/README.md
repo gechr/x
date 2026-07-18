@@ -481,7 +481,7 @@ false
 
 <a name="ReadLines"></a>
 
-## func [ReadLines](<https://github.com/gechr/x/blob/main/os/lines.go#L10>)
+## func [ReadLines](<https://github.com/gechr/x/blob/main/os/lines.go#L12>)
 
 ```go
 func ReadLines(path string) ([]string, error)
@@ -572,7 +572,7 @@ A `path` that is already gone yields an error wrapping [os.ErrNotExist](<https:/
 
 <a name="WriteLines"></a>
 
-## func [WriteLines](<https://github.com/gechr/x/blob/main/os/lines.go#L27>)
+## func [WriteLines](<https://github.com/gechr/x/blob/main/os/lines.go#L22>)
 
 ```go
 func WriteLines(path string, lines []string, perm os.FileMode) error
