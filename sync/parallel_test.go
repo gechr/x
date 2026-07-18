@@ -2,7 +2,6 @@ package sync_test
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -79,9 +78,7 @@ func TestParallelErr(t *testing.T) {
 	})
 	require.Equal(t, int64(10), calls.Load(), "a failure must not cancel other tasks")
 	require.ErrorIs(t, err, errOdd)
-	for _, i := range []int{1, 3, 5, 7, 9} {
-		require.ErrorContains(t, err, fmt.Sprintf("task %d: odd", i))
-	}
+	require.Equal(t, "task 1: odd\ntask 3: odd\ntask 5: odd\ntask 7: odd\ntask 9: odd", err.Error())
 }
 
 func TestParallelErrAllSucceed(t *testing.T) {

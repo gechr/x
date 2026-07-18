@@ -91,7 +91,7 @@ func TestWrapSoft_StylePassthrough(t *testing.T) {
 	got := ansi.WrapSoft(input, 11)
 
 	assert.Equal(t, "alpha bravo", xansi.Strip(got))
-	assert.NotContains(t, got, "\n")
+	assert.Equal(t, "\x1B[38;2;249;38;114malpha\x1B[0m \x1B[38;2;230;219;116mbravo\x1B[0m", got)
 }
 
 func TestWrapSoft_StyleWrap(t *testing.T) {
@@ -99,7 +99,7 @@ func TestWrapSoft_StyleWrap(t *testing.T) {
 	got := ansi.WrapSoft(input, 8)
 
 	assert.Equal(t, "I really\nlove Go!", xansi.Strip(got))
-	assert.Contains(t, got, "\x1b[")
+	assert.Equal(t, "I really\n\x1B[38;2;249;38;114mlove\x1B[0m Go!", got)
 }
 
 func TestWrapSoft_LongStyle(t *testing.T) {
@@ -123,8 +123,11 @@ func TestWrapSoft_OSC8Hyperlink(t *testing.T) {
 	input := "สวัสดีสวัสดี\x1b]8;;https://example.com\x1b\\ สวัสดีสวัสดี\x1b]8;;\x1b\\"
 	got := ansi.WrapSoft(input, 8)
 
-	assert.Contains(t, got, "\n")
-	assert.Contains(t, got, "https://example.com")
+	assert.Equal(
+		t,
+		"สวัสดีสวัสดี\x1b]8;;https://example.com\x1b\\\x1b]8;;\a\n\x1b]8;;https://example.com\aสวัสดีสวัสดี\x1b]8;;\x1b\\",
+		got,
+	)
 }
 
 func TestWrapSoft_TrailingSpaceStyle(t *testing.T) {
@@ -139,7 +142,7 @@ func TestWrapSoft_EmojiInStyledText(t *testing.T) {
 	got := ansi.WrapSoft(input, 8)
 
 	assert.Equal(t, "I really\nlove u🫧", xansi.Strip(got))
-	assert.Contains(t, got, "\x1b[")
+	assert.Equal(t, "I really\n\x1B[38;2;249;38;114mlove u🫧\x1B[0m", got)
 }
 
 func TestWrapSoft_Paragraph(t *testing.T) {
@@ -161,7 +164,7 @@ func TestWrapSoft_ParagraphWithStyles(t *testing.T) {
 	for i, line := range strings.Split(stripped, "\n") {
 		assert.LessOrEqual(t, len(line), 30, "line %d: %q", i, line)
 	}
-	assert.Contains(t, got, "\x1b[")
+	assert.Equal(t, "Lorem ipsum dolor \x1b[1msit\x1b[m amet,\nconsectetur adipiscing elit.", got)
 }
 
 func TestWrapSoft_AllLinesWithinWidth(t *testing.T) {
@@ -215,8 +218,7 @@ func TestWrapHard_PreservesANSI(t *testing.T) {
 	got := ansi.WrapHard(input, 5)
 
 	assert.Equal(t, "alpha\nbravo", xansi.Strip(got))
-	assert.Contains(t, got, "\x1b[")
-	assert.Contains(t, got, "\n")
+	assert.Equal(t, "\x1b[31malpha\x1b[m\n\x1b[31mbravo\x1b[0m", got)
 }
 
 // --- Wrapper builder ---
@@ -225,7 +227,7 @@ func TestWrapper_DefaultSoftWrap(t *testing.T) {
 	w := ansi.NewWrapper(ansi.WithWidth(20))
 	got := w.Wrap("alpha bravo charlie delta echo foxtrot")
 
-	require.Contains(t, got, "\n")
+	require.Equal(t, "alpha bravo charlie\ndelta echo foxtrot", got)
 	for line := range strings.SplitSeq(got, "\n") {
 		assert.LessOrEqual(t, xansi.StringWidth(line), 20)
 	}
@@ -272,7 +274,7 @@ func TestWrapper_WidthFunc(t *testing.T) {
 	}))
 	got := w.Wrap("alpha bravo charlie")
 
-	require.Contains(t, got, "\n")
+	require.Equal(t, "alpha\nbravo\ncharlie", got)
 	assert.Equal(t, 1, calls)
 }
 
@@ -282,7 +284,7 @@ func TestWrapper_WidthFuncOverridesWidth(t *testing.T) {
 		ansi.WithWidthFunc(func() int { return 10 }),
 	)
 	got := w.Wrap("alpha bravo charlie")
-	assert.Contains(t, got, "\n")
+	assert.Equal(t, "alpha\nbravo\ncharlie", got)
 }
 
 func TestWrapper_PreserveStyleTrue(t *testing.T) {
@@ -290,15 +292,14 @@ func TestWrapper_PreserveStyleTrue(t *testing.T) {
 	got := w.Wrap("\x1b[31malpha bravo\x1b[0m")
 
 	// Should contain ANSI reset/reapply across the break.
-	assert.Contains(t, got, "\x1b[")
-	assert.Contains(t, got, "\n")
+	assert.Equal(t, "\x1b[31malpha\x1b[m\n\x1b[31mbravo\x1b[0m", got)
 }
 
 func TestWrapper_PreserveStyleFalse(t *testing.T) {
 	w := ansi.NewWrapper(ansi.WithWidth(6), ansi.WithPreserveStyle(false))
 	got := w.Wrap("\x1b[31malpha bravo\x1b[0m")
 
-	assert.Contains(t, got, "\n")
+	assert.Equal(t, "\x1b[31malpha\nbravo\x1b[0m", got)
 }
 
 func TestWrapper_PreservesNewlines(t *testing.T) {
