@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	xstrings "github.com/gechr/x/strings"
 	xtime "github.com/gechr/x/time"
 )
 
@@ -203,7 +204,7 @@ func ParseDuration(s string) (time.Duration, error) {
 	var total time.Duration
 	for pos < end {
 		numStart := pos
-		for pos < end && rs[pos] >= '0' && rs[pos] <= '9' {
+		for pos < end && xstrings.IsDigitChar(rs[pos]) {
 			pos++
 		}
 		if pos == numStart {
@@ -212,7 +213,7 @@ func ParseDuration(s string) (time.Duration, error) {
 		if pos < end && rs[pos] == '.' {
 			pos++
 			fractionStart := pos
-			for pos < end && rs[pos] >= '0' && rs[pos] <= '9' {
+			for pos < end && xstrings.IsDigitChar(rs[pos]) {
 				pos++
 			}
 			if pos == fractionStart {

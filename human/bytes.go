@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	xstrings "github.com/gechr/x/strings"
 )
 
 // SI byte size constants (powers of 1000).
@@ -54,7 +56,7 @@ func ParseByteSize(s string) float64 {
 	}
 
 	i := 0
-	for i < len(s) && (s[i] == '.' || (s[i] >= '0' && s[i] <= '9')) {
+	for i < len(s) && (s[i] == '.' || xstrings.IsDigitChar(rune(s[i]))) {
 		i++
 	}
 	if i == 0 {

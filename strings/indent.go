@@ -3,7 +3,7 @@ package strings
 import "strings"
 
 // Indent prefixes every non-blank line of `s` with `prefix`. Blank and
-// whitespace-only lines are normalized to empty.
+// whitespace-only lines are normalized to empty, and CRLF line endings to LF.
 //
 //	Indent("foo\nbar", "  ")      // "  foo\n  bar"
 //	Indent("foo\n\nbar", "> ")    // "> foo\n\n> bar"
@@ -12,7 +12,7 @@ func Indent(s, prefix string) string {
 	if s == "" {
 		return s
 	}
-	lines := strings.Split(s, "\n")
+	lines := SplitLinesRaw(s)
 	var b strings.Builder
 	b.Grow(len(s) + len(prefix)*len(lines))
 	for i, line := range lines {
@@ -29,14 +29,15 @@ func Indent(s, prefix string) string {
 }
 
 // Dedent strips the longest common leading-whitespace prefix from non-empty
-// lines. Whitespace-only lines are normalized to empty (Python textwrap.dedent).
+// lines. Whitespace-only lines are normalized to empty (Python textwrap.dedent)
+// and CRLF line endings to LF.
 //
 //	Dedent("    foo\n      bar\n    baz") // "foo\n  bar\nbaz"
 func Dedent(s string) string {
 	if s == "" {
 		return s
 	}
-	lines := strings.Split(s, "\n")
+	lines := SplitLinesRaw(s)
 
 	prefix := ""
 	first := true

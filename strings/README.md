@@ -402,13 +402,13 @@ Output:
 
 <a name="Dedent"></a>
 
-## func [Dedent](<https://github.com/gechr/x/blob/main/strings/indent.go#L35>)
+## func [Dedent](<https://github.com/gechr/x/blob/main/strings/indent.go#L36>)
 
 ```go
 func Dedent(s string) string
 ```
 
-**Dedent** strips the longest common leading-whitespace prefix from non-empty lines. Whitespace-only lines are normalized to empty (Python textwrap.dedent).
+**Dedent** strips the longest common leading-whitespace prefix from non-empty lines. Whitespace-only lines are normalized to empty (Python textwrap.dedent) and CRLF line endings to LF.
 
 ```go
 Dedent("    foo\n      bar\n    baz") // "foo\n  bar\nbaz"
@@ -570,7 +570,7 @@ false
 func Indent(s, prefix string) string
 ```
 
-**Indent** prefixes every non-blank line of `s` with `prefix`. Blank and whitespace-only lines are normalized to empty.
+**Indent** prefixes every non-blank line of `s` with `prefix`. Blank and whitespace-only lines are normalized to empty, and CRLF line endings to LF.
 
 ```go
 Indent("foo\nbar", "  ")      // "  foo\n  bar"

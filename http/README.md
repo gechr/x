@@ -42,7 +42,7 @@ false
 
 <a name="NextLink"></a>
 
-## func [NextLink](<https://github.com/gechr/x/blob/main/http/link.go#L16>)
+## func [NextLink](<https://github.com/gechr/x/blob/main/http/link.go#L17>)
 
 ```go
 func NextLink(h http.Header) string

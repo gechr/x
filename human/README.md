@@ -126,7 +126,7 @@ Output:
 
 <a name="FormatDuration"></a>
 
-## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L43>)
+## func [FormatDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L44>)
 
 ```go
 func FormatDuration(d time.Duration, options ...DurationFormatOptions) string
@@ -167,7 +167,7 @@ Output:
 
 <a name="FormatIECBytes"></a>
 
-## func [FormatIECBytes](<https://github.com/gechr/x/blob/main/human/bytes.go#L108>)
+## func [FormatIECBytes](<https://github.com/gechr/x/blob/main/human/bytes.go#L110>)
 
 ```go
 func FormatIECBytes(b float64) string
@@ -304,7 +304,7 @@ Output:
 
 <a name="FormatSIBytes"></a>
 
-## func [FormatSIBytes](<https://github.com/gechr/x/blob/main/human/bytes.go#L103>)
+## func [FormatSIBytes](<https://github.com/gechr/x/blob/main/human/bytes.go#L105>)
 
 ```go
 func FormatSIBytes(b float64) string
@@ -446,7 +446,7 @@ in 2 hours
 
 <a name="ParseByteSize"></a>
 
-## func [ParseByteSize](<https://github.com/gechr/x/blob/main/human/bytes.go#L50>)
+## func [ParseByteSize](<https://github.com/gechr/x/blob/main/human/bytes.go#L52>)
 
 ```go
 func ParseByteSize(s string) float64
@@ -472,7 +472,7 @@ Output:
 
 <a name="ParseDuration"></a>
 
-## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L179>)
+## func [ParseDuration](<https://github.com/gechr/x/blob/main/human/duration.go#L180>)
 
 ```go
 func ParseDuration(s string) (time.Duration, error)
@@ -574,7 +574,7 @@ Output:
 
 <a name="DurationFormatOptions"></a>
 
-## type [DurationFormatOptions](<https://github.com/gechr/x/blob/main/human/duration.go#L21-L29>)
+## type [DurationFormatOptions](<https://github.com/gechr/x/blob/main/human/duration.go#L22-L30>)
 
 **DurationFormatOptions** controls duration rounding and fractional display.
 

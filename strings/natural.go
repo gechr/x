@@ -56,7 +56,7 @@ func EqualNatural(a, b string) bool {
 func commonNonDigitPrefix(a, b string) int {
 	n := min(len(a), len(b))
 	for i := range n {
-		if ca, cb := a[i], b[i]; isDigit(ca) || isDigit(cb) || ca != cb {
+		if ca, cb := a[i], b[i]; IsDigitChar(rune(ca)) || IsDigitChar(rune(cb)) || ca != cb {
 			return i
 		}
 	}
@@ -66,7 +66,7 @@ func commonNonDigitPrefix(a, b string) int {
 // digitRun returns the length of the leading run of ASCII digits in `s`.
 func digitRun(s string) int {
 	for i := range len(s) {
-		if !isDigit(s[i]) {
+		if !IsDigitChar(rune(s[i])) {
 			return i
 		}
 	}
@@ -94,6 +94,3 @@ func trimLeadingZeros(s string) string {
 	}
 	return s[len(s):]
 }
-
-// isDigit reports whether `c` is an ASCII digit.
-func isDigit(c byte) bool { return c >= '0' && c <= '9' }

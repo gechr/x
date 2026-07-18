@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	xslices "github.com/gechr/x/slices"
 	xstrings "github.com/gechr/x/strings"
 )
 
@@ -56,10 +57,9 @@ func hasRel(params, rel string) bool {
 		if !ok || !strings.EqualFold(strings.TrimSpace(name), "rel") {
 			continue
 		}
-		for candidate := range strings.SplitSeq(strings.Trim(strings.TrimSpace(value), `"`), " ") {
-			if strings.EqualFold(candidate, rel) {
-				return true
-			}
+		rels := strings.Fields(strings.Trim(strings.TrimSpace(value), `"`))
+		if xslices.ContainsFold(rels, rel) {
+			return true
 		}
 	}
 	return false
