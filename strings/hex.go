@@ -1,6 +1,12 @@
 package strings
 
-import "strings"
+import (
+	"encoding/hex"
+	"fmt"
+	"strings"
+)
+
+const sha256HexLength = 64
 
 // HexEqual reports whether `a` and `b` denote the same hexadecimal value,
 // ignoring surrounding whitespace, an optional `0x` (or `0X`) prefix, and case.
@@ -44,7 +50,25 @@ func IsGitCommit(s string) bool {
 	return len(s) == 40 && IsHex(s)
 }
 
-// IsSHA256 reports whether `s` is 64 hexadecimal digits (a SHA-256 digest).
+// IsSHA256 reports whether `s` is 64 hexadecimal digits (a sha256 digest).
 func IsSHA256(s string) bool {
-	return len(s) == 64 && IsHex(s)
+	return len(s) == sha256HexLength && IsHex(s)
+}
+
+// DecodeSHA256 decodes a 64-digit hexadecimal sha256 digest.
+// It returns the zero digest and an error if `s` has the wrong length or
+// contains a non-hexadecimal character.
+func DecodeSHA256(s string) ([32]byte, error) {
+	var digest [32]byte
+	if len(s) != sha256HexLength {
+		return digest, fmt.Errorf(
+			"invalid sha256 digest length: got %d, want %d",
+			len(s), sha256HexLength,
+		)
+	}
+
+	if _, err := hex.Decode(digest[:], []byte(s)); err != nil {
+		return [32]byte{}, fmt.Errorf("invalid sha256 digest: %w", err)
+	}
+	return digest, nil
 }

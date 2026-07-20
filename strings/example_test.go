@@ -246,6 +246,17 @@ func ExampleIsSHA256() {
 	// false
 }
 
+func ExampleDecodeSHA256() {
+	digest, err := xstrings.DecodeSHA256(
+		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+	)
+	fmt.Printf("%x\n", digest[:4])
+	fmt.Println(err)
+	// Output:
+	// e3b0c442
+	// <nil>
+}
+
 func ExampleLessNatural() {
 	fmt.Println(xstrings.LessNatural("v2", "v10"))
 	fmt.Println(xstrings.LessNatural("v10", "v2"))

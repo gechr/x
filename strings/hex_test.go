@@ -1,6 +1,7 @@
 package strings_test
 
 import (
+	"crypto/sha256"
 	"strings"
 	"testing"
 
@@ -59,4 +60,27 @@ func TestIsSHA256(t *testing.T) {
 	require.True(t, xstrings.IsSHA256(strings.Repeat("a", 64)))
 	require.False(t, xstrings.IsSHA256(strings.Repeat("a", 40)), "that is git commit length")
 	require.False(t, xstrings.IsSHA256(strings.Repeat("z", 64)), "not hex")
+}
+
+func TestDecodeSHA256(t *testing.T) {
+	t.Parallel()
+
+	want := sha256.Sum256(nil)
+	for _, input := range []string{
+		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+		"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+	} {
+		got, err := xstrings.DecodeSHA256(input)
+		require.NoError(t, err)
+		require.Equal(t, want, got)
+	}
+
+	for _, input := range []string{
+		"deadbeef",
+		strings.Repeat("z", 64),
+	} {
+		got, err := xstrings.DecodeSHA256(input)
+		require.Error(t, err)
+		require.Zero(t, got)
+	}
 }
