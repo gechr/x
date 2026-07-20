@@ -21,7 +21,7 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func ContainsAny(s string, substrings ...string) bool](<#ContainsAny>)
 - [func ContainsFold(s, substr string) bool](<#ContainsFold>)
 - [func CountAny(s, chars string) int](<#CountAny>)
-- [func DecodeSHA256(s string) (\[32\]byte, error)](<#DecodeSHA256>)
+- [func DecodeSHA256(s string) (\[sha256.Size\]byte, error)](<#DecodeSHA256>)
 - [func Dedent(s string) string](<#Dedent>)
 - [func EnsureTrailingNewline(s string) string](<#EnsureTrailingNewline>)
 - [func EqualNatural(a, b string) bool](<#EqualNatural>)
@@ -403,10 +403,10 @@ Output:
 
 <a name="DecodeSHA256"></a>
 
-## func [DecodeSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L61>)
+## func [DecodeSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L62>)
 
 ```go
-func DecodeSHA256(s string) ([32]byte, error)
+func DecodeSHA256(s string) ([sha256.Size]byte, error)
 ```
 
 **DecodeSHA256** decodes a 64-digit hexadecimal sha256 digest. It returns the zero digest and an error if `s` has the wrong length or contains a non-hexadecimal character.
@@ -568,7 +568,7 @@ false
 
 <a name="HexEqual"></a>
 
-## func [HexEqual](<https://github.com/gechr/x/blob/main/strings/hex.go#L14>)
+## func [HexEqual](<https://github.com/gechr/x/blob/main/strings/hex.go#L15>)
 
 ```go
 func HexEqual(a, b string) bool
@@ -749,7 +749,7 @@ func IsFalsy(s string) bool
 
 <a name="IsGitCommit"></a>
 
-## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L49>)
+## func [IsGitCommit](<https://github.com/gechr/x/blob/main/strings/hex.go#L50>)
 
 ```go
 func IsGitCommit(s string) bool
@@ -775,7 +775,7 @@ false
 
 <a name="IsHex"></a>
 
-## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L31>)
+## func [IsHex](<https://github.com/gechr/x/blob/main/strings/hex.go#L32>)
 
 ```go
 func IsHex(s string) bool
@@ -801,7 +801,7 @@ false
 
 <a name="IsHexChar"></a>
 
-## func [IsHexChar](<https://github.com/gechr/x/blob/main/strings/hex.go#L44>)
+## func [IsHexChar](<https://github.com/gechr/x/blob/main/strings/hex.go#L45>)
 
 ```go
 func IsHexChar(c rune) bool
@@ -831,7 +831,7 @@ false
 
 <a name="IsSHA256"></a>
 
-## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L54>)
+## func [IsSHA256](<https://github.com/gechr/x/blob/main/strings/hex.go#L55>)
 
 ```go
 func IsSHA256(s string) bool

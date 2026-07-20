@@ -1,12 +1,13 @@
 package strings
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"strings"
 )
 
-const sha256HexLength = 64
+const sha256HexLength = sha256.Size * 2
 
 // HexEqual reports whether `a` and `b` denote the same hexadecimal value,
 // ignoring surrounding whitespace, an optional `0x` (or `0X`) prefix, and case.
@@ -58,8 +59,8 @@ func IsSHA256(s string) bool {
 // DecodeSHA256 decodes a 64-digit hexadecimal sha256 digest.
 // It returns the zero digest and an error if `s` has the wrong length or
 // contains a non-hexadecimal character.
-func DecodeSHA256(s string) ([32]byte, error) {
-	var digest [32]byte
+func DecodeSHA256(s string) ([sha256.Size]byte, error) {
+	var digest [sha256.Size]byte
 	if len(s) != sha256HexLength {
 		return digest, fmt.Errorf(
 			"invalid sha256 digest length: got %d, want %d",
@@ -68,7 +69,7 @@ func DecodeSHA256(s string) ([32]byte, error) {
 	}
 
 	if _, err := hex.Decode(digest[:], []byte(s)); err != nil {
-		return [32]byte{}, fmt.Errorf("invalid sha256 digest: %w", err)
+		return [sha256.Size]byte{}, fmt.Errorf("invalid sha256 digest: %w", err)
 	}
 	return digest, nil
 }
