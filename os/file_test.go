@@ -80,3 +80,24 @@ func TestSameFile(t *testing.T) {
 		})
 	}
 }
+
+func TestRemoveIfExists(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	file := filepath.Join(dir, "file")
+	require.NoError(t, os.WriteFile(file, []byte("payload"), 0o600))
+
+	require.NoError(t, xos.RemoveIfExists(file))
+	require.NoFileExists(t, file)
+	require.NoError(t, xos.RemoveIfExists(file))
+
+	// A path below a regular file does not exist (ENOTDIR).
+	require.NoError(t, os.WriteFile(file, []byte("payload"), 0o600))
+	require.NoError(t, xos.RemoveIfExists(filepath.Join(file, "child")))
+
+	nonEmptyDir := filepath.Join(dir, "non-empty")
+	require.NoError(t, os.Mkdir(nonEmptyDir, 0o755))
+	require.NoError(t, os.WriteFile(filepath.Join(nonEmptyDir, "child"), nil, 0o600))
+	require.Error(t, xos.RemoveIfExists(nonEmptyDir))
+}

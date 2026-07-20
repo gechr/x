@@ -15,6 +15,16 @@ func SameFile(a, b string) (bool, error) {
 	return sameFile(a, nil, b)
 }
 
+// RemoveIfExists removes `path`. It succeeds without error if `path` does not
+// exist.
+func RemoveIfExists(path string) error {
+	err := os.Remove(path)
+	if notExist(err) {
+		return nil
+	}
+	return err
+}
+
 func sameFile(a string, aInfo os.FileInfo, b string) (bool, error) {
 	aResolved, err := xfilepath.ResolveLenient(a)
 	if err != nil {

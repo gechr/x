@@ -140,6 +140,20 @@ func ExampleSameFile() {
 	// false
 }
 
+func ExampleRemoveIfExists() {
+	dir, _ := os.MkdirTemp("", "example")
+	defer func() { _ = os.RemoveAll(dir) }()
+
+	path := filepath.Join(dir, "file.txt")
+	_ = os.WriteFile(path, []byte("hello"), 0o600)
+
+	fmt.Println(xos.RemoveIfExists(path))
+	fmt.Println(xos.RemoveIfExists(path))
+	// Output:
+	// <nil>
+	// <nil>
+}
+
 func ExampleAtomicWrite() {
 	dir, _ := os.MkdirTemp("", "example")
 	defer func() { _ = os.RemoveAll(dir) }()

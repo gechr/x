@@ -28,6 +28,7 @@ Package `os` provides OS helpers: file probes, safe writes, copy, line I/O, and 
 - [func IsWindows() bool](<#IsWindows>)
 - [func IsWritableDir(dir string) bool](<#IsWritableDir>)
 - [func ReadLines(path string) (\[\]string, error)](<#ReadLines>)
+- [func RemoveIfExists(path string) error](<#RemoveIfExists>)
 - [func SameFile(a, b string) (bool, error)](<#SameFile>)
 - [func Trash(path string) error](<#Trash>)
 - [func WriteLines(path string, lines \[\]string, perm os.FileMode) error](<#WriteLines>)
@@ -512,6 +513,38 @@ Output:
 alpha
 beta
 gamma
+```
+
+</details>
+
+<a name="RemoveIfExists"></a>
+
+## func [RemoveIfExists](<https://github.com/gechr/x/blob/main/os/file.go#L20>)
+
+```go
+func RemoveIfExists(path string) error
+```
+
+**RemoveIfExists** removes `path`. It succeeds without error if `path` does not exist.
+
+<details><summary><b>Example</b></summary>
+
+```go
+dir, _ := os.MkdirTemp("", "example")
+defer func() { _ = os.RemoveAll(dir) }()
+
+path := filepath.Join(dir, "file.txt")
+_ = os.WriteFile(path, []byte("hello"), 0o600)
+
+fmt.Println(xos.RemoveIfExists(path))
+fmt.Println(xos.RemoveIfExists(path))
+```
+
+Output:
+
+```text
+<nil>
+<nil>
 ```
 
 </details>
