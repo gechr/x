@@ -247,7 +247,7 @@ foo, bar
 
 <a name="CompareFold"></a>
 
-## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L14>)
+## func [CompareFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L9>)
 
 ```go
 func CompareFold(a, b string) int
@@ -353,7 +353,7 @@ false
 
 <a name="ContainsFold"></a>
 
-## func [ContainsFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L28>)
+## func [ContainsFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L15>)
 
 ```go
 func ContainsFold(s, substr string) bool
@@ -516,7 +516,7 @@ false
 
 <a name="HasPrefixFold"></a>
 
-## func [HasPrefixFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L44>)
+## func [HasPrefixFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L21>)
 
 ```go
 func HasPrefixFold(s, prefix string) bool
@@ -542,7 +542,7 @@ false
 
 <a name="HasSuffixFold"></a>
 
-## func [HasSuffixFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L51>)
+## func [HasSuffixFold](<https://github.com/gechr/x/blob/main/strings/fold.go#L27>)
 
 ```go
 func HasSuffixFold(s, suffix string) bool

@@ -12,6 +12,7 @@ go get github.com/gechr/x@latest
 | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
 | [`agent`](https://github.com/gechr/x/tree/main/agent#readme)                         | AI coding agent detection (Claude Code, Codex, Cursor, …)        |
 | [`ansi`](https://github.com/gechr/x/tree/main/ansi#readme)                           | ANSI-aware text wrapping, hyperlinks, and TTY fallback           |
+| [`bytes`](https://github.com/gechr/x/tree/main/bytes#readme)                         | Byte-slice mirror of `strings`                                   |
 | [`encoding`](https://github.com/gechr/x/tree/main/encoding#readme)                   | Structured-document helpers: field paths for JSON/YAML           |
 | [`errors`](https://github.com/gechr/x/tree/main/errors#readme)                       | Error matching helpers                                           |
 | [`filepath`](https://github.com/gechr/x/tree/main/filepath#readme)                   | Path helpers: symlink resolution and containment checks          |
