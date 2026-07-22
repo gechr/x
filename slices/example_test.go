@@ -38,6 +38,12 @@ func ExampleFormat() {
 	// [Salutations, Valentina! Salutations, Ander! Salutations, Olivia! Salutations, Sam!]
 }
 
+func ExampleSurround() {
+	fmt.Println(xslices.Surround([]string{"a", "b", "c"}, `"`, `"`))
+	// Output:
+	// ["a" "b" "c"]
+}
+
 func ExampleFilter() {
 	items := []int{1, 2, 3, 4, 5, 6}
 	fmt.Println(xslices.Filter(items, func(n int) bool { return n%2 == 0 }))

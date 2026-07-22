@@ -24,6 +24,7 @@ Package `slices` provides slice helpers.
 - [func Map\[S ~\[\]E, E, R any\](items S, fn func(E) R) \[\]R](<#Map>)
 - [func Partition\[S ~\[\]E, E any\](items S, match func(E) bool) (S, S)](<#Partition>)
 - [func SortNatural\[S ~\[\]E, E ~string\](s S)](<#SortNatural>)
+- [func Surround\[S ~\[\]E, E ~string\](items S, prefix, suffix E) \[\]E](<#Surround>)
 - [func Trim\[S ~\[\]E, E comparable\](items, cutset S) S](<#Trim>)
 - [func TrimLeft\[S ~\[\]E, E comparable\](items, cutset S) S](<#TrimLeft>)
 - [func TrimRight\[S ~\[\]E, E comparable\](items, cutset S) S](<#TrimRight>)
@@ -457,6 +458,30 @@ Output:
 
 ```text
 [item1 item2 item3 item10 item20]
+```
+
+</details>
+
+<a name="Surround"></a>
+
+## func [Surround](<https://github.com/gechr/x/blob/main/slices/surround.go#L5>)
+
+```go
+func Surround[S ~[]E, E ~string](items S, prefix, suffix E) []E
+```
+
+**Surround** returns a new slice with `prefix` and `suffix` concatenated onto each element of `items`.
+
+<details><summary><b>Example</b></summary>
+
+```go
+fmt.Println(xslices.Surround([]string{"a", "b", "c"}, `"`, `"`))
+```
+
+Output:
+
+```text
+["a" "b" "c"]
 ```
 
 </details>
