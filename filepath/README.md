@@ -11,6 +11,7 @@ Package `filepath` provides path helpers: symlink resolution and containment che
 - [func Expand(path string) string](<#Expand>)
 - [func IsWithin(base string, targets ...string) bool](<#IsWithin>)
 - [func Merge(paths \[\]string, opts ...MergeOption) \[\]string](<#Merge>)
+- [func Rebase(dir, path string) string](<#Rebase>)
 - [func Resolve(path string) (string, error)](<#Resolve>)
 - [func ResolveLenient(path string) (string, error)](<#ResolveLenient>)
 - [func SplitPath(list string) \[\]string](<#SplitPath>)
@@ -46,7 +47,7 @@ Output:
 
 <a name="IsWithin"></a>
 
-## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L96>)
+## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L114>)
 
 ```go
 func IsWithin(base string, targets ...string) bool
@@ -94,7 +95,7 @@ false
 
 <a name="Merge"></a>
 
-## func [Merge](<https://github.com/gechr/x/blob/main/filepath/path.go#L160>)
+## func [Merge](<https://github.com/gechr/x/blob/main/filepath/path.go#L178>)
 
 ```go
 func Merge(paths []string, opts ...MergeOption) []string
@@ -138,9 +139,36 @@ Output:
 
 </details>
 
+<a name="Rebase"></a>
+
+## func [Rebase](<https://github.com/gechr/x/blob/main/filepath/path.go#L63>)
+
+```go
+func Rebase(dir, path string) string
+```
+
+**Rebase** anchors a relative `path` to the base directory `dir`, returning `filepath.Join(dir, path)`. An empty or already-absolute `path` is returned unchanged, so a caller-supplied override always wins over the default base. It is purely lexical and touches neither the filesystem nor the current working directory; the result is absolute only when `dir` is.
+
+<details><summary><b>Example</b></summary>
+
+**Rebase** anchors a relative path to a base directory. (ToSlash keeps the output identical across operating systems.)
+
+```go
+base := filepath.Join("etc", "app")
+fmt.Println(filepath.ToSlash(xfilepath.Rebase(base, "conf.d")))
+```
+
+Output:
+
+```text
+etc/app/conf.d
+```
+
+</details>
+
 <a name="Resolve"></a>
 
-## func [Resolve](<https://github.com/gechr/x/blob/main/filepath/path.go#L56>)
+## func [Resolve](<https://github.com/gechr/x/blob/main/filepath/path.go#L74>)
 
 ```go
 func Resolve(path string) (string, error)
@@ -176,7 +204,7 @@ true
 
 <a name="ResolveLenient"></a>
 
-## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L72>)
+## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L90>)
 
 ```go
 func ResolveLenient(path string) (string, error)
@@ -238,7 +266,7 @@ Output:
 
 <a name="MergeOption"></a>
 
-## type [MergeOption](<https://github.com/gechr/x/blob/main/filepath/path.go#L131>)
+## type [MergeOption](<https://github.com/gechr/x/blob/main/filepath/path.go#L149>)
 
 **MergeOption** configures [Merge](<#Merge>).
 
@@ -248,7 +276,7 @@ type MergeOption func(*mergeConfig)
 
 <a name="WithResolveSymlinks"></a>
 
-### func [WithResolveSymlinks](<https://github.com/gechr/x/blob/main/filepath/path.go#L141>)
+### func [WithResolveSymlinks](<https://github.com/gechr/x/blob/main/filepath/path.go#L159>)
 
 ```go
 func WithResolveSymlinks() MergeOption

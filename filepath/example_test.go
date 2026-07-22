@@ -60,6 +60,15 @@ func ExampleResolveLenient() {
 	// missing.txt
 }
 
+// Rebase anchors a relative path to a base directory. (ToSlash keeps the
+// output identical across operating systems.)
+func ExampleRebase() {
+	base := filepath.Join("etc", "app")
+	fmt.Println(filepath.ToSlash(xfilepath.Rebase(base, "conf.d")))
+	// Output:
+	// etc/app/conf.d
+}
+
 func ExampleIsWithin() {
 	fmt.Println(xfilepath.IsWithin("src", "src/foo.go"))
 	fmt.Println(xfilepath.IsWithin("src", "src"))

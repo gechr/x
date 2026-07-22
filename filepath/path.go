@@ -49,6 +49,24 @@ func SplitPath(list string) []string {
 	return paths
 }
 
+// Rebase anchors a relative `path` to the base directory `dir`, returning
+// `filepath.Join(dir, path)`. An empty or already-absolute `path` is returned
+// unchanged, so a caller-supplied override always wins over the default base.
+// It is purely lexical and touches neither the filesystem nor the current
+// working directory; the result is absolute only when `dir` is.
+//
+// Example:
+//
+//	Rebase("/etc/app", "conf.d")   // "/etc/app/conf.d"
+//	Rebase("/etc/app", "/abs.cfg") // "/abs.cfg"
+//	Rebase("/etc/app", "")         // ""
+func Rebase(dir, path string) string {
+	if path == "" || filepath.IsAbs(path) {
+		return path
+	}
+	return filepath.Join(dir, path)
+}
+
 // Resolve recursively follows every symlink along `path` and returns the fully
 // resolved absolute path. On any error (missing component, cycle, permission)
 // the input path is returned alongside the error so callers can choose whether

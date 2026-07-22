@@ -73,6 +73,25 @@ func TestSplitPath(t *testing.T) {
 	}
 }
 
+func TestRebase(t *testing.T) {
+	t.Parallel()
+
+	base := filepath.Join("etc", "app")
+
+	// A relative path is joined onto (and cleaned against) the base dir.
+	require.Equal(t, filepath.Join(base, "conf.d"), xfilepath.Rebase(base, "conf.d"))
+	require.Equal(t, filepath.Join("etc", "conf.d"),
+		xfilepath.Rebase(base, filepath.Join("..", "conf.d")))
+
+	// An empty or already-absolute path is returned unchanged - the override wins.
+	require.Empty(t, xfilepath.Rebase(base, ""))
+
+	abs, err := filepath.Abs(filepath.Join("some", "abs.cfg"))
+	require.NoError(t, err)
+	require.True(t, filepath.IsAbs(abs))
+	require.Equal(t, abs, xfilepath.Rebase(base, abs))
+}
+
 func TestResolve(t *testing.T) {
 	t.Parallel()
 
