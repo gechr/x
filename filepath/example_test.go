@@ -16,6 +16,15 @@ func ExampleExpand() {
 	// /srv/app/config.toml
 }
 
+// SplitPath splits a PATH-style list and drops the empty entry left by the
+// trailing separator.
+func ExampleSplitPath() {
+	sep := string(os.PathListSeparator)
+	fmt.Println(xfilepath.SplitPath("/usr/bin" + sep + "/bin" + sep))
+	// Output:
+	// [/usr/bin /bin]
+}
+
 // Resolve follows symlinks, so a link and its target resolve to the same
 // path.
 func ExampleResolve() {

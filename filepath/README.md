@@ -13,6 +13,7 @@ Package `filepath` provides path helpers: symlink resolution and containment che
 - [func Merge(paths \[\]string, opts ...MergeOption) \[\]string](<#Merge>)
 - [func Resolve(path string) (string, error)](<#Resolve>)
 - [func ResolveLenient(path string) (string, error)](<#ResolveLenient>)
+- [func SplitPath(list string) \[\]string](<#SplitPath>)
 - [type MergeOption](<#MergeOption>)
   - [func WithResolveSymlinks() MergeOption](<#WithResolveSymlinks>)
 
@@ -45,7 +46,7 @@ Output:
 
 <a name="IsWithin"></a>
 
-## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L75>)
+## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L96>)
 
 ```go
 func IsWithin(base string, targets ...string) bool
@@ -93,7 +94,7 @@ false
 
 <a name="Merge"></a>
 
-## func [Merge](<https://github.com/gechr/x/blob/main/filepath/path.go#L139>)
+## func [Merge](<https://github.com/gechr/x/blob/main/filepath/path.go#L160>)
 
 ```go
 func Merge(paths []string, opts ...MergeOption) []string
@@ -139,7 +140,7 @@ Output:
 
 <a name="Resolve"></a>
 
-## func [Resolve](<https://github.com/gechr/x/blob/main/filepath/path.go#L35>)
+## func [Resolve](<https://github.com/gechr/x/blob/main/filepath/path.go#L56>)
 
 ```go
 func Resolve(path string) (string, error)
@@ -175,7 +176,7 @@ true
 
 <a name="ResolveLenient"></a>
 
-## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L51>)
+## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L72>)
 
 ```go
 func ResolveLenient(path string) (string, error)
@@ -208,9 +209,36 @@ missing.txt
 
 </details>
 
+<a name="SplitPath"></a>
+
+## func [SplitPath](<https://github.com/gechr/x/blob/main/filepath/path.go#L41>)
+
+```go
+func SplitPath(list string) []string
+```
+
+**SplitPath** splits a PATH-style list (such as $PATH or $GOPATH) on the OS-specific list separator ([os.PathListSeparator](<https://pkg.go.dev/os#PathListSeparator>)), dropping the empty entries produced by leading, trailing, or doubled separators - an empty entry otherwise resolves to the current directory when joined. On Windows it honours the same quoting rules as [filepath.SplitList](<https://pkg.go.dev/path/filepath#SplitList>).
+
+<details><summary><b>Example</b></summary>
+
+**SplitPath** splits a PATH-style list and drops the empty entry left by the trailing separator.
+
+```go
+sep := string(os.PathListSeparator)
+fmt.Println(xfilepath.SplitPath("/usr/bin" + sep + "/bin" + sep))
+```
+
+Output:
+
+```text
+[/usr/bin /bin]
+```
+
+</details>
+
 <a name="MergeOption"></a>
 
-## type [MergeOption](<https://github.com/gechr/x/blob/main/filepath/path.go#L110>)
+## type [MergeOption](<https://github.com/gechr/x/blob/main/filepath/path.go#L131>)
 
 **MergeOption** configures [Merge](<#Merge>).
 
@@ -220,7 +248,7 @@ type MergeOption func(*mergeConfig)
 
 <a name="WithResolveSymlinks"></a>
 
-### func [WithResolveSymlinks](<https://github.com/gechr/x/blob/main/filepath/path.go#L120>)
+### func [WithResolveSymlinks](<https://github.com/gechr/x/blob/main/filepath/path.go#L141>)
 
 ```go
 func WithResolveSymlinks() MergeOption

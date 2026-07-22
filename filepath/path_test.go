@@ -37,6 +37,42 @@ func TestExpand_NoExpansion(t *testing.T) {
 	require.Equal(t, "/absolute/path", xfilepath.Expand("/absolute/path"))
 }
 
+func TestSplitPath(t *testing.T) {
+	t.Parallel()
+
+	sep := string(os.PathListSeparator)
+
+	tests := []struct {
+		name string
+		in   string
+		want []string
+	}{
+		{name: "empty", in: "", want: []string{}},
+		{name: "single", in: "/usr/bin", want: []string{"/usr/bin"}},
+		{name: "multiple", in: "/usr/bin" + sep + "/bin", want: []string{"/usr/bin", "/bin"}},
+		{
+			name: "trailing separator",
+			in:   "/usr/bin" + sep + "/bin" + sep,
+			want: []string{"/usr/bin", "/bin"},
+		},
+		{name: "leading separator", in: sep + "/usr/bin", want: []string{"/usr/bin"}},
+		{
+			name: "doubled separator",
+			in:   "/usr/bin" + sep + sep + "/bin",
+			want: []string{"/usr/bin", "/bin"},
+		},
+		{name: "only separators", in: sep + sep, want: []string{}},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			require.Equal(t, tt.want, xfilepath.SplitPath(tt.in))
+		})
+	}
+}
+
 func TestResolve(t *testing.T) {
 	t.Parallel()
 

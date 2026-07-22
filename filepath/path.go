@@ -28,6 +28,27 @@ func Expand(path string) string {
 	return os.ExpandEnv(path)
 }
 
+// SplitPath splits a PATH-style list (such as $PATH or $GOPATH) on the
+// OS-specific list separator ([os.PathListSeparator]), dropping the empty
+// entries produced by leading, trailing, or doubled separators - an empty
+// entry otherwise resolves to the current directory when joined. On Windows it
+// honours the same quoting rules as [filepath.SplitList].
+//
+// Example:
+//
+//	SplitPath("/usr/bin:/bin:")   // ["/usr/bin", "/bin"]  (Unix)
+//	SplitPath("")                 // []
+func SplitPath(list string) []string {
+	raw := filepath.SplitList(list)
+	paths := make([]string, 0, len(raw))
+	for _, path := range raw {
+		if path != "" {
+			paths = append(paths, path)
+		}
+	}
+	return paths
+}
+
 // Resolve recursively follows every symlink along `path` and returns the fully
 // resolved absolute path. On any error (missing component, cycle, permission)
 // the input path is returned alongside the error so callers can choose whether
