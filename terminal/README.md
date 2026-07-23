@@ -13,6 +13,7 @@ Package `terminal` provides terminal detection and size queries.
 - [func IsDark() (bool, bool)](<#IsDark>)
 - [func IsLight() (bool, bool)](<#IsLight>)
 - [func Size(f \*os.File) (int, int)](<#Size>)
+- [func SupportsTrueColor() bool](<#SupportsTrueColor>)
 - [func Width(f \*os.File) int](<#Width>)
 
 <a name="Height"></a>
@@ -148,6 +149,18 @@ Output:
 ```
 
 </details>
+
+<a name="SupportsTrueColor"></a>
+
+## func [SupportsTrueColor](<https://github.com/gechr/x/blob/main/terminal/color.go#L16>)
+
+```go
+func SupportsTrueColor() bool
+```
+
+**SupportsTrueColor** reports whether the terminal supports 24-bit "true color" output, based on the COLORTERM and TERM environment variables.
+
+COLORTERM=truecolor (or 24bit) is the de-facto signal modern terminals set. TERM alone is deliberately not trusted for capability - the ubiquitous TERM=xterm-256color advertises only 256 colors even on terminals that render 24-bit, which is precisely why COLORTERM exists. This reports capability, not preference: honoring NO\_COLOR or a non-terminal stream is left to the caller.
 
 <a name="Width"></a>
 
