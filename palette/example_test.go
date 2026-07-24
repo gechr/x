@@ -46,5 +46,5 @@ func ExampleAuto() {
 	p = palette.Auto(palette.WithTrueColor())
 	fmt.Println(len(p))
 	// Output:
-	// 36
+	// 50
 }

@@ -1,37 +1,38 @@
 package palette
 
-// TrueColorDark returns a vivid 36-color Glasbey palette curated for dark
-// backgrounds. It was generated with glasbey using lightness bounds of 50-90
-// and chroma bounds of 40-100, then optimized as a complete set for perceptual
-// separation. Each color has a contrast ratio of at least 4.5:1 against black.
-// Each call returns a fresh palette the caller owns.
+// TrueColorDark returns the first 50 colors of Colorcet's glasbey_light
+// palette (https://colorcet.holoviz.org/user_guide/Categorical.html), the
+// standard Glasbey palette for dark backgrounds. Glasbey orders colors so each
+// addition is maximally distinct from the preceding colors. Each call returns
+// a fresh palette the caller owns.
 func TrueColorDark() Palette {
 	return hexColors(
-		"#ff3d00", "#1cae00", "#ce51ff", "#1ca2ca", "#ffc200",
-		"#00ffba", "#ffa2ca", "#bab6ff", "#a6ff00", "#ff00b2",
-		"#be8239", "#92e7ff", "#39a692", "#aace79", "#6d8eff",
-		"#ffaa75", "#f39aff", "#c275aa", "#9a9a00", "#d76d69",
-		"#04e351", "#e7f37d", "#a286ce", "#ff7d00", "#75beff",
-		"#ff3161", "#00dbc6", "#6da25d", "#ff51ef", "#c2ce00",
-		"#caae55", "#b6ffb6", "#96ffef", "#fb699e", "#10c682",
-		"#00cae7",
+		"#d60000", "#018700", "#b500ff", "#05acc6", "#97ff00",
+		"#ffa52f", "#ff8ec8", "#79525e", "#00fdcf", "#afa5ff",
+		"#93ac83", "#9a6900", "#366962", "#d3008c", "#fdf490",
+		"#c86e66", "#9ee2ff", "#00c846", "#a877ac", "#b8ba01",
+		"#f4bfb1", "#ff28fd", "#f2cdff", "#009e7c", "#ff6200",
+		"#56642a", "#953f1f", "#90318e", "#ff3464", "#a0e491",
+		"#8c9ab1", "#829026", "#ae083f", "#77c6ba", "#bc9157",
+		"#e48eff", "#72b8ff", "#c6a5c1", "#ff9070", "#d3c37c",
+		"#bceddb", "#6b8567", "#916e56", "#f9ff00", "#bac1df",
+		"#ac567c", "#ffcd03", "#ff49b1", "#c15603", "#5d8c90",
 	)
 }
 
-// TrueColorLight returns a vivid 36-color Glasbey palette curated for light
-// backgrounds. It was generated with glasbey using lightness bounds of 10-35
-// and chroma bounds of 40-100, then optimized as a complete set for perceptual
-// separation. Each color has a contrast ratio of at least 4.5:1 against white.
-// See [TrueColorDark].
+// TrueColorLight returns the first 50 colors of Colorcet's glasbey_dark, the
+// standard Glasbey palette for light backgrounds. See [TrueColorDark].
 func TrueColorLight() Palette {
 	return hexColors(
-		"#c60000", "#8624ff", "#148200", "#65004d", "#04758a",
-		"#080096", "#714900", "#003500", "#b204b2", "#450c00",
-		"#a24965", "#0000fb", "#550096", "#6d0014", "#6561a2",
-		"#007d5d", "#004971", "#414d00", "#865192", "#a64d20",
-		"#be0075", "#390449", "#5900df", "#752800", "#756d00",
-		"#920075", "#45001c", "#28185d", "#414186", "#b2103d",
-		"#790092", "#a218df", "#005d2d", "#5551ff", "#0071c6",
-		"#792d45",
+		"#d60000", "#8c3bff", "#018700", "#00acc6", "#e6a500",
+		"#ff7ed1", "#6b004f", "#573b00", "#005659", "#15e18c",
+		"#0000dd", "#a17569", "#bcb6ff", "#bf03b8", "#645472",
+		"#790000", "#0774d8", "#729a7c", "#ff7752", "#004b00",
+		"#8e7b01", "#f2007b", "#8eba00", "#a57bb8", "#5901a3",
+		"#e2afaf", "#a03a52", "#a1c8c8", "#9e4b00", "#546744",
+		"#bac389", "#5e7b87", "#60383b", "#8287ff", "#380000",
+		"#e252ff", "#2f5282", "#7ecaff", "#c4668e", "#008069",
+		"#919eb6", "#cc7407", "#7e2a8e", "#00bda3", "#2db152",
+		"#4d33ff", "#00e400", "#ff00cd", "#c85748", "#e49cff",
 	)
 }

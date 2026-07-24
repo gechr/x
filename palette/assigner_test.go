@@ -30,13 +30,13 @@ func TestNewAssignerUsesGivenColors(t *testing.T) {
 	require.Equal(t, pal, palette.NewAssigner(pal...).Palette())
 }
 
-func TestAssignerFirstKeyGetsHashColor(t *testing.T) {
+func TestAssignerUsesPaletteOrder(t *testing.T) {
 	pal := palette.DefaultDark()
 	a := palette.NewAssigner(pal...)
 
-	// With nothing assigned yet, the first key lands on its stable hash color -
-	// the same one [Palette.Color] would pick.
-	require.Equal(t, pal.Color("alpha"), a.Assign("alpha"))
+	require.Equal(t, pal[0], a.Assign("alpha"))
+	require.Equal(t, pal[1], a.Assign("beta"))
+	require.Equal(t, pal[2], a.Assign("gamma"))
 }
 
 func TestAssignerNoDuplicatesUntilExhausted(t *testing.T) {
@@ -47,7 +47,7 @@ func TestAssignerNoDuplicatesUntilExhausted(t *testing.T) {
 	for _, key := range []string{"alpha", "beta", "gamma"} {
 		seen[a.Assign(key)] = true
 	}
-	// All three distinct keys map to distinct colors despite hash collisions.
+	// All three distinct keys map to distinct colors.
 	require.Len(t, seen, 3)
 
 	// Palette exhausted: a fourth key must reuse an existing color.

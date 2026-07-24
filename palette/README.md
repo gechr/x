@@ -26,11 +26,9 @@ The mapping from string to color is deterministic: the same text always resolves
 
 <a name="Assigner"></a>
 
-## type [Assigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L21-L27>)
+## type [Assigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L15-L21>)
 
-**Assigner** hands out colors from a [Palette](<#Palette>) so distinct keys receive distinct colors. Each key is placed at its hash-derived color - the same slot [Palette.Color](<#Palette.Color>) would choose - and if that color is already taken, the Assigner probes forward to the next free color. Assignments are remembered, so a key always resolves to the same color for the Assigner's lifetime.
-
-This blends the two extremes: like [Palette.Color](<#Palette.Color>) a key tends to land on its stable hash color across runs, but unlike it distinct keys never share a color until the palette is exhausted (after which colors repeat). A key only moves off its hash color when an earlier-seen key collided into that slot, so with few keys relative to the palette size, most keys stay stable across runs.
+**Assigner** hands out colors from a [Palette](<#Palette>) so distinct keys receive distinct colors in palette order, repeating only after the palette is exhausted. Assignments are remembered, so a key always resolves to the same color for the Assigner's lifetime. Assign keys in a stable order, such as sorted order, to reproduce the same mapping across runs.
 
 An Assigner is safe for concurrent use.
 
@@ -42,7 +40,7 @@ type Assigner struct {
 
 <a name="NewAssigner"></a>
 
-### func [NewAssigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L33>)
+### func [NewAssigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L27>)
 
 ```go
 func NewAssigner(colors ...color.Color) *Assigner
@@ -71,17 +69,17 @@ true
 
 <a name="Assigner.Assign"></a>
 
-### func (\*Assigner) [Assign](<https://github.com/gechr/x/blob/main/palette/assigner.go#L53>)
+### func (\*Assigner) [Assign](<https://github.com/gechr/x/blob/main/palette/assigner.go#L47>)
 
 ```go
 func (a *Assigner) Assign(key string) color.Color
 ```
 
-**Assign** returns the color for key: its hash-derived color when free, otherwise the next free color. The choice is remembered, so a key always resolves to the same color thereafter. It returns nil when the palette is empty.
+**Assign** returns the next palette color for a new key. The choice is remembered, so a key always resolves to the same color thereafter. Colors repeat in palette order after the palette is exhausted. It returns nil when the palette is empty.
 
 <a name="Assigner.Palette"></a>
 
-### func (\*Assigner) [Palette](<https://github.com/gechr/x/blob/main/palette/assigner.go#L46>)
+### func (\*Assigner) [Palette](<https://github.com/gechr/x/blob/main/palette/assigner.go#L39>)
 
 ```go
 func (a *Assigner) Palette() Palette
@@ -148,7 +146,7 @@ fmt.Println(len(p))
 Output:
 
 ```text
-36
+50
 ```
 
 </details>
@@ -181,17 +179,17 @@ func DefaultLight() Palette
 func TrueColorDark() Palette
 ```
 
-**TrueColorDark** returns a vivid 36-color Glasbey palette curated for dark backgrounds. It was generated with glasbey using lightness bounds of 50-90 and chroma bounds of 40-100, then optimized as a complete set for perceptual separation. Each color has a contrast ratio of at least 4.5:1 against black. Each call returns a fresh palette the caller owns.
+**TrueColorDark** returns the first 50 colors of Colorcet's glasbey\_light palette ([https://colorcet.holoviz.org/user\_guide/Categorical.html](<https://colorcet.holoviz.org/user_guide/Categorical.html>)), the standard Glasbey palette for dark backgrounds. Glasbey orders colors so each addition is maximally distinct from the preceding colors. Each call returns a fresh palette the caller owns.
 
 <a name="TrueColorLight"></a>
 
-### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L26>)
+### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L25>)
 
 ```go
 func TrueColorLight() Palette
 ```
 
-**TrueColorLight** returns a vivid 36-color Glasbey palette curated for light backgrounds. It was generated with glasbey using lightness bounds of 10-35 and chroma bounds of 40-100, then optimized as a complete set for perceptual separation. Each color has a contrast ratio of at least 4.5:1 against white. See [TrueColorDark](<#TrueColorDark>).
+**TrueColorLight** returns the first 50 colors of Colorcet's glasbey\_dark, the standard Glasbey palette for light backgrounds. See [TrueColorDark](<#TrueColorDark>).
 
 <a name="Palette.Color"></a>
 
