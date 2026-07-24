@@ -42,9 +42,9 @@ func ExampleAuto() {
 		_ = p.Color(entity)
 	}
 
-	// Force the true-color Glasbey palette regardless of detection.
+	// Force the true-color palette regardless of detection.
 	p = palette.Auto(palette.WithTrueColor())
 	fmt.Println(len(p))
 	// Output:
-	// 50
+	// 32
 }

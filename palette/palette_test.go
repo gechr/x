@@ -55,7 +55,7 @@ func TestTrueColorPalettesAreDistinct(t *testing.T) {
 		"dark":  palette.TrueColorDark(),
 		"light": palette.TrueColorLight(),
 	} {
-		require.Len(t, p, 50, name)
+		require.Len(t, p, 32, name)
 
 		seen := map[color.Color]bool{}
 		for _, c := range p {
@@ -104,10 +104,10 @@ func TestAutoReturnsNonEmptyPalette(t *testing.T) {
 	require.NotEmpty(t, palette.Auto())
 }
 
-func TestAutoWithTrueColorForcesGlasbey(t *testing.T) {
+func TestAutoWithTrueColorForcesTrueColor(t *testing.T) {
 	// Detection can't yield true color in a test harness (no TTY, no
 	// COLORTERM), so the override is what proves the wiring.
-	require.Len(t, palette.Auto(palette.WithTrueColor()), 50)
+	require.Len(t, palette.Auto(palette.WithTrueColor()), 32)
 }
 
 func luminance(c color.Color) uint32 {

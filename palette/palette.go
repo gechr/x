@@ -42,8 +42,8 @@ func index(text string, n int) int {
 
 // Auto returns a palette matching the terminal, defaulting to the dark
 // palette when background detection is unavailable. By default it selects the
-// Glasbey palette when the terminal supports true color and the ANSI-256
-// palette otherwise; pass [WithTrueColor] to force the Glasbey palette.
+// true-color palette when the terminal supports true color and the ANSI-256
+// palette otherwise; pass [WithTrueColor] to force the true-color palette.
 func Auto(opts ...Option) Palette {
 	var c config
 	for _, opt := range opts {

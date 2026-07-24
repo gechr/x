@@ -105,7 +105,7 @@ type Option func(*config)
 func WithTrueColor() Option
 ```
 
-**WithTrueColor** forces [Auto](<#Auto>) to return the true-color Glasbey palette, overriding its automatic terminal-capability detection. The caller is responsible for ensuring the terminal supports true color.
+**WithTrueColor** forces [Auto](<#Auto>) to return the true-color palette, overriding its automatic terminal-capability detection. The caller is responsible for ensuring the terminal supports true color.
 
 <a name="Palette"></a>
 
@@ -125,7 +125,7 @@ type Palette []color.Color
 func Auto(opts ...Option) Palette
 ```
 
-**Auto** returns a palette matching the terminal, defaulting to the dark palette when background detection is unavailable. By default it selects the Glasbey palette when the terminal supports true color and the ANSI-256 palette otherwise; pass [WithTrueColor](<#WithTrueColor>) to force the Glasbey palette.
+**Auto** returns a palette matching the terminal, defaulting to the dark palette when background detection is unavailable. By default it selects the true-color palette when the terminal supports true color and the ANSI-256 palette otherwise; pass [WithTrueColor](<#WithTrueColor>) to force the true-color palette.
 
 <details><summary><b>Example</b></summary>
 
@@ -138,7 +138,7 @@ for _, entity := range []string{"alpha", "beta", "alpha"} {
     _ = p.Color(entity)
 }
 
-// Force the true-color Glasbey palette regardless of detection.
+// Force the true-color palette regardless of detection.
 p = palette.Auto(palette.WithTrueColor())
 fmt.Println(len(p))
 ```
@@ -146,7 +146,7 @@ fmt.Println(len(p))
 Output:
 
 ```text
-50
+32
 ```
 
 </details>
@@ -173,23 +173,23 @@ func DefaultLight() Palette
 
 <a name="TrueColorDark"></a>
 
-### func [TrueColorDark](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L8>)
+### func [TrueColorDark](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L7>)
 
 ```go
 func TrueColorDark() Palette
 ```
 
-**TrueColorDark** returns the first 50 colors of Colorcet's glasbey\_light palette ([https://colorcet.holoviz.org/user\_guide/Categorical.html](<https://colorcet.holoviz.org/user_guide/Categorical.html>)), the standard Glasbey palette for dark backgrounds. Colors are ordered from most vivid and bright to most muted and dark. Each call returns a fresh palette the caller owns.
+**TrueColorDark** returns the 24-bit palette tuned for dark backgrounds. Every color clears 4.5:1 contrast against #1e1e1e, and colors are ordered so that the first N are the most separable N. Each call returns a fresh palette the caller owns.
 
 <a name="TrueColorLight"></a>
 
-### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L26>)
+### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L21>)
 
 ```go
 func TrueColorLight() Palette
 ```
 
-**TrueColorLight** returns the first 50 colors of Colorcet's glasbey\_dark, the standard Glasbey palette for light backgrounds, ordered like [TrueColorDark](<#TrueColorDark>).
+**TrueColorLight** returns the 24-bit palette tuned for light backgrounds, ordered like [TrueColorDark](<#TrueColorDark>) but measured against #fafafa.
 
 <a name="Palette.Color"></a>
 
