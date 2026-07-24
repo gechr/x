@@ -179,17 +179,17 @@ func DefaultLight() Palette
 func TrueColorDark() Palette
 ```
 
-**TrueColorDark** returns the first 50 colors of Colorcet's glasbey\_light palette ([https://colorcet.holoviz.org/user\_guide/Categorical.html](<https://colorcet.holoviz.org/user_guide/Categorical.html>)), the standard Glasbey palette for dark backgrounds. Glasbey orders colors so each addition is maximally distinct from the preceding colors. Each call returns a fresh palette the caller owns.
+**TrueColorDark** returns the first 50 colors of Colorcet's glasbey\_light palette ([https://colorcet.holoviz.org/user\_guide/Categorical.html](<https://colorcet.holoviz.org/user_guide/Categorical.html>)), the standard Glasbey palette for dark backgrounds. Colors are ordered from most vivid and bright to most muted and dark. Each call returns a fresh palette the caller owns.
 
 <a name="TrueColorLight"></a>
 
-### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L25>)
+### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L26>)
 
 ```go
 func TrueColorLight() Palette
 ```
 
-**TrueColorLight** returns the first 50 colors of Colorcet's glasbey\_dark, the standard Glasbey palette for light backgrounds. See [TrueColorDark](<#TrueColorDark>).
+**TrueColorLight** returns the first 50 colors of Colorcet's glasbey\_dark, the standard Glasbey palette for light backgrounds, ordered like [TrueColorDark](<#TrueColorDark>).
 
 <a name="Palette.Color"></a>
 
