@@ -23,6 +23,7 @@ Package `slices` provides slice helpers.
 - [func LastIndexFunc\[S ~\[\]E, E any\](items S, match func(E) bool) int](<#LastIndexFunc>)
 - [func Map\[S ~\[\]E, E, R any\](items S, fn func(E) R) \[\]R](<#Map>)
 - [func Partition\[S ~\[\]E, E any\](items S, match func(E) bool) (S, S)](<#Partition>)
+- [func Reject\[S ~\[\]E, E any\](items S, drop func(E) bool) S](<#Reject>)
 - [func SortNatural\[S ~\[\]E, E ~string\](s S)](<#SortNatural>)
 - [func Surround\[S ~\[\]E, E ~string\](items S, prefix, suffix E) \[\]E](<#Surround>)
 - [func Trim\[S ~\[\]E, E comparable\](items, cutset S) S](<#Trim>)
@@ -429,6 +430,31 @@ Output:
 
 ```text
 [2 4 6]
+[1 3 5]
+```
+
+</details>
+
+<a name="Reject"></a>
+
+## func [Reject](<https://github.com/gechr/x/blob/main/slices/reject.go#L5>)
+
+```go
+func Reject[S ~[]E, E any](items S, drop func(E) bool) S
+```
+
+**Reject** returns the elements of `items` not satisfying `drop`, preserving their original order.
+
+<details><summary><b>Example</b></summary>
+
+```go
+items := []int{1, 2, 3, 4, 5, 6}
+fmt.Println(xslices.Reject(items, func(n int) bool { return n%2 == 0 }))
+```
+
+Output:
+
+```text
 [1 3 5]
 ```
 

@@ -50,6 +50,12 @@ func ExampleFilter() {
 	// Output: [2 4 6]
 }
 
+func ExampleReject() {
+	items := []int{1, 2, 3, 4, 5, 6}
+	fmt.Println(xslices.Reject(items, func(n int) bool { return n%2 == 0 }))
+	// Output: [1 3 5]
+}
+
 // Duplicates and order in the first slice are preserved.
 func ExampleDifference() {
 	fmt.Println(xslices.Difference([]int{1, 1, 2, 3}, []int{2}))
