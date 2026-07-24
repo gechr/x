@@ -10,6 +10,10 @@ The mapping from string to color is deterministic: the same text always resolves
 
 ## Index
 
+- [type Assigner](<#Assigner>)
+  - [func NewAssigner(colors ...color.Color) \*Assigner](<#NewAssigner>)
+  - [func (a \*Assigner) Assign(key string) color.Color](<#Assigner.Assign>)
+  - [func (a \*Assigner) Palette() Palette](<#Assigner.Palette>)
 - [type Option](<#Option>)
   - [func WithTrueColor() Option](<#WithTrueColor>)
 - [type Palette](<#Palette>)
@@ -19,6 +23,71 @@ The mapping from string to color is deterministic: the same text always resolves
   - [func TrueColorDark() Palette](<#TrueColorDark>)
   - [func TrueColorLight() Palette](<#TrueColorLight>)
   - [func (p Palette) Color(text string) color.Color](<#Palette.Color>)
+
+<a name="Assigner"></a>
+
+## type [Assigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L21-L27>)
+
+**Assigner** hands out colors from a [Palette](<#Palette>) so distinct keys receive distinct colors. Each key is placed at its hash-derived color - the same slot [Palette.Color](<#Palette.Color>) would choose - and if that color is already taken, the Assigner probes forward to the next free color. Assignments are remembered, so a key always resolves to the same color for the Assigner's lifetime.
+
+This blends the two extremes: like [Palette.Color](<#Palette.Color>) a key tends to land on its stable hash color across runs, but unlike it distinct keys never share a color until the palette is exhausted (after which colors repeat). A key only moves off its hash color when an earlier-seen key collided into that slot, so with few keys relative to the palette size, most keys stay stable across runs.
+
+An Assigner is safe for concurrent use.
+
+```go
+type Assigner struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewAssigner"></a>
+
+### func [NewAssigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L33>)
+
+```go
+func NewAssigner(colors ...color.Color) *Assigner
+```
+
+**NewAssigner** returns an Assigner that draws from the given colors. When no colors are given, it defaults to [Auto](<#Auto>), selecting a palette that matches the terminal background and true-color support. Pass an explicit palette by spreading it, e.g. NewAssigner(TrueColorDark()...).
+
+<details><summary><b>Example</b></summary>
+
+```go
+// An Assigner gives distinct keys distinct colors (no duplicates until the
+// palette is exhausted) while keeping each key stable. With no colors it
+// defaults to Auto for the current terminal.
+a := palette.NewAssigner()
+
+fmt.Println(a.Assign("web") == a.Assign("web"))
+```
+
+Output:
+
+```text
+true
+```
+
+</details>
+
+<a name="Assigner.Assign"></a>
+
+### func (\*Assigner) [Assign](<https://github.com/gechr/x/blob/main/palette/assigner.go#L53>)
+
+```go
+func (a *Assigner) Assign(key string) color.Color
+```
+
+**Assign** returns the color for key: its hash-derived color when free, otherwise the next free color. The choice is remembered, so a key always resolves to the same color thereafter. It returns nil when the palette is empty.
+
+<a name="Assigner.Palette"></a>
+
+### func (\*Assigner) [Palette](<https://github.com/gechr/x/blob/main/palette/assigner.go#L46>)
+
+```go
+func (a *Assigner) Palette() Palette
+```
+
+**Palette** returns the underlying palette the Assigner draws from.
 
 <a name="Option"></a>
 
@@ -52,7 +121,7 @@ type Palette []color.Color
 
 <a name="Auto"></a>
 
-### func [Auto](<https://github.com/gechr/x/blob/main/palette/palette.go#L41>)
+### func [Auto](<https://github.com/gechr/x/blob/main/palette/palette.go#L47>)
 
 ```go
 func Auto(opts ...Option) Palette
@@ -86,7 +155,7 @@ Output:
 
 <a name="DefaultDark"></a>
 
-### func [DefaultDark](<https://github.com/gechr/x/blob/main/palette/palette.go#L76>)
+### func [DefaultDark](<https://github.com/gechr/x/blob/main/palette/palette.go#L82>)
 
 ```go
 func DefaultDark() Palette
@@ -96,7 +165,7 @@ func DefaultDark() Palette
 
 <a name="DefaultLight"></a>
 
-### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L113>)
+### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L119>)
 
 ```go
 func DefaultLight() Palette

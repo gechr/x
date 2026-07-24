@@ -22,6 +22,17 @@ func ExamplePalette_Color_empty() {
 	// <nil>
 }
 
+func ExampleNewAssigner() {
+	// An Assigner gives distinct keys distinct colors (no duplicates until the
+	// palette is exhausted) while keeping each key stable. With no colors it
+	// defaults to Auto for the current terminal.
+	a := palette.NewAssigner()
+
+	fmt.Println(a.Assign("web") == a.Assign("web"))
+	// Output:
+	// true
+}
+
 func ExampleAuto() {
 	// Auto detects the terminal background and true-color support, then colors
 	// entities so identical strings share a stable color.

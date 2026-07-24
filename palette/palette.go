@@ -28,10 +28,16 @@ func (p Palette) Color(text string) color.Color {
 	if len(p) == 0 {
 		return nil
 	}
+	return p[index(text, len(p))]
+}
 
+// index returns a stable index in [0, n) for text, deterministic across
+// processes and platforms. It is shared by [Palette.Color] and [Assigner] so
+// their hashing cannot drift apart.
+func index(text string, n int) int {
 	hasher := fnv.New32a()
 	_, _ = hasher.Write([]byte(text))
-	return p[int(hasher.Sum32()&math.MaxInt32)%len(p)]
+	return int(hasher.Sum32()&math.MaxInt32) % n
 }
 
 // Auto returns a palette matching the terminal, defaulting to the dark
