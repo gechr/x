@@ -107,7 +107,7 @@ type Option func(*config)
 func WithTrueColor() Option
 ```
 
-**WithTrueColor** forces [Auto](<#Auto>) to return the 256-color Glasbey palette, overriding its automatic terminal-capability detection. The caller is responsible for ensuring the terminal supports true color.
+**WithTrueColor** forces [Auto](<#Auto>) to return the true-color Glasbey palette, overriding its automatic terminal-capability detection. The caller is responsible for ensuring the terminal supports true color.
 
 <a name="Palette"></a>
 
@@ -140,7 +140,7 @@ for _, entity := range []string{"alpha", "beta", "alpha"} {
     _ = p.Color(entity)
 }
 
-// Force the 256-color Glasbey palette regardless of detection.
+// Force the true-color Glasbey palette regardless of detection.
 p = palette.Auto(palette.WithTrueColor())
 fmt.Println(len(p))
 ```
@@ -148,7 +148,7 @@ fmt.Println(len(p))
 Output:
 
 ```text
-256
+36
 ```
 
 </details>
@@ -175,23 +175,23 @@ func DefaultLight() Palette
 
 <a name="TrueColorDark"></a>
 
-### func [TrueColorDark](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L11>)
+### func [TrueColorDark](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L8>)
 
 ```go
 func TrueColorDark() Palette
 ```
 
-**TrueColorDark** returns the 256-color Glasbey palette curated for dark backgrounds - colorcet's glasbey\_light ([https://github.com/holoviz/colorcet](<https://github.com/holoviz/colorcet>)), generated once by perceptual max-min optimization so every prefix stays visually distinct. Use it when entities outnumber the default ANSI-256 palette; the caller is responsible for ensuring the terminal supports true color. Each call returns a fresh palette the caller owns.
+**TrueColorDark** returns a vivid 36-color Glasbey palette curated for dark backgrounds. It was generated with glasbey using lightness bounds of 50-90 and chroma bounds of 40-100, then optimized as a complete set for perceptual separation. Each color has a contrast ratio of at least 4.5:1 against black. Each call returns a fresh palette the caller owns.
 
 <a name="TrueColorLight"></a>
 
-### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L72>)
+### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/glasbey.go#L26>)
 
 ```go
 func TrueColorLight() Palette
 ```
 
-**TrueColorLight** returns the 256-color Glasbey palette curated for light backgrounds - colorcet's glasbey\_dark. See [TrueColorDark](<#TrueColorDark>).
+**TrueColorLight** returns a vivid 36-color Glasbey palette curated for light backgrounds. It was generated with glasbey using lightness bounds of 10-35 and chroma bounds of 40-100, then optimized as a complete set for perceptual separation. Each color has a contrast ratio of at least 4.5:1 against white. See [TrueColorDark](<#TrueColorDark>).
 
 <a name="Palette.Color"></a>
 

@@ -8,7 +8,7 @@ type config struct {
 // Option configures [Auto].
 type Option func(*config)
 
-// WithTrueColor forces [Auto] to return the 256-color Glasbey palette,
+// WithTrueColor forces [Auto] to return the true-color Glasbey palette,
 // overriding its automatic terminal-capability detection. The caller is
 // responsible for ensuring the terminal supports true color.
 func WithTrueColor() Option {
