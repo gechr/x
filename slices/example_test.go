@@ -211,3 +211,27 @@ func ExampleUniqueFold() {
 	// [Go Rust]
 	// [ς]
 }
+
+// Every element must satisfy the predicate; an empty slice reports true.
+func ExampleAllFunc() {
+	isEven := func(n int) bool { return n%2 == 0 }
+	fmt.Println(xslices.AllFunc([]int{2, 4, 6}, isEven))
+	fmt.Println(xslices.AllFunc([]int{2, 3, 4}, isEven))
+	fmt.Println(xslices.AllFunc([]int{}, isEven))
+	// Output:
+	// true
+	// false
+	// true
+}
+
+// A single matching element suffices; an empty slice reports false.
+func ExampleAnyFunc() {
+	isEven := func(n int) bool { return n%2 == 0 }
+	fmt.Println(xslices.AnyFunc([]int{1, 2, 3}, isEven))
+	fmt.Println(xslices.AnyFunc([]int{1, 3, 5}, isEven))
+	fmt.Println(xslices.AnyFunc([]int{}, isEven))
+	// Output:
+	// true
+	// false
+	// false
+}

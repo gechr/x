@@ -8,6 +8,8 @@ Package `slices` provides slice helpers.
 
 ## Index
 
+- [func AllFunc\[S ~\[\]E, E any\](items S, match func(E) bool) bool](<#AllFunc>)
+- [func AnyFunc\[S ~\[\]E, E any\](items S, match func(E) bool) bool](<#AnyFunc>)
 - [func ContainedByAll\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainedByAll>)
 - [func ContainedByAny\[S ~\[\]E, E comparable\](target E, lists ...S) bool](<#ContainedByAny>)
 - [func ContainsAll\[S ~\[\]E, E comparable\](items S, targets ...E) bool](<#ContainsAll>)
@@ -33,6 +35,68 @@ Package `slices` provides slice helpers.
 - [func Unique\[S ~\[\]E, E comparable\](items S) S](<#Unique>)
 - [func UniqueFold\[S ~\[\]E, E ~string\](items S) S](<#UniqueFold>)
 - [func UniqueFunc\[S ~\[\]E, E any, K comparable\](items S, key func(E) K) S](<#UniqueFunc>)
+
+<a name="AllFunc"></a>
+
+## func [AllFunc](<https://github.com/gechr/x/blob/main/slices/match.go#L7>)
+
+```go
+func AllFunc[S ~[]E, E any](items S, match func(E) bool) bool
+```
+
+**AllFunc** reports whether every element of `items` satisfies `match`. It returns true when `items` is empty.
+
+<details><summary><b>Example</b></summary>
+
+Every element must satisfy the predicate; an empty slice reports true.
+
+```go
+isEven := func(n int) bool { return n%2 == 0 }
+fmt.Println(xslices.AllFunc([]int{2, 4, 6}, isEven))
+fmt.Println(xslices.AllFunc([]int{2, 3, 4}, isEven))
+fmt.Println(xslices.AllFunc([]int{}, isEven))
+```
+
+Output:
+
+```text
+true
+false
+true
+```
+
+</details>
+
+<a name="AnyFunc"></a>
+
+## func [AnyFunc](<https://github.com/gechr/x/blob/main/slices/match.go#L15>)
+
+```go
+func AnyFunc[S ~[]E, E any](items S, match func(E) bool) bool
+```
+
+**AnyFunc** reports whether any element of `items` satisfies `match`. It returns false when `items` is empty.
+
+<details><summary><b>Example</b></summary>
+
+A single matching element suffices; an empty slice reports false.
+
+```go
+isEven := func(n int) bool { return n%2 == 0 }
+fmt.Println(xslices.AnyFunc([]int{1, 2, 3}, isEven))
+fmt.Println(xslices.AnyFunc([]int{1, 3, 5}, isEven))
+fmt.Println(xslices.AnyFunc([]int{}, isEven))
+```
+
+Output:
+
+```text
+true
+false
+false
+```
+
+</details>
 
 <a name="ContainedByAll"></a>
 
