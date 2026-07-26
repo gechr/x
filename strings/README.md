@@ -49,6 +49,7 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func PadCenter(s string, width int) string](<#PadCenter>)
 - [func PadLeft(s string, width int) string](<#PadLeft>)
 - [func PadRight(s string, width int) string](<#PadRight>)
+- [func Slug(s string, opts ...SlugOption) string](<#Slug>)
 - [func SplitAny(s, chars string) \[\]string](<#SplitAny>)
 - [func SplitBy(s, sep string) \[\]string](<#SplitBy>)
 - [func SplitCSV(s string) \[\]string](<#SplitCSV>)
@@ -61,6 +62,12 @@ Package `strings` provides string helpers: split, contains, indent/dedent, trunc
 - [func TruncateMiddle(s string, n int, marker string) string](<#TruncateMiddle>)
 - [func TruncateRight(s string, n int, marker string) string](<#TruncateRight>)
 - [func Unwrap(s, prefix, suffix string) (string, bool)](<#Unwrap>)
+- [type SlugOption](<#SlugOption>)
+  - [func WithSlugCutMidWord() SlugOption](<#WithSlugCutMidWord>)
+  - [func WithSlugMaxLength(n int) SlugOption](<#WithSlugMaxLength>)
+  - [func WithSlugMaxWords(n int) SlugOption](<#WithSlugMaxWords>)
+  - [func WithSlugMinWordLength(n int) SlugOption](<#WithSlugMinWordLength>)
+  - [func WithSlugSeparator(sep rune) SlugOption](<#WithSlugSeparator>)
 
 <a name="AllEmpty"></a>
 
@@ -859,7 +866,7 @@ false
 
 <a name="IsSlug"></a>
 
-## func [IsSlug](<https://github.com/gechr/x/blob/main/strings/slug.go#L8>)
+## func [IsSlug](<https://github.com/gechr/x/blob/main/strings/slug.go#L235>)
 
 ```go
 func IsSlug(s string) bool
@@ -869,7 +876,7 @@ func IsSlug(s string) bool
 
 <a name="IsSlugLenient"></a>
 
-## func [IsSlugLenient](<https://github.com/gechr/x/blob/main/strings/slug.go#L34>)
+## func [IsSlugLenient](<https://github.com/gechr/x/blob/main/strings/slug.go#L261>)
 
 ```go
 func IsSlugLenient(s string) bool
@@ -998,6 +1005,24 @@ Output:
 ```
 
 </details>
+
+<a name="Slug"></a>
+
+## func [Slug](<https://github.com/gechr/x/blob/main/strings/slug.go#L131>)
+
+```go
+func Slug(s string, opts ...SlugOption) string
+```
+
+**Slug** converts `s` to a slug: lowercased, with every run of characters that is not an ASCII alphanumeric collapsed to a single '-', and no leading or trailing separator. `My Service`, `my_service`, and ` my.service!! ` all slugify to `my-service`.
+
+The result satisfies [IsSlug](<#IsSlug>) except for the one input that has no slug: a string carrying no ASCII alphanumeric at all (`""`, `"___"`, `"日本"`) returns the empty string, which [IsSlug](<#IsSlug>) rejects. Test the result rather than the input when that case must be caught. [WithSlugSeparator](<#WithSlugSeparator>) is the only option that forfeits the guarantee; the bounds all preserve it.
+
+Non-ASCII characters are separators rather than letters, since a slug admits only a-z, 0-9, and '-'; transliterating them is the caller's job. Case is the only thing folded, so `myService` slugifies to `myservice` - a slug reflects the characters it was given, not the word boundaries a reader infers from them.
+
+Nothing is bounded by default - no length cap, no word count, matching [IsSlug](<#IsSlug>), which admits a slug of any shape - since a bound is a policy the caller cannot undo. Pass [WithSlugMaxLength](<#WithSlugMaxLength>), [WithSlugMaxWords](<#WithSlugMaxWords>), [WithSlugMinWordLength](<#WithSlugMinWordLength>), or [WithSlugCutMidWord](<#WithSlugCutMidWord>) to impose one, and [WithSlugSeparator](<#WithSlugSeparator>) to join with something other than '-'.
+
+Slugification is idempotent: every valid slug is its own slug, and stays its own slug under any bound it already satisfies.
 
 <a name="SplitAny"></a>
 
@@ -1277,3 +1302,98 @@ quoted true
 ```
 
 </details>
+
+<a name="SlugOption"></a>
+
+## type [SlugOption](<https://github.com/gechr/x/blob/main/strings/slug.go#L16>)
+
+**SlugOption** shapes what [Slug](<#Slug>) produces. The options compose in any order, and all but one are bounds - they decide how much of the slug is kept, so the result still satisfies [IsSlug](<#IsSlug>) (or is empty, when a bound leaves nothing). [WithSlugSeparator](<#WithSlugSeparator>) is the exception, changing the grammar itself.
+
+```go
+type SlugOption func(*slugConfig)
+```
+
+<a name="WithSlugCutMidWord"></a>
+
+### func [WithSlugCutMidWord](<https://github.com/gechr/x/blob/main/strings/slug.go#L83>)
+
+```go
+func WithSlugCutMidWord() SlugOption
+```
+
+**WithSlugCutMidWord** lets [WithSlugMaxLength](<#WithSlugMaxLength>) cut inside a word, filling the cap instead of falling back to the last word boundary. The separator is still never left dangling, so the result stays a valid slug - it just ends in a fragment.
+
+```go
+Slug("My Long Service Name", WithSlugMaxLength(12))                       // "my-long"
+Slug("My Long Service Name", WithSlugMaxLength(12), WithSlugCutMidWord()) // "my-long-serv"
+```
+
+Use it where the slug is an identifier that should use the space it has (a generated name, a truncated key), not where a human reads it as words. It is inert without a length cap, which is the only bound that cuts.
+
+<a name="WithSlugMaxLength"></a>
+
+### func [WithSlugMaxLength](<https://github.com/gechr/x/blob/main/strings/slug.go#L55>)
+
+```go
+func WithSlugMaxLength(n int) SlugOption
+```
+
+**WithSlugMaxLength** caps the slug at `n` characters, cut at a word boundary: a cut landing inside a word takes that whole word with it, so the result reads as the words that were kept rather than one that was chopped.
+
+```go
+Slug("My Long Service Name", WithSlugMaxLength(12)) // "my-long", not "my-long-serv"
+```
+
+A first word longer than `n` is the one exception, having no boundary to fall back to: it is cut mid-word rather than yielding nothing.
+
+```go
+Slug("verylongword", WithSlugMaxLength(4)) // "very"
+```
+
+`n` counts bytes, which a word makes identical to runes - words are ASCII - unless a multi-byte [WithSlugSeparator](<#WithSlugSeparator>) joins them. Bytes are what a cap is usually spent against (a DNS label, a filename, a 63-character field), so a rune count would be the one thing a cap must never do: overrun.
+
+<a name="WithSlugMaxWords"></a>
+
+### func [WithSlugMaxWords](<https://github.com/gechr/x/blob/main/strings/slug.go#L90>)
+
+```go
+func WithSlugMaxWords(n int) SlugOption
+```
+
+**WithSlugMaxWords** keeps at most the first `n` words, dropping the rest.
+
+```go
+Slug("My Long Service Name", WithSlugMaxWords(2)) // "my-long"
+```
+
+<a name="WithSlugMinWordLength"></a>
+
+### func [WithSlugMinWordLength](<https://github.com/gechr/x/blob/main/strings/slug.go#L102>)
+
+```go
+func WithSlugMinWordLength(n int) SlugOption
+```
+
+**WithSlugMinWordLength** drops every word shorter than `n` characters, which is how the noise a punctuation split leaves behind is kept out of the slug - initials, stray digits, the `s` of a possessive.
+
+```go
+Slug("Bob's API v2 Service", WithSlugMinWordLength(2)) // "bob-api-v2-service"
+```
+
+It is applied before the other bounds, so a dropped word does not consume a [WithSlugMaxWords](<#WithSlugMaxWords>) slot or [WithSlugMaxLength](<#WithSlugMaxLength>) characters.
+
+<a name="WithSlugSeparator"></a>
+
+### func [WithSlugSeparator](<https://github.com/gechr/x/blob/main/strings/slug.go#L69>)
+
+```go
+func WithSlugSeparator(sep rune) SlugOption
+```
+
+**WithSlugSeparator** joins the words with `sep` instead of '-'.
+
+```go
+Slug("My Service", WithSlugSeparator('_')) // "my_service"
+```
+
+It is the one option that changes what the result is rather than how much of it there is, so it is also the one that forfeits the [IsSlug](<#IsSlug>) guarantee: only '-' is a slug separator, and '\_' yields a string [IsSlugLenient](<#IsSlugLenient>) accepts and [IsSlug](<#IsSlug>) rejects. Anything else - a '.', a '/', a non-ASCII rune - satisfies neither, and the collapsing, trimming, and bounds still hold. Pick it when the identifier's grammar is the caller's, not this package's.
