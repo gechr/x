@@ -29,8 +29,11 @@ func CompletionFile(command, sh string) (string, error) {
 		return filepath.Join(dir, "fish", "completions", command+".fish"), nil
 	case Nu:
 		// Nushell auto-sources every .nu file under its vendor autoload
-		// directories on startup; the user-writable one lives under the data dir.
-		dir, err := DataDir()
+		// directories on startup; the user-writable one lives under its own data
+		// directory. That honors `$XDG_DATA_HOME` on every platform, but its
+		// fallback is the platform-idiomatic location rather than the XDG one
+		// [DataDir] uses, so it is resolved separately.
+		dir, err := baseDir("XDG_DATA_HOME", nuDataDirDefault)
 		if err != nil {
 			return "", err
 		}

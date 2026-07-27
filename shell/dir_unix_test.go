@@ -5,6 +5,7 @@ package shell_test
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/gechr/x/shell"
@@ -178,4 +179,22 @@ func TestCompletionFile(t *testing.T) {
 			require.Equal(t, tt.want, got)
 		})
 	}
+}
+
+func TestCompletionFile_NuEnvUnset(t *testing.T) {
+	// Nushell resolves its data directory with the Rust `dirs` crate, so the
+	// fallback is platform-idiomatic rather than the XDG `~/.local/share`.
+	t.Setenv("XDG_DATA_HOME", "")
+
+	home, err := os.UserHomeDir()
+	require.NoError(t, err)
+
+	want := filepath.Join(home, ".local", "share")
+	if runtime.GOOS == "darwin" {
+		want = filepath.Join(home, "Library", "Application Support")
+	}
+
+	got, err := shell.CompletionFile("myapp", shell.Nu)
+	require.NoError(t, err)
+	require.Equal(t, filepath.Join(want, "nushell", "vendor", "autoload", "myapp.nu"), got)
 }
