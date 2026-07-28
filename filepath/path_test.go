@@ -37,6 +37,36 @@ func TestExpand_NoExpansion(t *testing.T) {
 	require.Equal(t, "/absolute/path", xfilepath.Expand("/absolute/path"))
 }
 
+func TestLooksLikePath(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		in   string
+		want bool
+	}{
+		{name: "empty", in: "", want: false},
+		{name: "dot", in: ".", want: true},
+		{name: "dot slash", in: "./foo", want: true},
+		{name: "parent", in: "../foo", want: true},
+		{name: "dotfile", in: ".gitignore", want: true},
+		{name: "absolute", in: "/etc/app", want: true},
+		{name: "tilde", in: "~", want: true},
+		{name: "tilde slash", in: "~/config", want: true},
+		{name: "bare name", in: "build", want: false},
+		{name: "owner repo slug", in: "owner/repo", want: false},
+		{name: "relative subpath", in: "foo/bar", want: false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			require.Equal(t, tt.want, xfilepath.LooksLikePath(tt.in))
+		})
+	}
+}
+
 func TestSplitPath(t *testing.T) {
 	t.Parallel()
 

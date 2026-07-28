@@ -15,3 +15,10 @@ func equalPath(a, b string) bool {
 func hasPathPrefix(path, prefix string) bool {
 	return strings.HasPrefix(path, prefix)
 }
+
+// looksLikePathOS reports whether the string begins with a platform-specific path
+// marker for [LooksLikePath]. Unix has none beyond the cross-platform prefixes,
+// so it is always false.
+func looksLikePathOS(_ string) bool {
+	return false
+}

@@ -10,6 +10,7 @@ Package `filepath` provides path helpers: symlink resolution and containment che
 
 - [func Expand(path string) string](<#Expand>)
 - [func IsWithin(base string, targets ...string) bool](<#IsWithin>)
+- [func LooksLikePath(s string) bool](<#LooksLikePath>)
 - [func Merge(paths \[\]string, opts ...MergeOption) \[\]string](<#Merge>)
 - [func Rebase(dir, path string) string](<#Rebase>)
 - [func Resolve(path string) (string, error)](<#Resolve>)
@@ -47,7 +48,7 @@ Output:
 
 <a name="IsWithin"></a>
 
-## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L114>)
+## func [IsWithin](<https://github.com/gechr/x/blob/main/filepath/path.go#L142>)
 
 ```go
 func IsWithin(base string, targets ...string) bool
@@ -93,9 +94,41 @@ false
 
 </details>
 
+<a name="LooksLikePath"></a>
+
+## func [LooksLikePath](<https://github.com/gechr/x/blob/main/filepath/path.go#L48>)
+
+```go
+func LooksLikePath(s string) bool
+```
+
+**LooksLikePath** reports whether s begins with a marker that identifies it as a filesystem path rather than a bare name (a command, an "owner/repo" slug, or any other identifier). It is a purely lexical heuristic on the leading characters: it neither cleans s nor touches the filesystem, and an unrooted relative path such as "foo/bar" returns false because it is indistinguishable from a bare identifier.
+
+A path is recognised by a leading ".", "/", or "~" on every platform, plus a leading "\\" (including a UNC "\\\\") or a drive-letter prefix ("C:") on Windows.
+
+<details><summary><b>Example</b></summary>
+
+**LooksLikePath** distinguishes a filesystem path from a bare identifier by its leading characters, without touching the filesystem.
+
+```go
+fmt.Println(xfilepath.LooksLikePath("./config.toml"))
+fmt.Println(xfilepath.LooksLikePath("~/notes"))
+fmt.Println(xfilepath.LooksLikePath("owner/repo"))
+```
+
+Output:
+
+```text
+true
+true
+false
+```
+
+</details>
+
 <a name="Merge"></a>
 
-## func [Merge](<https://github.com/gechr/x/blob/main/filepath/path.go#L178>)
+## func [Merge](<https://github.com/gechr/x/blob/main/filepath/path.go#L206>)
 
 ```go
 func Merge(paths []string, opts ...MergeOption) []string
@@ -141,7 +174,7 @@ Output:
 
 <a name="Rebase"></a>
 
-## func [Rebase](<https://github.com/gechr/x/blob/main/filepath/path.go#L63>)
+## func [Rebase](<https://github.com/gechr/x/blob/main/filepath/path.go#L91>)
 
 ```go
 func Rebase(dir, path string) string
@@ -168,7 +201,7 @@ etc/app/conf.d
 
 <a name="Resolve"></a>
 
-## func [Resolve](<https://github.com/gechr/x/blob/main/filepath/path.go#L74>)
+## func [Resolve](<https://github.com/gechr/x/blob/main/filepath/path.go#L102>)
 
 ```go
 func Resolve(path string) (string, error)
@@ -204,7 +237,7 @@ true
 
 <a name="ResolveLenient"></a>
 
-## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L90>)
+## func [ResolveLenient](<https://github.com/gechr/x/blob/main/filepath/path.go#L118>)
 
 ```go
 func ResolveLenient(path string) (string, error)
@@ -239,7 +272,7 @@ missing.txt
 
 <a name="SplitPath"></a>
 
-## func [SplitPath](<https://github.com/gechr/x/blob/main/filepath/path.go#L41>)
+## func [SplitPath](<https://github.com/gechr/x/blob/main/filepath/path.go#L69>)
 
 ```go
 func SplitPath(list string) []string
@@ -266,7 +299,7 @@ Output:
 
 <a name="MergeOption"></a>
 
-## type [MergeOption](<https://github.com/gechr/x/blob/main/filepath/path.go#L149>)
+## type [MergeOption](<https://github.com/gechr/x/blob/main/filepath/path.go#L177>)
 
 **MergeOption** configures [Merge](<#Merge>).
 
@@ -276,7 +309,7 @@ type MergeOption func(*mergeConfig)
 
 <a name="WithResolveSymlinks"></a>
 
-### func [WithResolveSymlinks](<https://github.com/gechr/x/blob/main/filepath/path.go#L159>)
+### func [WithResolveSymlinks](<https://github.com/gechr/x/blob/main/filepath/path.go#L187>)
 
 ```go
 func WithResolveSymlinks() MergeOption

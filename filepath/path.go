@@ -28,6 +28,34 @@ func Expand(path string) string {
 	return os.ExpandEnv(path)
 }
 
+// LooksLikePath reports whether s begins with a marker that identifies it as a
+// filesystem path rather than a bare name (a command, an "owner/repo" slug, or
+// any other identifier). It is a purely lexical heuristic on the leading
+// characters: it neither cleans s nor touches the filesystem, and an unrooted
+// relative path such as "foo/bar" returns false because it is indistinguishable
+// from a bare identifier.
+//
+// A path is recognised by a leading ".", "/", or "~" on every platform, plus a
+// leading "\" (including a UNC "\\") or a drive-letter prefix ("C:") on Windows.
+//
+// Example:
+//
+//	LooksLikePath("./foo")      // true
+//	LooksLikePath("~/cfg")      // true
+//	LooksLikePath("/etc/app")   // true
+//	LooksLikePath("owner/repo") // false
+//	LooksLikePath("build")      // false
+func LooksLikePath(s string) bool {
+	if s == "" {
+		return false
+	}
+	switch s[0] {
+	case '.', '/', '~':
+		return true
+	}
+	return looksLikePathOS(s)
+}
+
 // SplitPath splits a PATH-style list (such as $PATH or $GOPATH) on the
 // OS-specific list separator ([os.PathListSeparator]), dropping the empty
 // entries produced by leading, trailing, or doubled separators - an empty

@@ -16,6 +16,18 @@ func ExampleExpand() {
 	// /srv/app/config.toml
 }
 
+// LooksLikePath distinguishes a filesystem path from a bare identifier by its
+// leading characters, without touching the filesystem.
+func ExampleLooksLikePath() {
+	fmt.Println(xfilepath.LooksLikePath("./config.toml"))
+	fmt.Println(xfilepath.LooksLikePath("~/notes"))
+	fmt.Println(xfilepath.LooksLikePath("owner/repo"))
+	// Output:
+	// true
+	// true
+	// false
+}
+
 // SplitPath splits a PATH-style list and drops the empty entry left by the
 // trailing separator.
 func ExampleSplitPath() {
