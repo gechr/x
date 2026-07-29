@@ -10,11 +10,16 @@ import (
 // result of `fallback`. Per the XDG Base Directory spec, a relative path in the
 // environment variable is invalid and ignored. The XDG_* variables are
 // honored on every platform; only the `fallback` is OS-specific.
-func baseDir(env string, fallback func() (string, error)) (string, error) {
-	if dir := os.Getenv(env); filepath.IsAbs(dir) {
-		return dir, nil
+func baseDir(env string, fallback func() (string, error), elem ...string) (string, error) {
+	dir := os.Getenv(env)
+	if !filepath.IsAbs(dir) {
+		var err error
+		dir, err = fallback()
+		if err != nil {
+			return "", err
+		}
 	}
-	return fallback()
+	return filepath.Join(append([]string{dir}, elem...)...), nil
 }
 
 // searchDirs splits the value of `env` on the OS list separator, dropping empty
@@ -33,28 +38,32 @@ func searchDirs(env string, fallback []string) []string {
 	return dirs
 }
 
-// CacheDir returns the user cache directory: `$XDG_CACHE_HOME` when set to an
-// absolute path, otherwise an OS-specific default.
-func CacheDir() (string, error) {
-	return baseDir("XDG_CACHE_HOME", cacheDirDefault)
+// CacheDir returns a path within the user cache directory:
+// `$XDG_CACHE_HOME` when set to an absolute path, otherwise an OS-specific
+// default. Each element is joined to the directory.
+func CacheDir(elem ...string) (string, error) {
+	return baseDir("XDG_CACHE_HOME", cacheDirDefault, elem...)
 }
 
-// ConfigDir returns the user config directory: `$XDG_CONFIG_HOME` when set to an
-// absolute path, otherwise an OS-specific default.
-func ConfigDir() (string, error) {
-	return baseDir("XDG_CONFIG_HOME", configDirDefault)
+// ConfigDir returns a path within the user config directory:
+// `$XDG_CONFIG_HOME` when set to an absolute path, otherwise an OS-specific
+// default. Each element is joined to the directory.
+func ConfigDir(elem ...string) (string, error) {
+	return baseDir("XDG_CONFIG_HOME", configDirDefault, elem...)
 }
 
-// DataDir returns the user data directory: `$XDG_DATA_HOME` when set to an
-// absolute path, otherwise an OS-specific default.
-func DataDir() (string, error) {
-	return baseDir("XDG_DATA_HOME", dataDirDefault)
+// DataDir returns a path within the user data directory: `$XDG_DATA_HOME` when
+// set to an absolute path, otherwise an OS-specific default. Each element is
+// joined to the directory.
+func DataDir(elem ...string) (string, error) {
+	return baseDir("XDG_DATA_HOME", dataDirDefault, elem...)
 }
 
-// StateDir returns the user state directory: `$XDG_STATE_HOME` when set to an
-// absolute path, otherwise an OS-specific default.
-func StateDir() (string, error) {
-	return baseDir("XDG_STATE_HOME", stateDirDefault)
+// StateDir returns a path within the user state directory: `$XDG_STATE_HOME`
+// when set to an absolute path, otherwise an OS-specific default. Each element
+// is joined to the directory.
+func StateDir(elem ...string) (string, error) {
+	return baseDir("XDG_STATE_HOME", stateDirDefault, elem...)
 }
 
 // ConfigDirs returns the ordered, read-only config search directories:

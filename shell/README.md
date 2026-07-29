@@ -9,11 +9,11 @@ Package `shell` provides shell detection, path expansion, argument quoting, and 
 ## Index
 
 - [Constants](<#constants>)
-- [func CacheDir() (string, error)](<#CacheDir>)
+- [func CacheDir(elem ...string) (string, error)](<#CacheDir>)
 - [func CompletionFile(command, sh string) (string, error)](<#CompletionFile>)
-- [func ConfigDir() (string, error)](<#ConfigDir>)
+- [func ConfigDir(elem ...string) (string, error)](<#ConfigDir>)
 - [func ConfigDirs() \[\]string](<#ConfigDirs>)
-- [func DataDir() (string, error)](<#DataDir>)
+- [func DataDir(elem ...string) (string, error)](<#DataDir>)
 - [func DataDirs() \[\]string](<#DataDirs>)
 - [func Detect() string](<#Detect>)
 - [func DetectFromEnv(env string) string](<#DetectFromEnv>)
@@ -22,7 +22,7 @@ Package `shell` provides shell detection, path expansion, argument quoting, and 
 - [func Known() \[\]string](<#Known>)
 - [func Quote(s string) string](<#Quote>)
 - [func Split(s string) (\[\]string, error)](<#Split>)
-- [func StateDir() (string, error)](<#StateDir>)
+- [func StateDir(elem ...string) (string, error)](<#StateDir>)
 
 ## Constants
 
@@ -52,13 +52,13 @@ const EnvShell = "SHELL"
 
 <a name="CacheDir"></a>
 
-## func [CacheDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L38>)
+## func [CacheDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L44>)
 
 ```go
-func CacheDir() (string, error)
+func CacheDir(elem ...string) (string, error)
 ```
 
-**CacheDir** returns the user cache directory: `$XDG_CACHE_HOME` when set to an absolute path, otherwise an OS-specific default.
+**CacheDir** returns a path within the user cache directory: `$XDG_CACHE_HOME` when set to an absolute path, otherwise an OS-specific default. Each element is joined to the directory.
 
 <a name="CompletionFile"></a>
 
@@ -72,17 +72,17 @@ func CompletionFile(command, sh string) (string, error)
 
 <a name="ConfigDir"></a>
 
-## func [ConfigDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L44>)
+## func [ConfigDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L51>)
 
 ```go
-func ConfigDir() (string, error)
+func ConfigDir(elem ...string) (string, error)
 ```
 
-**ConfigDir** returns the user config directory: `$XDG_CONFIG_HOME` when set to an absolute path, otherwise an OS-specific default.
+**ConfigDir** returns a path within the user config directory: `$XDG_CONFIG_HOME` when set to an absolute path, otherwise an OS-specific default. Each element is joined to the directory.
 
 <a name="ConfigDirs"></a>
 
-## func [ConfigDirs](<https://github.com/gechr/x/blob/main/shell/dir.go#L64>)
+## func [ConfigDirs](<https://github.com/gechr/x/blob/main/shell/dir.go#L73>)
 
 ```go
 func ConfigDirs() []string
@@ -92,17 +92,17 @@ func ConfigDirs() []string
 
 <a name="DataDir"></a>
 
-## func [DataDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L50>)
+## func [DataDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L58>)
 
 ```go
-func DataDir() (string, error)
+func DataDir(elem ...string) (string, error)
 ```
 
-**DataDir** returns the user data directory: `$XDG_DATA_HOME` when set to an absolute path, otherwise an OS-specific default.
+**DataDir** returns a path within the user data directory: `$XDG_DATA_HOME` when set to an absolute path, otherwise an OS-specific default. Each element is joined to the directory.
 
 <a name="DataDirs"></a>
 
-## func [DataDirs](<https://github.com/gechr/x/blob/main/shell/dir.go#L72>)
+## func [DataDirs](<https://github.com/gechr/x/blob/main/shell/dir.go#L81>)
 
 ```go
 func DataDirs() []string
@@ -301,10 +301,10 @@ EOF found when expecting closing quote
 
 <a name="StateDir"></a>
 
-## func [StateDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L56>)
+## func [StateDir](<https://github.com/gechr/x/blob/main/shell/dir.go#L65>)
 
 ```go
-func StateDir() (string, error)
+func StateDir(elem ...string) (string, error)
 ```
 
-**StateDir** returns the user state directory: `$XDG_STATE_HOME` when set to an absolute path, otherwise an OS-specific default.
+**StateDir** returns a path within the user state directory: `$XDG_STATE_HOME` when set to an absolute path, otherwise an OS-specific default. Each element is joined to the directory.

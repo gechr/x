@@ -88,6 +88,29 @@ func TestStateDir_EnvUnset(t *testing.T) {
 	require.Equal(t, filepath.Join(home, ".local", "state"), got)
 }
 
+func TestBaseDirs_JoinElements(t *testing.T) {
+	tests := []struct {
+		name string
+		env  string
+		dir  func(...string) (string, error)
+	}{
+		{name: "cache", env: "XDG_CACHE_HOME", dir: shell.CacheDir},
+		{name: "config", env: "XDG_CONFIG_HOME", dir: shell.ConfigDir},
+		{name: "data", env: "XDG_DATA_HOME", dir: shell.DataDir},
+		{name: "state", env: "XDG_STATE_HOME", dir: shell.StateDir},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Setenv(tt.env, "/base")
+
+			got, err := tt.dir("my", "sub", "dir")
+			require.NoError(t, err)
+			require.Equal(t, filepath.Join("/base", "my", "sub", "dir"), got)
+		})
+	}
+}
+
 func TestCacheDir_EnvRelative(t *testing.T) {
 	// The XDG spec requires relative paths to be treated as invalid.
 	t.Setenv("XDG_CACHE_HOME", "relative/cache")
