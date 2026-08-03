@@ -80,13 +80,17 @@ const (
 
 <a name="AtomicWrite"></a>
 
-## func [AtomicWrite](<https://github.com/gechr/x/blob/main/os/write.go#L12>)
+## func [AtomicWrite](<https://github.com/gechr/x/blob/main/os/write.go#L27>)
 
 ```go
 func AtomicWrite(path string, data []byte, perm os.FileMode) error
 ```
 
 **AtomicWrite** writes `data` to `path` via a temp-file-and-rename in the same directory. The temp file is removed on any failure.
+
+The replacement is durable, not merely atomic: the temp file's contents are synced before the rename and `path`'s directory is synced after it, so the new directory entry survives a crash rather than being lost to unflushed metadata. Directory syncing is Unix-only and a no-op elsewhere (see [IsUnix](<#IsUnix>)). A failing directory sync is reported as an error even though the rename has already landed - `data` is at `path`, only its durability is unproven - and `path` is deliberately left as written rather than rolled back.
+
+A symlink at `path` is replaced by the new file, not written through to its target, because [os.Rename](<https://pkg.go.dev/os#Rename>) acts on the name. That is what keeps the write atomic, since a link's target may sit on another filesystem where no rename is possible. Callers wanting to write through a link must resolve it first (see [filepath.Resolve](<../filepath/README.md#Resolve>)) and accept the target's directory as the one being modified.
 
 <details><summary><b>Example</b></summary>
 
@@ -114,13 +118,13 @@ hello
 
 <a name="CopyFile"></a>
 
-## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L88>)
+## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L110>)
 
 ```go
 func CopyFile(src, dst string) error
 ```
 
-**CopyFile** copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced before close. When `src` and `dst` are the same file (including via hard link) [CopyFile](<#CopyFile>) is a no-op.
+**CopyFile** copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced before close and its directory afterwards, so a newly created `dst` is durable and not just written - the same reasoning as [AtomicWrite](<#AtomicWrite>), and likewise Unix-only. When `src` and `dst` are the same file (including via hard link) [CopyFile](<#CopyFile>) is a no-op.
 
 <details><summary><b>Example</b></summary>
 
@@ -151,7 +155,7 @@ hello
 
 <a name="EnsureDir"></a>
 
-## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L50>)
+## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L70>)
 
 ```go
 func EnsureDir(dir string, perm os.FileMode) error
@@ -187,7 +191,7 @@ true
 
 <a name="EnsureFile"></a>
 
-## func [EnsureFile](<https://github.com/gechr/x/blob/main/os/write.go#L69>)
+## func [EnsureFile](<https://github.com/gechr/x/blob/main/os/write.go#L89>)
 
 ```go
 func EnsureFile(path string, perm os.FileMode) error

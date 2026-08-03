@@ -9,6 +9,21 @@ import (
 
 // AtomicWrite writes `data` to `path` via a temp-file-and-rename in the same
 // directory. The temp file is removed on any failure.
+//
+// The replacement is durable, not merely atomic: the temp file's contents are
+// synced before the rename and `path`'s directory is synced after it, so the new
+// directory entry survives a crash rather than being lost to unflushed metadata.
+// Directory syncing is Unix-only and a no-op elsewhere (see [IsUnix]). A failing
+// directory sync is reported as an error even though the rename has already
+// landed - `data` is at `path`, only its durability is unproven - and `path` is
+// deliberately left as written rather than rolled back.
+//
+// A symlink at `path` is replaced by the new file, not written through to its
+// target, because [os.Rename] acts on the name. That is what keeps the write
+// atomic, since a link's target may sit on another filesystem where no rename is
+// possible. Callers wanting to write through a link must resolve it first (see
+// [github.com/gechr/x/filepath.Resolve]) and accept the target's directory as
+// the one being modified.
 func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 	dir := filepath.Dir(path)
 	tmp, err := os.CreateTemp(dir, "."+filepath.Base(path)+".*")
@@ -40,6 +55,11 @@ func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 	if err := os.Rename(tmpName, path); err != nil {
 		cleanup()
 		return fmt.Errorf("failed to rename temp file: %w", err)
+	}
+	// Past the rename `cleanup()` must never run: `tmpName` is gone, so it would
+	// remove `path` instead and turn a durability gap into data loss.
+	if err := syncDir(dir); err != nil {
+		return fmt.Errorf("failed to sync directory after rename: %w", err)
 	}
 	return nil
 }
@@ -83,7 +103,9 @@ func EnsureFile(path string, perm os.FileMode) error {
 }
 
 // CopyFile copies `src` to `dst`, preserving `src`'s mode bits. `dst` is fsynced
-// before close. When `src` and `dst` are the same file (including via hard link)
+// before close and its directory afterwards, so a newly created `dst` is durable
+// and not just written - the same reasoning as [AtomicWrite], and likewise
+// Unix-only. When `src` and `dst` are the same file (including via hard link)
 // [CopyFile] is a no-op.
 func CopyFile(src, dst string) error {
 	in, err := os.Open(src)
@@ -127,6 +149,12 @@ func CopyFile(src, dst string) error {
 	}
 	if err := out.Close(); err != nil {
 		return fmt.Errorf("failed to close destination file: %w", err)
+	}
+	// Unconditional rather than gated on `dst` having been created: the contents
+	// are already synced, so one more sync costs far less than deciding whether
+	// the entry is new - which [os.Lstat] cannot answer for a dangling symlink.
+	if err := syncDir(filepath.Dir(dst)); err != nil {
+		return fmt.Errorf("failed to sync destination directory: %w", err)
 	}
 	return nil
 }

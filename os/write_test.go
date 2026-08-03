@@ -54,6 +54,31 @@ func TestAtomicWrite_NoTempLeftBehind(t *testing.T) {
 	require.Equal(t, "config.txt", entries[0].Name())
 }
 
+func TestAtomicWrite_ReplacesSymlink(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	target := filepath.Join(dir, "target.txt")
+	link := filepath.Join(dir, "link.txt")
+	require.NoError(t, os.WriteFile(target, []byte("original"), 0o600))
+	require.NoError(t, os.Symlink(target, link))
+
+	require.NoError(t, xos.AtomicWrite(link, []byte("new"), 0o600))
+
+	// The rename detaches the link rather than writing through it.
+	info, err := os.Lstat(link)
+	require.NoError(t, err)
+	require.Zero(t, info.Mode()&os.ModeSymlink, "link should have been replaced by a regular file")
+
+	got, err := os.ReadFile(link)
+	require.NoError(t, err)
+	require.Equal(t, "new", string(got))
+
+	got, err = os.ReadFile(target)
+	require.NoError(t, err)
+	require.Equal(t, "original", string(got))
+}
+
 func TestEnsureDir(t *testing.T) {
 	t.Parallel()
 
