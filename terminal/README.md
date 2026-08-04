@@ -8,13 +8,15 @@ Package `terminal` provides terminal detection and size queries.
 
 ## Index
 
-- [func Height(f \*os.File) int](<#Height>)
-- [func Is(f \*os.File) bool](<#Is>)
-- [func IsDark() (bool, bool)](<#IsDark>)
-- [func IsLight() (bool, bool)](<#IsLight>)
-- [func Size(f \*os.File) (int, int)](<#Size>)
-- [func SupportsTrueColor() bool](<#SupportsTrueColor>)
-- [func Width(f \*os.File) int](<#Width>)
+- [terminal](#terminal)
+  - [Index](#index)
+  - [func Height](#func-height)
+  - [func Is](#func-is)
+  - [func IsDark](#func-isdark)
+  - [func IsLight](#func-islight)
+  - [func Size](#func-size)
+  - [func SupportsTrueColor](#func-supportstruecolor)
+  - [func Width](#func-width)
 
 <a name="Height"></a>
 
@@ -81,13 +83,13 @@ false
 
 <a name="IsDark"></a>
 
-## func [IsDark](<https://github.com/gechr/x/blob/main/terminal/background.go#L16>)
+## func [IsDark](<https://github.com/gechr/x/blob/main/terminal/background.go#L31>)
 
 ```go
 func IsDark() (bool, bool)
 ```
 
-**IsDark** reports (dark, ok) for the controlling terminal. `ok` is false if no standard stream is a terminal or the terminal does not respond to the background-color query, in which case the first result is meaningless.
+**IsDark** reports (dark, ok) for the controlling terminal. It performs terminal I/O on the first call, waiting up to 10 milliseconds for a background-color response. The result, including no response, is cached for the process. `ok` is false if no standard stream is a terminal or the terminal does not respond, in which case the first result is meaningless.
 
 <details><summary><b>Example</b></summary>
 
@@ -115,13 +117,13 @@ no terminal detected
 
 <a name="IsLight"></a>
 
-## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L23>)
+## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L40>)
 
 ```go
 func IsLight() (bool, bool)
 ```
 
-**IsLight** reports (light, ok) for the controlling terminal. `ok` is false if no standard stream is a terminal or the terminal does not respond to the background-color query, in which case the first result is meaningless.
+**IsLight** reports (light, ok) for the controlling terminal. Like `IsDark`, it performs terminal I/O on the first call and caches the result for the process. `ok` is false if no standard stream is a terminal or the terminal does not respond, in which case the first result is meaningless.
 
 <a name="Size"></a>
 

@@ -2,26 +2,43 @@ package terminal
 
 import (
 	"os"
-
-	"github.com/muesli/termenv"
+	"sync"
 )
 
 // darkLightnessThreshold is the HSL lightness below which a background is
 // considered dark. 0.5 splits the range evenly between black and white.
-const darkLightnessThreshold = 0.5
+const (
+	darkLightnessThreshold = 0.5
+	colorChannelMaximum    = 255
+	lightnessExtremaCount  = 2
+)
 
-// IsDark reports (dark, ok) for the controlling terminal. `ok` is false if no
-// standard stream is a terminal or the terminal does not respond to the
-// background-color query, in which case the first result is meaningless.
-func IsDark() (bool, bool) {
-	return detectBackground(terminalFile())
+var background = sync.OnceValue(func() backgroundResult {
+	dark, ok := detectBackground(terminalFile())
+	return backgroundResult{dark: dark, ok: ok}
+})
+
+type backgroundResult struct {
+	dark bool
+	ok   bool
 }
 
-// IsLight reports (light, ok) for the controlling terminal. `ok` is false if no
-// standard stream is a terminal or the terminal does not respond to the
-// background-color query, in which case the first result is meaningless.
+// IsDark reports (dark, ok) for the controlling terminal. It performs terminal
+// I/O on the first call, waiting up to 10 milliseconds for a background-color
+// response. The result, including no response, is cached for the process. `ok`
+// is false if no standard stream is a terminal or the terminal does not
+// respond, in which case the first result is meaningless.
+func IsDark() (bool, bool) {
+	result := background()
+	return result.dark, result.ok
+}
+
+// IsLight reports (light, ok) for the controlling terminal. Like IsDark, it
+// performs terminal I/O on the first call and caches the result for the process.
+// `ok` is false if no standard stream is a terminal or the terminal does not
+// respond, in which case the first result is meaningless.
 func IsLight() (bool, bool) {
-	dark, ok := detectBackground(terminalFile())
+	dark, ok := IsDark()
 	return ok && !dark, ok
 }
 
@@ -45,11 +62,12 @@ func detectBackground(f *os.File) (bool, bool) {
 		return false, false
 	}
 
-	bg := termenv.NewOutput(f, termenv.WithTTY(true)).BackgroundColor()
-	if _, isNoColor := bg.(termenv.NoColor); isNoColor {
+	red, green, blue, ok := queryBackground(f)
+	if !ok {
 		return false, false
 	}
 
-	_, _, lightness := termenv.ConvertToRGB(bg).Hsl()
+	lightness := float64(int(max(red, green, blue))+int(min(red, green, blue))) /
+		(lightnessExtremaCount * colorChannelMaximum)
 	return lightness < darkLightnessThreshold, true
 }
