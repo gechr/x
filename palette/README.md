@@ -15,6 +15,8 @@ The mapping from string to color is deterministic: the same text always resolves
   - [func (a \*Assigner) Assign(key string) color.Color](<#Assigner.Assign>)
   - [func (a \*Assigner) Palette() Palette](<#Assigner.Palette>)
 - [type Option](<#Option>)
+  - [func WithDark(dark bool) Option](<#WithDark>)
+  - [func WithReserved(reserved ...color.Color) Option](<#WithReserved>)
   - [func WithTrueColor() Option](<#WithTrueColor>)
 - [type Palette](<#Palette>)
   - [func Auto(opts ...Option) Palette](<#Auto>)
@@ -22,7 +24,13 @@ The mapping from string to color is deterministic: the same text always resolves
   - [func DefaultLight() Palette](<#DefaultLight>)
   - [func TrueColorDark() Palette](<#TrueColorDark>)
   - [func TrueColorLight() Palette](<#TrueColorLight>)
+  - [func (p Palette) Assigner() \*Assigner](<#Palette.Assigner>)
+  - [func (p Palette) Avoiding(reserved ...color.Color) Palette](<#Palette.Avoiding>)
   - [func (p Palette) Color(text string) color.Color](<#Palette.Color>)
+- [type Semantic](<#Semantic>)
+  - [func SemanticDark() Semantic](<#SemanticDark>)
+  - [func SemanticLight() Semantic](<#SemanticLight>)
+  - [func (s Semantic) Colors() \[\]color.Color](<#Semantic.Colors>)
 
 <a name="Assigner"></a>
 
@@ -40,13 +48,13 @@ type Assigner struct {
 
 <a name="NewAssigner"></a>
 
-### func [NewAssigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L27>)
+### func [NewAssigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L29>)
 
 ```go
 func NewAssigner(colors ...color.Color) *Assigner
 ```
 
-**NewAssigner** returns an Assigner that draws from the given colors. When no colors are given, it defaults to [Auto](<#Auto>), selecting a palette that matches the terminal background and true-color support. Pass an explicit palette by spreading it, e.g. NewAssigner(TrueColorDark()...).
+**NewAssigner** returns an Assigner that draws from the given colors. When no colors are given, it defaults to [Auto](<#Auto>), selecting a palette that matches the terminal background and true-color support. Pass an explicit palette by spreading it, e.g. NewAssigner(TrueColorDark()...). Spreading an empty palette also triggers the [Auto](<#Auto>) fallback; use [Palette.Assigner](<#Palette.Assigner>) for a palette that must stay empty, such as the result of [Palette.Avoiding](<#Palette.Avoiding>).
 
 <details><summary><b>Example</b></summary>
 
@@ -69,7 +77,7 @@ true
 
 <a name="Assigner.Assign"></a>
 
-### func (\*Assigner) [Assign](<https://github.com/gechr/x/blob/main/palette/assigner.go#L47>)
+### func (\*Assigner) [Assign](<https://github.com/gechr/x/blob/main/palette/assigner.go#L56>)
 
 ```go
 func (a *Assigner) Assign(key string) color.Color
@@ -79,7 +87,7 @@ func (a *Assigner) Assign(key string) color.Color
 
 <a name="Assigner.Palette"></a>
 
-### func (\*Assigner) [Palette](<https://github.com/gechr/x/blob/main/palette/assigner.go#L39>)
+### func (\*Assigner) [Palette](<https://github.com/gechr/x/blob/main/palette/assigner.go#L48>)
 
 ```go
 func (a *Assigner) Palette() Palette
@@ -89,7 +97,7 @@ func (a *Assigner) Palette() Palette
 
 <a name="Option"></a>
 
-## type [Option](<https://github.com/gechr/x/blob/main/palette/options.go#L9>)
+## type [Option](<https://github.com/gechr/x/blob/main/palette/options.go#L13>)
 
 **Option** configures [Auto](<#Auto>).
 
@@ -97,9 +105,29 @@ func (a *Assigner) Palette() Palette
 type Option func(*config)
 ```
 
+<a name="WithDark"></a>
+
+### func [WithDark](<https://github.com/gechr/x/blob/main/palette/options.go#L28>)
+
+```go
+func WithDark(dark bool) Option
+```
+
+**WithDark** tells [Auto](<#Auto>) whether the terminal background is dark, skipping its background detection entirely. Use it when the background was already detected, for example once at startup.
+
+<a name="WithReserved"></a>
+
+### func [WithReserved](<https://github.com/gechr/x/blob/main/palette/options.go#L40>)
+
+```go
+func WithReserved(reserved ...color.Color) Option
+```
+
+**WithReserved** keeps the returned palette perceptually clear of the reserved colors, as if the selected palette were passed to [Palette.Avoiding](<#Palette.Avoiding>): any palette color that could be mistaken for a reserved one is removed. Use it when entity colors render alongside colors that carry meaning of their own, such as a theme's semantic red or a [Semantic](<#Semantic>) set. On the non-true-color path, colors are measured as ANSI-256 renders them.
+
 <a name="WithTrueColor"></a>
 
-### func [WithTrueColor](<https://github.com/gechr/x/blob/main/palette/options.go#L14>)
+### func [WithTrueColor](<https://github.com/gechr/x/blob/main/palette/options.go#L18>)
 
 ```go
 func WithTrueColor() Option
@@ -119,13 +147,15 @@ type Palette []color.Color
 
 <a name="Auto"></a>
 
-### func [Auto](<https://github.com/gechr/x/blob/main/palette/palette.go#L47>)
+### func [Auto](<https://github.com/gechr/x/blob/main/palette/palette.go#L52>)
 
 ```go
 func Auto(opts ...Option) Palette
 ```
 
 **Auto** returns a palette matching the terminal, defaulting to the dark palette when background detection is unavailable. By default it selects the true-color palette when the terminal supports true color and the ANSI-256 palette otherwise; pass [WithTrueColor](<#WithTrueColor>) to force the true-color palette.
+
+Background detection queries the terminal, waiting up to 10 milliseconds for a response on the first call; the result is cached for the process. Pass [WithDark](<#WithDark>) to skip detection entirely, for example when the background was already detected at startup.
 
 <details><summary><b>Example</b></summary>
 
@@ -153,7 +183,7 @@ Output:
 
 <a name="DefaultDark"></a>
 
-### func [DefaultDark](<https://github.com/gechr/x/blob/main/palette/palette.go#L82>)
+### func [DefaultDark](<https://github.com/gechr/x/blob/main/palette/palette.go#L104>)
 
 ```go
 func DefaultDark() Palette
@@ -163,7 +193,7 @@ func DefaultDark() Palette
 
 <a name="DefaultLight"></a>
 
-### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L119>)
+### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L141>)
 
 ```go
 func DefaultLight() Palette
@@ -190,6 +220,49 @@ func TrueColorLight() Palette
 ```
 
 **TrueColorLight** returns the 24-bit palette tuned for light backgrounds, ordered like [TrueColorDark](<#TrueColorDark>) but measured against #fafafa.
+
+<a name="Palette.Assigner"></a>
+
+### func (Palette) [Assigner](<https://github.com/gechr/x/blob/main/palette/assigner.go#L40>)
+
+```go
+func (p Palette) Assigner() *Assigner
+```
+
+**Assigner** returns an Assigner that draws from exactly this palette, even when it is empty — unlike [NewAssigner](<#NewAssigner>), which treats no colors as a request for [Auto](<#Auto>). An empty palette assigns nil to every key.
+
+<a name="Palette.Avoiding"></a>
+
+### func (Palette) [Avoiding](<https://github.com/gechr/x/blob/main/palette/avoid.go#L37>)
+
+```go
+func (p Palette) Avoiding(reserved ...color.Color) Palette
+```
+
+**Avoiding** returns a new palette without the colors that sit perceptually close to any reserved color, so entity colors cannot be mistaken for a reserved one — a theme's semantic red, say. Closeness is measured with the CIEDE2000 color-difference formula. The remaining colors keep their original order, so a most-separable-first palette stays that way.
+
+Distances are measured on the colors' own RGBA values, so the guarantee is for opaque colors rendered in true color. Rendering in a reduced color profile quantizes colors and can narrow their distances; [Auto](<#Auto>) accounts for this on its non-true-color path by measuring colors as ANSI-256 renders them. Nil and fully transparent reserved colors are ignored; palette colors that cannot be measured are kept.
+
+The mapping from string to color differs between the filtered and unfiltered palettes, since [Palette.Color](<#Palette.Color>) hashes over the palette length. A reserved set that blankets the palette can leave it empty, in which case [Palette.Color](<#Palette.Color>) returns nil; use [Palette.Assigner](<#Palette.Assigner>) rather than [NewAssigner](<#NewAssigner>) to keep such a palette empty.
+
+<details><summary><b>Example</b></summary>
+
+```go
+// A theme that renders dangerous entities in its own semantic red can keep
+// entity colors perceptually clear of it, so the red stays unmistakable.
+themeRed := lipgloss.Color("#f38ba8")
+p := palette.TrueColorDark().Avoiding(themeRed)
+
+fmt.Println(len(p))
+```
+
+Output:
+
+```text
+27
+```
+
+</details>
 
 <a name="Palette.Color"></a>
 
@@ -232,3 +305,73 @@ Output:
 ```
 
 </details>
+
+<a name="Semantic"></a>
+
+## type [Semantic](<https://github.com/gechr/x/blob/main/palette/semantic.go#L17-L22>)
+
+**Semantic** holds measured colors for conventional message meanings. Like the entity palettes, every color clears 4.5:1 contrast against its target background, and the colors are mutually distinguishable. Which strings warrant a semantic color is the caller's policy; the set only guarantees the colors themselves are legible and distinct.
+
+To keep entity colors perceptually clear of the set, reserve it: pass the [Semantic.Colors](<#Semantic.Colors>) slice to [WithReserved](<#WithReserved>) or [Palette.Avoiding](<#Palette.Avoiding>).
+
+```go
+type Semantic struct {
+    Danger  color.Color
+    Warning color.Color
+    Success color.Color
+    Info    color.Color
+}
+```
+
+<a name="SemanticDark"></a>
+
+### func [SemanticDark](<https://github.com/gechr/x/blob/main/palette/semantic.go#L26>)
+
+```go
+func SemanticDark() Semantic
+```
+
+**SemanticDark** returns the semantic set tuned for dark backgrounds, measured against #1e1e1e like [TrueColorDark](<#TrueColorDark>).
+
+<details><summary><b>Example</b></summary>
+
+```go
+// A measured semantic set: every color clears 4.5:1 against a dark
+// background, and reserving it keeps entity colors clear of the set.
+sem := palette.SemanticDark()
+p := palette.Auto(
+    palette.WithTrueColor(),
+    palette.WithDark(true),
+    palette.WithReserved(sem.Colors()...),
+)
+
+fmt.Println(len(p) < len(palette.TrueColorDark()))
+```
+
+Output:
+
+```text
+true
+```
+
+</details>
+
+<a name="SemanticLight"></a>
+
+### func [SemanticLight](<https://github.com/gechr/x/blob/main/palette/semantic.go#L37>)
+
+```go
+func SemanticLight() Semantic
+```
+
+**SemanticLight** returns the semantic set tuned for light backgrounds, measured against #fafafa like [TrueColorLight](<#TrueColorLight>).
+
+<a name="Semantic.Colors"></a>
+
+### func (Semantic) [Colors](<https://github.com/gechr/x/blob/main/palette/semantic.go#L48>)
+
+```go
+func (s Semantic) Colors() []color.Color
+```
+
+**Colors** returns the set as a slice, in Danger, Warning, Success, Info order — convenient for [Palette.Avoiding](<#Palette.Avoiding>) and [WithReserved](<#WithReserved>).

@@ -23,14 +23,23 @@ type Assigner struct {
 // NewAssigner returns an Assigner that draws from the given colors. When no
 // colors are given, it defaults to [Auto], selecting a palette that matches the
 // terminal background and true-color support. Pass an explicit palette by
-// spreading it, e.g. NewAssigner(TrueColorDark()...).
+// spreading it, e.g. NewAssigner(TrueColorDark()...). Spreading an empty
+// palette also triggers the [Auto] fallback; use [Palette.Assigner] for a
+// palette that must stay empty, such as the result of [Palette.Avoiding].
 func NewAssigner(colors ...color.Color) *Assigner {
 	pal := Palette(colors)
 	if len(pal) == 0 {
 		pal = Auto()
 	}
+	return pal.Assigner()
+}
+
+// Assigner returns an Assigner that draws from exactly this palette, even
+// when it is empty — unlike [NewAssigner], which treats no colors as a
+// request for [Auto]. An empty palette assigns nil to every key.
+func (p Palette) Assigner() *Assigner {
 	return &Assigner{
-		palette: pal,
+		palette: p,
 		seen:    make(map[string]int),
 	}
 }

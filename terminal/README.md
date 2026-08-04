@@ -8,15 +8,13 @@ Package `terminal` provides terminal detection and size queries.
 
 ## Index
 
-- [terminal](#terminal)
-  - [Index](#index)
-  - [func Height](#func-height)
-  - [func Is](#func-is)
-  - [func IsDark](#func-isdark)
-  - [func IsLight](#func-islight)
-  - [func Size](#func-size)
-  - [func SupportsTrueColor](#func-supportstruecolor)
-  - [func Width](#func-width)
+- [func Height(f \*os.File) int](<#Height>)
+- [func Is(f \*os.File) bool](<#Is>)
+- [func IsDark() (bool, bool)](<#IsDark>)
+- [func IsLight() (bool, bool)](<#IsLight>)
+- [func Size(f \*os.File) (int, int)](<#Size>)
+- [func SupportsTrueColor() bool](<#SupportsTrueColor>)
+- [func Width(f \*os.File) int](<#Width>)
 
 <a name="Height"></a>
 
@@ -123,7 +121,7 @@ no terminal detected
 func IsLight() (bool, bool)
 ```
 
-**IsLight** reports (light, ok) for the controlling terminal. Like `IsDark`, it performs terminal I/O on the first call and caches the result for the process. `ok` is false if no standard stream is a terminal or the terminal does not respond, in which case the first result is meaningless.
+**IsLight** reports (light, ok) for the controlling terminal. Like [IsDark](<#IsDark>), it performs terminal I/O on the first call and caches the result for the process. `ok` is false if no standard stream is a terminal or the terminal does not respond, in which case the first result is meaningless.
 
 <a name="Size"></a>
 

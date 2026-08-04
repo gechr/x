@@ -105,9 +105,43 @@ func TestAutoReturnsNonEmptyPalette(t *testing.T) {
 }
 
 func TestAutoWithTrueColorForcesTrueColor(t *testing.T) {
-	// Detection can't yield true color in a test harness (no TTY, no
-	// COLORTERM), so the override is what proves the wiring.
+	// Detection reads COLORTERM/TERM, so pin them to a non-true-color
+	// terminal; the override alone must select the true-color palette.
+	t.Setenv("COLORTERM", "")
+	t.Setenv("TERM", "xterm-256color")
+
 	require.Len(t, palette.Auto(palette.WithTrueColor()), 32)
+}
+
+func TestAutoWithDarkSelectsVariant(t *testing.T) {
+	dark := palette.Auto(palette.WithTrueColor(), palette.WithDark(true))
+	light := palette.Auto(palette.WithTrueColor(), palette.WithDark(false))
+
+	require.Equal(t, palette.TrueColorDark(), dark)
+	require.Equal(t, palette.TrueColorLight(), light)
+}
+
+func TestAutoWithReservedAvoidsColors(t *testing.T) {
+	themeRed := lipgloss.Color("#f38ba8")
+	p := palette.Auto(
+		palette.WithTrueColor(),
+		palette.WithDark(true),
+		palette.WithReserved(themeRed),
+	)
+
+	require.Equal(t, palette.TrueColorDark().Avoiding(themeRed), p)
+}
+
+func TestAutoWithReservedMeasuresAsRenderedWithoutTrueColor(t *testing.T) {
+	// Pin the environment to a non-true-color terminal so Auto takes the
+	// ANSI-256 path, which must measure both sides as rendered.
+	t.Setenv("COLORTERM", "")
+	t.Setenv("TERM", "xterm-256color")
+
+	reserved := palette.SemanticDark().Colors()
+	p := palette.Auto(palette.WithDark(true), palette.WithReserved(reserved...))
+
+	require.Equal(t, palette.AvoidingAsANSI256(palette.DefaultDark(), reserved...), p)
 }
 
 func luminance(c color.Color) uint32 {

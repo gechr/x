@@ -3,6 +3,7 @@ package palette_test
 import (
 	"fmt"
 
+	"charm.land/lipgloss/v2"
 	"github.com/gechr/x/palette"
 )
 
@@ -20,6 +21,32 @@ func ExamplePalette_Color_empty() {
 	fmt.Println(palette.Palette(nil).Color("alpha"))
 	// Output:
 	// <nil>
+}
+
+func ExamplePalette_Avoiding() {
+	// A theme that renders dangerous entities in its own semantic red can keep
+	// entity colors perceptually clear of it, so the red stays unmistakable.
+	themeRed := lipgloss.Color("#f38ba8")
+	p := palette.TrueColorDark().Avoiding(themeRed)
+
+	fmt.Println(len(p))
+	// Output:
+	// 27
+}
+
+func ExampleSemanticDark() {
+	// A measured semantic set: every color clears 4.5:1 against a dark
+	// background, and reserving it keeps entity colors clear of the set.
+	sem := palette.SemanticDark()
+	p := palette.Auto(
+		palette.WithTrueColor(),
+		palette.WithDark(true),
+		palette.WithReserved(sem.Colors()...),
+	)
+
+	fmt.Println(len(p) < len(palette.TrueColorDark()))
+	// Output:
+	// true
 }
 
 func ExampleNewAssigner() {

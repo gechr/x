@@ -44,6 +44,11 @@ func index(text string, n int) int {
 // palette when background detection is unavailable. By default it selects the
 // true-color palette when the terminal supports true color and the ANSI-256
 // palette otherwise; pass [WithTrueColor] to force the true-color palette.
+//
+// Background detection queries the terminal, waiting up to 10 milliseconds
+// for a response on the first call; the result is cached for the process.
+// Pass [WithDark] to skip detection entirely, for example when the
+// background was already detected at startup.
 func Auto(opts ...Option) Palette {
 	var c config
 	for _, opt := range opts {
@@ -55,16 +60,33 @@ func Auto(opts ...Option) Palette {
 		trueColor = *c.trueColor
 	}
 
-	switch dark := isDark(); {
-	case trueColor && dark:
-		return TrueColorDark()
-	case trueColor:
-		return TrueColorLight()
-	case dark:
-		return DefaultDark()
-	default:
-		return DefaultLight()
+	dark := c.dark != nil && *c.dark
+	if c.dark == nil {
+		dark = isDark()
 	}
+
+	var p Palette
+	switch {
+	case trueColor && dark:
+		p = TrueColorDark()
+	case trueColor:
+		p = TrueColorLight()
+	case dark:
+		p = DefaultDark()
+	default:
+		p = DefaultLight()
+	}
+
+	if len(c.reserved) == 0 {
+		return p
+	}
+	if trueColor {
+		return p.Avoiding(c.reserved...)
+	}
+	// Without true color, both palette and reserved colors render quantized
+	// to ANSI-256, which can pull them closer together than their true-color
+	// values suggest — so measure them as they will render.
+	return p.avoiding(ansi256, c.reserved...)
 }
 
 // isDark reports whether the terminal has a dark background, defaulting to

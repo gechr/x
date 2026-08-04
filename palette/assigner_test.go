@@ -30,6 +30,27 @@ func TestNewAssignerUsesGivenColors(t *testing.T) {
 	require.Equal(t, pal, palette.NewAssigner(pal...).Palette())
 }
 
+func TestPaletteAssignerPreservesEmptiness(t *testing.T) {
+	// Spreading an empty palette into NewAssigner falls back to Auto, which
+	// would resurrect exactly the colors an Avoiding caller excluded. The
+	// method constructor must keep the palette empty instead.
+	full := palette.TrueColorDark()
+	emptied := full.Avoiding(full...)
+	require.Empty(t, emptied)
+
+	a := emptied.Assigner()
+	require.Empty(t, a.Palette())
+	require.Nil(t, a.Assign("alpha"))
+}
+
+func TestPaletteAssignerUsesPalette(t *testing.T) {
+	pal := palette.DefaultDark()
+	a := pal.Assigner()
+
+	require.Equal(t, pal, a.Palette())
+	require.Equal(t, pal[0], a.Assign("alpha"))
+}
+
 func TestAssignerUsesPaletteOrder(t *testing.T) {
 	pal := palette.DefaultDark()
 	a := palette.NewAssigner(pal...)

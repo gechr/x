@@ -33,7 +33,7 @@ func IsDark() (bool, bool) {
 	return result.dark, result.ok
 }
 
-// IsLight reports (light, ok) for the controlling terminal. Like IsDark, it
+// IsLight reports (light, ok) for the controlling terminal. Like [IsDark], it
 // performs terminal I/O on the first call and caches the result for the process.
 // `ok` is false if no standard stream is a terminal or the terminal does not
 // respond, in which case the first result is meaningless.
