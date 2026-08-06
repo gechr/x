@@ -27,6 +27,12 @@ func TestParseBackgroundResponse(t *testing.T) {
 			green:    86,
 			blue:     154,
 		},
+		"trailing device attributes reply": {
+			response: "\x1b]11;rgb:0000/0000/0000\x1b\\\x1b[?62;4c",
+			red:      0,
+			green:    0,
+			blue:     0,
+		},
 		"short components": {
 			response: "\x1b]11;rgb:f/8/0\a",
 			red:      255,
@@ -57,5 +63,45 @@ func TestParseBackgroundResponse_Invalid(t *testing.T) {
 	} {
 		_, _, _, ok := parseBackgroundResponse(response)
 		require.False(t, ok, response)
+	}
+}
+
+func TestDeviceAttributesComplete(t *testing.T) {
+	tests := map[string]struct {
+		response string
+		complete bool
+	}{
+		"empty": {
+			response: "",
+		},
+		"reply alone": {
+			response: "\x1b[?62;4c",
+			complete: true,
+		},
+		"reply after background response": {
+			response: "\x1b]11;rgb:0000/0000/0000\x1b\\\x1b[?1;2c",
+			complete: true,
+		},
+		"minimal reply": {
+			response: "\x1b[?c",
+			complete: true,
+		},
+		"introducer without final byte": {
+			response: "\x1b[?62;4",
+		},
+		// The final byte must be looked for after the introducer: hex digits
+		// in a background response would otherwise terminate the reply early.
+		"c in background response only": {
+			response: "\x1b]11;rgb:9abc/9abc/9abc\x1b\\",
+		},
+		"background response still arriving": {
+			response: "\x1b]11;rgb:0000/0000/00",
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			require.Equal(t, test.complete, deviceAttributesComplete(test.response))
+		})
 	}
 }

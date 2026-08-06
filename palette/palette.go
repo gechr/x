@@ -85,7 +85,7 @@ func Auto(opts ...Option) Palette {
 	}
 	// Without true color, both palette and reserved colors render quantized
 	// to ANSI-256, which can pull them closer together than their true-color
-	// values suggest — so measure them as they will render.
+	// values suggest - so measure them as they will render.
 	return p.avoiding(ansi256, c.reserved...)
 }
 

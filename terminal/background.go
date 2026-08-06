@@ -24,10 +24,11 @@ type backgroundResult struct {
 }
 
 // IsDark reports (dark, ok) for the controlling terminal. It performs terminal
-// I/O on the first call, waiting up to 10 milliseconds for a background-color
-// response. The result, including no response, is cached for the process. `ok`
-// is false if no standard stream is a terminal or the terminal does not
-// respond, in which case the first result is meaningless.
+// I/O on the first call, returning as soon as the terminal has answered and
+// waiting no longer than half a second for one that never does. The result,
+// including no response, is cached for the process. `ok` is false if no
+// standard stream is a terminal or the terminal does not respond, in which
+// case the first result is meaningless.
 func IsDark() (bool, bool) {
 	result := background()
 	return result.dark, result.ok

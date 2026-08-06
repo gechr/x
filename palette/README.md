@@ -229,7 +229,7 @@ func TrueColorLight() Palette
 func (p Palette) Assigner() *Assigner
 ```
 
-**Assigner** returns an Assigner that draws from exactly this palette, even when it is empty — unlike [NewAssigner](<#NewAssigner>), which treats no colors as a request for [Auto](<#Auto>). An empty palette assigns nil to every key.
+**Assigner** returns an Assigner that draws from exactly this palette, even when it is empty - unlike [NewAssigner](<#NewAssigner>), which treats no colors as a request for [Auto](<#Auto>). An empty palette assigns nil to every key.
 
 <a name="Palette.Avoiding"></a>
 
@@ -239,7 +239,7 @@ func (p Palette) Assigner() *Assigner
 func (p Palette) Avoiding(reserved ...color.Color) Palette
 ```
 
-**Avoiding** returns a new palette without the colors that sit perceptually close to any reserved color, so entity colors cannot be mistaken for a reserved one — a theme's semantic red, say. Closeness is measured with the CIEDE2000 color-difference formula. The remaining colors keep their original order, so a most-separable-first palette stays that way.
+**Avoiding** returns a new palette without the colors that sit perceptually close to any reserved color, so entity colors cannot be mistaken for a reserved one - a theme's semantic red, say. Closeness is measured with the CIEDE2000 color-difference formula. The remaining colors keep their original order, so a most-separable-first palette stays that way.
 
 Distances are measured on the colors' own RGBA values, so the guarantee is for opaque colors rendered in true color. Rendering in a reduced color profile quantizes colors and can narrow their distances; [Auto](<#Auto>) accounts for this on its non-true-color path by measuring colors as ANSI-256 renders them. Nil and fully transparent reserved colors are ignored; palette colors that cannot be measured are kept.
 
@@ -374,4 +374,4 @@ func SemanticLight() Semantic
 func (s Semantic) Colors() []color.Color
 ```
 
-**Colors** returns the set as a slice, in Danger, Warning, Success, Info order — convenient for [Palette.Avoiding](<#Palette.Avoiding>) and [WithReserved](<#WithReserved>).
+**Colors** returns the set as a slice, in Danger, Warning, Success, Info order - convenient for [Palette.Avoiding](<#Palette.Avoiding>) and [WithReserved](<#WithReserved>).

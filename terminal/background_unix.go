@@ -14,8 +14,26 @@ import (
 )
 
 const (
-	backgroundQueryTimeout = 10 * time.Millisecond
-	backgroundQuery        = "\x1b]11;?\x1b\\"
+	// backgroundQueryTimeout bounds the wait for a terminal that answers
+	// neither query. It is a fault backstop rather than a latency budget:
+	// terminals that speak DA1 - effectively all of them - end the read as
+	// soon as the reply lands, so this is only reached behind a pty with no
+	// emulator on the other end, such as a CI runner or script(1). It is
+	// generous enough for a DA1 round trip over a high-latency link, since
+	// giving up early is the failure that leaks escape sequences.
+	backgroundQueryTimeout = 500 * time.Millisecond
+	// backgroundQuery asks for the background colour (OSC 11) and follows it
+	// with a Primary Device Attributes request (DA1). Terminals answer queries
+	// in order, so the DA1 reply marks the end of the batch: seeing it with no
+	// OSC 11 reply before it means the terminal does not support the query,
+	// which a timeout alone cannot distinguish from a terminal that is merely
+	// slow. Reading through to DA1 also guarantees no reply is left behind in
+	// the input buffer, where the shell would echo it once the process exits.
+	backgroundQuery = "\x1b]11;?\x1b\\\x1b[0c"
+	// deviceAttributesPrefix and deviceAttributesFinal bracket a DA1 reply,
+	// which takes the form CSI ? Ps ; ... c.
+	deviceAttributesPrefix = "\x1b[?"
+	deviceAttributesFinal  = 'c'
 	backgroundResponse     = "\x1b]11;rgb:"
 	maxBackgroundResponse  = 128
 	rgbComponentCount      = 3
@@ -34,13 +52,22 @@ func queryBackground(f *os.File) (uint8, uint8, uint8, bool) {
 		return 0, 0, 0, false
 	}
 
+	return parseBackgroundResponse(readQueryResponse(f, fd))
+}
+
+// readQueryResponse reads the terminal's replies to backgroundQuery, stopping
+// at the DA1 reply that trails them. It reads a byte at a time so it consumes
+// exactly the replies and no more, leaving any input the user typed ahead of
+// them in the buffer rather than swallowing it in a bulk read.
+func readQueryResponse(f *os.File, fd int) string {
 	deadline := time.Now().Add(backgroundQueryTimeout)
-	response := make([]byte, 0, maxBackgroundResponse)
-	buffer := make([]byte, maxBackgroundResponse)
-	for len(response) < maxBackgroundResponse {
+	var response strings.Builder
+	buffer := make([]byte, 1)
+
+	for response.Len() < maxBackgroundResponse {
 		remaining := time.Until(deadline)
 		if remaining <= 0 {
-			return 0, 0, 0, false
+			break
 		}
 
 		timeout := max(int(remaining.Milliseconds()), 1)
@@ -51,20 +78,31 @@ func queryBackground(f *os.File) (uint8, uint8, uint8, bool) {
 			continue
 		}
 		if err != nil || ready == 0 {
-			return 0, 0, 0, false
+			break
 		}
 
-		count, err := f.Read(buffer[:min(len(buffer), maxBackgroundResponse-len(response))])
+		count, err := f.Read(buffer)
 		if err != nil || count == 0 {
-			return 0, 0, 0, false
+			break
 		}
-		response = append(response, buffer[:count]...)
-		if red, green, blue, ok := parseBackgroundResponse(string(response)); ok {
-			return red, green, blue, true
+		response.Write(buffer[:count])
+		if deviceAttributesComplete(response.String()) {
+			break
 		}
 	}
 
-	return 0, 0, 0, false
+	return response.String()
+}
+
+// deviceAttributesComplete reports whether response ends with a complete DA1
+// reply. The search starts after the CSI ? introducer so that hex digits in an
+// OSC 11 reply cannot be mistaken for the final byte.
+func deviceAttributesComplete(response string) bool {
+	_, after, ok := strings.Cut(response, deviceAttributesPrefix)
+	if !ok {
+		return false
+	}
+	return strings.ContainsRune(after, deviceAttributesFinal)
 }
 
 func parseBackgroundResponse(response string) (uint8, uint8, uint8, bool) {

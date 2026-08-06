@@ -44,7 +44,7 @@ func SemanticLight() Semantic {
 }
 
 // Colors returns the set as a slice, in Danger, Warning, Success, Info
-// order — convenient for [Palette.Avoiding] and [WithReserved].
+// order - convenient for [Palette.Avoiding] and [WithReserved].
 func (s Semantic) Colors() []color.Color {
 	return []color.Color{s.Danger, s.Warning, s.Success, s.Info}
 }

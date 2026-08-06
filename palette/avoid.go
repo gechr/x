@@ -18,7 +18,7 @@ const minReservedDistance = 0.16
 
 // Avoiding returns a new palette without the colors that sit perceptually
 // close to any reserved color, so entity colors cannot be mistaken for a
-// reserved one — a theme's semantic red, say. Closeness is measured with the
+// reserved one - a theme's semantic red, say. Closeness is measured with the
 // CIEDE2000 color-difference formula. The remaining colors keep their
 // original order, so a most-separable-first palette stays that way.
 //

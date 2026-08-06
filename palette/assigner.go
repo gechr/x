@@ -35,7 +35,7 @@ func NewAssigner(colors ...color.Color) *Assigner {
 }
 
 // Assigner returns an Assigner that draws from exactly this palette, even
-// when it is empty — unlike [NewAssigner], which treats no colors as a
+// when it is empty - unlike [NewAssigner], which treats no colors as a
 // request for [Auto]. An empty palette assigns nil to every key.
 func (p Palette) Assigner() *Assigner {
 	return &Assigner{
