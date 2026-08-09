@@ -31,7 +31,7 @@ func ExamplePalette_Avoiding() {
 
 	fmt.Println(len(p))
 	// Output:
-	// 27
+	// 20
 }
 
 func ExampleSemanticDark() {
@@ -73,5 +73,5 @@ func ExampleAuto() {
 	p = palette.Auto(palette.WithTrueColor())
 	fmt.Println(len(p))
 	// Output:
-	// 32
+	// 23
 }

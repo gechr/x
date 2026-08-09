@@ -176,7 +176,7 @@ fmt.Println(len(p))
 Output:
 
 ```text
-32
+23
 ```
 
 </details>
@@ -193,7 +193,7 @@ func DefaultDark() Palette
 
 <a name="DefaultLight"></a>
 
-### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L141>)
+### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L131>)
 
 ```go
 func DefaultLight() Palette
@@ -213,7 +213,7 @@ func TrueColorDark() Palette
 
 <a name="TrueColorLight"></a>
 
-### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L21>)
+### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L19>)
 
 ```go
 func TrueColorLight() Palette
@@ -259,7 +259,7 @@ fmt.Println(len(p))
 Output:
 
 ```text
-27
+20
 ```
 
 </details>

@@ -6,13 +6,11 @@ package palette
 // caller owns.
 func TrueColorDark() Palette {
 	return hexColors(
-		"#fe05fa", "#c7c7c7", "#00a005", "#ff3217", "#2d81fe",
-		"#66ff14", "#b973b0", "#c29203", "#fcd304", "#1daeb5",
-		"#09fed9", "#f89cfb", "#7bca56", "#f98a7e", "#fe0c99",
-		"#83acff", "#fff8ee", "#dafcb1", "#48d8f5", "#c2715f",
-		"#6d9f63", "#e5b46b", "#f368d3", "#e2ff25", "#7884c6",
-		"#c087f5", "#0cd8af", "#aee86c", "#04df08", "#e6577d",
-		"#ec7208", "#ffacc8",
+		"#ff00ff", "#ff3217", "#2d81fe", "#66ff66", "#ffcc00",
+		"#0caeb6", "#3dffec", "#ff6699", "#4ad103", "#f76e6e",
+		"#83acff", "#d4ffa1", "#00ccff", "#e5b46b", "#ff75ff",
+		"#ffff00", "#c087f5", "#a6ea5a", "#ff3366", "#ffacc8",
+		"#ff8938", "#aaaf03", "#ffa500",
 	)
 }
 
@@ -20,12 +18,10 @@ func TrueColorDark() Palette {
 // ordered like [TrueColorDark] but measured against #fafafa.
 func TrueColorLight() Palette {
 	return hexColors(
-		"#0404fe", "#4d4d4d", "#c805d2", "#de2500", "#0d8609",
-		"#6a019f", "#556dc6", "#9a1553", "#01268d", "#946611",
-		"#820eff", "#680e08", "#da0d7e", "#055901", "#9a5a8c",
-		"#512155", "#00559a", "#a10197", "#853c1d", "#4534c5",
-		"#075cf9", "#684788", "#9050cf", "#027355", "#b20303",
-		"#b3514d", "#410186", "#15789c", "#0e08c4", "#5d6704",
-		"#7e0672", "#ba3ea5",
+		"#0404fe", "#de2500", "#0d8609", "#6a019f", "#556dc6",
+		"#9f0053", "#966501", "#820eff", "#6d0000",
+		"#db047e", "#055901", "#5f0169", "#a10197", "#027355",
+		"#b20303", "#e00131", "#15789c", "#5d6704", "#ce02b6",
+		"#0249c9", "#5c3db6", "#350078", "#1f00b9",
 	)
 }

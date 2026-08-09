@@ -55,7 +55,7 @@ func TestTrueColorPalettesAreDistinct(t *testing.T) {
 		"dark":  palette.TrueColorDark(),
 		"light": palette.TrueColorLight(),
 	} {
-		require.Len(t, p, 32, name)
+		require.Len(t, p, 23, name)
 
 		seen := map[color.Color]bool{}
 		for _, c := range p {
@@ -110,7 +110,7 @@ func TestAutoWithTrueColorForcesTrueColor(t *testing.T) {
 	t.Setenv("COLORTERM", "")
 	t.Setenv("TERM", "xterm-256color")
 
-	require.Len(t, palette.Auto(palette.WithTrueColor()), 32)
+	require.Len(t, palette.Auto(palette.WithTrueColor()), 23)
 }
 
 func TestAutoWithDarkSelectsVariant(t *testing.T) {
