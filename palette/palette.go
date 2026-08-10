@@ -100,29 +100,31 @@ func isDark() bool {
 // background in [DefaultLight].
 const darkenPercent = 0.45
 
-// DefaultDark returns the default ANSI-256 palette tuned for dark backgrounds.
+// DefaultDark returns the default ANSI-256 palette tuned for dark
+// backgrounds, ordered so that colors close together in the list stay
+// perceptually distinct.
 func DefaultDark() Palette {
 	return Palette{
-		lipgloss.Color("208"), // orange
-		lipgloss.Color("51"),  // cyan
-		lipgloss.Color("226"), // yellow
-		lipgloss.Color("207"), // magenta
 		lipgloss.Color("82"),  // green
+		lipgloss.Color("207"), // magenta
+		lipgloss.Color("208"), // orange
 		lipgloss.Color("75"),  // blue
-		lipgloss.Color("214"), // orange (light)
-		lipgloss.Color("48"),  // spring green
-		lipgloss.Color("220"), // gold
-		lipgloss.Color("50"),  // spring green (light)
-		lipgloss.Color("156"), // pale green
-		lipgloss.Color("183"), // plum
-		lipgloss.Color("229"), // pale yellow
-		lipgloss.Color("203"), // red
-		lipgloss.Color("63"),  // blue
-		lipgloss.Color("173"), // brown
-		lipgloss.Color("37"),  // teal
-		lipgloss.Color("57"),  // indigo
 		lipgloss.Color("124"), // maroon
 		lipgloss.Color("100"), // olive
+		lipgloss.Color("50"),  // spring green (light)
+		lipgloss.Color("57"),  // indigo
+		lipgloss.Color("226"), // yellow
+		lipgloss.Color("183"), // plum
+		lipgloss.Color("203"), // red
+		lipgloss.Color("214"), // orange (light)
+		lipgloss.Color("51"),  // cyan
+		lipgloss.Color("63"),  // blue
+		lipgloss.Color("156"), // pale green
+		lipgloss.Color("37"),  // teal
+		lipgloss.Color("173"), // brown
+		lipgloss.Color("220"), // gold
+		lipgloss.Color("229"), // pale yellow
+		lipgloss.Color("48"),  // spring green
 	}
 }
 

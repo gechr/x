@@ -183,17 +183,17 @@ Output:
 
 <a name="DefaultDark"></a>
 
-### func [DefaultDark](<https://github.com/gechr/x/blob/main/palette/palette.go#L104>)
+### func [DefaultDark](<https://github.com/gechr/x/blob/main/palette/palette.go#L106>)
 
 ```go
 func DefaultDark() Palette
 ```
 
-**DefaultDark** returns the default ANSI-256 palette tuned for dark backgrounds.
+**DefaultDark** returns the default ANSI-256 palette tuned for dark backgrounds, ordered so that colors close together in the list stay perceptually distinct.
 
 <a name="DefaultLight"></a>
 
-### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L131>)
+### func [DefaultLight](<https://github.com/gechr/x/blob/main/palette/palette.go#L133>)
 
 ```go
 func DefaultLight() Palette
@@ -203,17 +203,17 @@ func DefaultLight() Palette
 
 <a name="TrueColorDark"></a>
 
-### func [TrueColorDark](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L7>)
+### func [TrueColorDark](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L8>)
 
 ```go
 func TrueColorDark() Palette
 ```
 
-**TrueColorDark** returns the 24-bit palette tuned for dark backgrounds. Every color clears 4.5:1 contrast against #1e1e1e, and colors are ordered so that the first N are the most separable N. Each call returns a fresh palette the caller owns.
+**TrueColorDark** returns the 24-bit palette tuned for dark backgrounds. Every color clears 4.5:1 contrast against #1e1e1e and sits at least 0.08 CIEDE2000 from every other, and colors are ordered so that consecutive entries stay distinct from one another as well. Each call returns a fresh palette the caller owns.
 
 <a name="TrueColorLight"></a>
 
-### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L19>)
+### func [TrueColorLight](<https://github.com/gechr/x/blob/main/palette/truecolor.go#L20>)
 
 ```go
 func TrueColorLight() Palette
