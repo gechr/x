@@ -152,15 +152,17 @@ Output:
 
 <a name="SupportsTrueColor"></a>
 
-## func [SupportsTrueColor](<https://github.com/gechr/x/blob/main/terminal/color.go#L16>)
+## func [SupportsTrueColor](<https://github.com/gechr/x/blob/main/terminal/color.go#L37>)
 
 ```go
 func SupportsTrueColor() bool
 ```
 
-**SupportsTrueColor** reports whether the terminal supports 24-bit "true color" output, based on the COLORTERM and TERM environment variables.
+**SupportsTrueColor** reports whether the terminal supports 24-bit "true color" output.
 
-COLORTERM=truecolor (or 24bit) is the de-facto signal modern terminals set. TERM alone is deliberately not trusted for capability - the ubiquitous TERM=xterm-256color advertises only 256 colors even on terminals that render 24-bit, which is precisely why COLORTERM exists. This reports capability, not preference: honoring NO\_COLOR or a non-terminal stream is left to the caller.
+Detection reads COLORTERM, TERM, the terminfo Tc and RGB capabilities and, inside tmux, `tmux info` - tmux does not forward COLORTERM, so only its own capabilities settle the question there. TERM alone is not trusted for capability: the ubiquitous TERM=xterm-256color advertises only 256 colors even on terminals that render 24-bit, which is precisely why COLORTERM exists.
+
+This reports capability, not preference: NO\_COLOR and CLICOLOR are ignored and a redirected stream is still measured against the terminal, so honoring either is left to the caller. The first call detects, and the result is cached for the process.
 
 <a name="Width"></a>
 

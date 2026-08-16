@@ -15,3 +15,13 @@ func AvoidingAsANSI256(p Palette, reserved ...color.Color) Palette {
 func ANSI256(c color.Color) color.Color {
 	return ansi256(c)
 }
+
+// WithoutTrueColor is the inverse of [WithTrueColor], sending [Auto] down its
+// ANSI-256 path whatever the terminal supports. Tests need it because
+// detection is cached for the process, so the environment cannot pin it.
+func WithoutTrueColor() Option {
+	return func(c *config) {
+		off := false
+		c.trueColor = &off
+	}
+}

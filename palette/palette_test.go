@@ -105,11 +105,8 @@ func TestAutoReturnsNonEmptyPalette(t *testing.T) {
 }
 
 func TestAutoWithTrueColorForcesTrueColor(t *testing.T) {
-	// Detection reads COLORTERM/TERM, so pin them to a non-true-color
-	// terminal; the override alone must select the true-color palette.
-	t.Setenv("COLORTERM", "")
-	t.Setenv("TERM", "xterm-256color")
-
+	// The override alone must select the true-color palette, whatever the
+	// terminal running the test supports.
 	require.Len(t, palette.Auto(palette.WithTrueColor()), 23)
 }
 
@@ -133,13 +130,14 @@ func TestAutoWithReservedAvoidsColors(t *testing.T) {
 }
 
 func TestAutoWithReservedMeasuresAsRenderedWithoutTrueColor(t *testing.T) {
-	// Pin the environment to a non-true-color terminal so Auto takes the
-	// ANSI-256 path, which must measure both sides as rendered.
-	t.Setenv("COLORTERM", "")
-	t.Setenv("TERM", "xterm-256color")
-
+	// Send Auto down its ANSI-256 path, which must measure both sides as
+	// rendered.
 	reserved := palette.SemanticDark().Colors()
-	p := palette.Auto(palette.WithDark(true), palette.WithReserved(reserved...))
+	p := palette.Auto(
+		palette.WithoutTrueColor(),
+		palette.WithDark(true),
+		palette.WithReserved(reserved...),
+	)
 
 	require.Equal(t, palette.AvoidingAsANSI256(palette.DefaultDark(), reserved...), p)
 }
