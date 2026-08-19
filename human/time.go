@@ -101,7 +101,7 @@ func formatDurationCompact(
 
 	switch {
 	case seconds < SecondsPerMinute:
-		return "now" //nolint:goconst // this is fine
+		return "now"
 	case minutes < MinutesPerHour:
 		return wrap(minutes, "m")
 	case hours < HoursPerDay:
