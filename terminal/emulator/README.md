@@ -122,7 +122,7 @@ Output:
 
 <a name="SupportsGraphemes"></a>
 
-## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L23>)
+## func [SupportsGraphemes](<https://github.com/gechr/x/blob/main/terminal/emulator/graphemes.go#L24>)
 
 ```go
 func SupportsGraphemes() bool

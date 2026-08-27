@@ -37,7 +37,7 @@ func TestSupportsGraphemes_MarkerVars(t *testing.T) {
 		env  string
 		want bool
 	}{
-		{"ITERM_SESSION_ID", false},
+		{"ITERM_SESSION_ID", true},
 		{"KITTY_WINDOW_ID", true},
 		{"WEZTERM_PANE", true},
 		{"WT_SESSION", true},

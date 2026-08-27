@@ -11,6 +11,7 @@ var graphemeEmulators = set.New(
 	Contour,
 	Foot,
 	Ghostty,
+	ITerm2,
 	Kitty,
 	Rio,
 	WezTerm,
