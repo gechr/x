@@ -18,7 +18,7 @@ go get github.com/gechr/x@latest
 | [`filepath`](https://github.com/gechr/x/tree/main/filepath#readme)                   | Path helpers: symlink resolution and containment checks          |
 | [`http`](https://github.com/gechr/x/tree/main/http#readme)                           | HTTP helpers: retryable status codes, status text, Link headers  |
 | [`human`](https://github.com/gechr/x/tree/main/human#readme)                         | Human-readable bytes, durations, counts, numbers, ordinals       |
-| [`maps`](https://github.com/gechr/x/tree/main/maps#readme)                           | Map helpers: sorted iteration, grouping, inversion               |
+| [`maps`](https://github.com/gechr/x/tree/main/maps#readme)                           | Map helpers: sorted iteration, grouping, inversion, merging      |
 | [`math`](https://github.com/gechr/x/tree/main/math#readme)                           | Numeric helpers: clamping with NaN handling                      |
 | [`os`](https://github.com/gechr/x/tree/main/os#readme)                               | OS helpers: file probes, safe writes, copy, line I/O             |
 | [`ptr`](https://github.com/gechr/x/tree/main/ptr#readme)                             | Pointer helpers                                                  |

@@ -79,6 +79,52 @@ func ExampleInvert() {
 	// 3 c
 }
 
+func ExampleMerge() {
+	defaults := map[string]string{"host": "localhost", "port": "8080"}
+	overrides := map[string]string{"port": "9090"}
+	for k, v := range xmaps.Sorted(xmaps.Merge(defaults, overrides)) {
+		fmt.Println(k, v)
+	}
+	// Output:
+	// host localhost
+	// port 9090
+}
+
+// MergeFunc resolves duplicate keys with a custom function, such as summing
+// the values.
+func ExampleMergeFunc() {
+	monday := map[string]int{"apples": 3, "pears": 1}
+	tuesday := map[string]int{"apples": 2, "plums": 5}
+	sum := func(_ string, existing, incoming int) int { return existing + incoming }
+	for k, v := range xmaps.Sorted(xmaps.MergeFunc(sum, monday, tuesday)) {
+		fmt.Println(k, v)
+	}
+	// Output:
+	// apples 5
+	// pears 1
+	// plums 5
+}
+
+func ExampleMergeDeep() {
+	defaults := map[string]any{
+		"server": map[string]any{"host": "localhost", "port": 8080},
+		"debug":  false,
+	}
+	overrides := map[string]any{
+		"server": map[string]any{"port": 9090},
+	}
+	merged := xmaps.MergeDeep(defaults, overrides)
+	fmt.Println(merged["debug"])
+	server, _ := merged["server"].(map[string]any)
+	for k, v := range xmaps.Sorted(server) {
+		fmt.Println(k, v)
+	}
+	// Output:
+	// false
+	// host localhost
+	// port 9090
+}
+
 func ExampleKeys() {
 	m := map[string]int{"charlie": 3, "alpha": 1, "beta": 2}
 	keys := xmaps.Keys(m)

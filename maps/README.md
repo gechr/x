@@ -4,7 +4,7 @@
 import "github.com/gechr/x/maps"
 ```
 
-Package `maps` provides map helpers: sorted iteration, grouping, and inversion.
+Package `maps` provides map helpers: sorted iteration, grouping, inversion, and merging.
 
 ## Index
 
@@ -13,6 +13,9 @@ Package `maps` provides map helpers: sorted iteration, grouping, and inversion.
 - [func Invert\[M ~map\[K\]V, K, V comparable\](m M) map\[V\]K](<#Invert>)
 - [func Keys\[M ~map\[K\]V, K comparable, V any\](m M) \[\]K](<#Keys>)
 - [func KeysNatural\[M ~map\[K\]V, K ~string, V any\](m M) \[\]K](<#KeysNatural>)
+- [func Merge\[M ~map\[K\]V, K comparable, V any\](ms ...M) M](<#Merge>)
+- [func MergeDeep\[M ~map\[K\]any, K comparable\](ms ...M) M](<#MergeDeep>)
+- [func MergeFunc\[M ~map\[K\]V, K comparable, V any\]( resolve func(k K, existing, incoming V) V, ms ...M, ) M](<#MergeFunc>)
 - [func Sorted\[M ~map\[K\]V, K cmp.Ordered, V any\](m M) iter.Seq2\[K, V\]](<#Sorted>)
 - [func SortedFunc\[M ~map\[K\]V, K comparable, V any\](m M, compare func(x, y K) int) iter.Seq2\[K, V\]](<#SortedFunc>)
 - [func Values\[M ~map\[K\]V, K comparable, V any\](m M) \[\]V](<#Values>)
@@ -165,6 +168,111 @@ Output:
 
 ```text
 item1, item2, item10
+```
+
+</details>
+
+<a name="Merge"></a>
+
+## func [Merge](<https://github.com/gechr/x/blob/main/maps/merge.go#L8>)
+
+```go
+func Merge[M ~map[K]V, K comparable, V any](ms ...M) M
+```
+
+**Merge** returns a new map holding the entries of every map in `ms`. If a key appears in more than one map, the value from the last map wins. The inputs are left unmodified.
+
+<details><summary><b>Example</b></summary>
+
+```go
+defaults := map[string]string{"host": "localhost", "port": "8080"}
+overrides := map[string]string{"port": "9090"}
+for k, v := range xmaps.Sorted(xmaps.Merge(defaults, overrides)) {
+    fmt.Println(k, v)
+}
+```
+
+Output:
+
+```text
+host localhost
+port 9090
+```
+
+</details>
+
+<a name="MergeDeep"></a>
+
+## func [MergeDeep](<https://github.com/gechr/x/blob/main/maps/merge.go#L43>)
+
+```go
+func MergeDeep[M ~map[K]any, K comparable](ms ...M) M
+```
+
+**MergeDeep** returns a new map holding the entries of every map in `ms`, merging nested `map[K]any` values recursively. If a key appears in more than one map and either value is not a `map[K]any`, the value from the last map wins. Slices are replaced, not concatenated.
+
+The inputs are left unmodified: every merged level is a new map. Nested maps that appear in only one input are shared with that input, not copied.
+
+<details><summary><b>Example</b></summary>
+
+```go
+defaults := map[string]any{
+    "server": map[string]any{"host": "localhost", "port": 8080},
+    "debug":  false,
+}
+overrides := map[string]any{
+    "server": map[string]any{"port": 9090},
+}
+merged := xmaps.MergeDeep(defaults, overrides)
+fmt.Println(merged["debug"])
+server, _ := merged["server"].(map[string]any)
+for k, v := range xmaps.Sorted(server) {
+    fmt.Println(k, v)
+}
+```
+
+Output:
+
+```text
+false
+host localhost
+port 9090
+```
+
+</details>
+
+<a name="MergeFunc"></a>
+
+## func [MergeFunc](<https://github.com/gechr/x/blob/main/maps/merge.go#L20>)
+
+```go
+func MergeFunc[M ~map[K]V, K comparable, V any](
+    resolve func(k K, existing, incoming V) V,
+    ms ...M,
+) M
+```
+
+**MergeFunc** returns a new map holding the entries of every map in `ms`. If a key appears in more than one map, `resolve` receives the key, the value merged so far and the incoming value, and returns the value to keep. The inputs are left unmodified.
+
+<details><summary><b>Example</b></summary>
+
+**MergeFunc** resolves duplicate keys with a custom function, such as summing the values.
+
+```go
+monday := map[string]int{"apples": 3, "pears": 1}
+tuesday := map[string]int{"apples": 2, "plums": 5}
+sum := func(_ string, existing, incoming int) int { return existing + incoming }
+for k, v := range xmaps.Sorted(xmaps.MergeFunc(sum, monday, tuesday)) {
+    fmt.Println(k, v)
+}
+```
+
+Output:
+
+```text
+apples 5
+pears 1
+plums 5
 ```
 
 </details>
