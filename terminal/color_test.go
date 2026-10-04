@@ -2,6 +2,7 @@ package terminal_test
 
 import (
 	"os"
+	"runtime"
 	"testing"
 
 	"github.com/gechr/x/terminal"
@@ -56,7 +57,9 @@ func TestDetectTrueColor(t *testing.T) {
 	})
 
 	t.Run("empty environment", func(t *testing.T) {
-		require.False(t, terminal.DetectTrueColor(nil))
+		// colorprofile reads the Windows build, not the environment, so modern
+		// Windows reports true color with nothing set.
+		require.Equal(t, runtime.GOOS == "windows", terminal.DetectTrueColor(nil))
 	})
 }
 
