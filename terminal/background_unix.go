@@ -149,7 +149,7 @@ func parseColorComponent(component string) (uint8, bool) {
 	}
 
 	maximum := uint64(1)<<(bitsPerHexDigit*len(component)) - 1
-	normalized := value * colorChannelMaximum / maximum
-	//nolint:gosec // The normalized result is at most 255.
+	normalized := (value*colorChannelMaximum + maximum/2) / maximum
+	//nolint:gosec // The rounded result is at most 255.
 	return uint8(normalized), true
 }

@@ -33,6 +33,20 @@ func TestParseBackgroundResponse(t *testing.T) {
 			green:    0,
 			blue:     0,
 		},
+		// 0x8000 is 127.502 of 255 and 0x7fff is 127.498, so these only
+		// pass if components round to the nearest value rather than truncate.
+		"four-digit components round to nearest": {
+			response: "\x1b]11;rgb:8000/7fff/ffff\a",
+			red:      128,
+			green:    127,
+			blue:     255,
+		},
+		"three-digit components round to nearest": {
+			response: "\x1b]11;rgb:800/fff/000\a",
+			red:      128,
+			green:    255,
+			blue:     0,
+		},
 		"short components": {
 			response: "\x1b]11;rgb:f/8/0\a",
 			red:      255,
