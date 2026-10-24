@@ -87,7 +87,7 @@ false
 func IsDark() (bool, bool)
 ```
 
-**IsDark** reports (dark, ok) for the controlling terminal. It performs terminal I/O on the first call, returning as soon as the terminal has answered and waiting no longer than half a second for one that never does. The result, including no response, is cached for the process. `ok` is false if no standard stream is a terminal or the terminal does not respond, in which case the first result is meaningless.
+**IsDark** reports (dark, ok) for the controlling terminal. It performs terminal I/O on the first call, returning as soon as the terminal has answered and waiting no longer than half a second for one that never does. The result, including no response, is cached for the process. `ok` is false if no standard stream is a terminal open for reading and writing, or the terminal does not respond, in which case the first result is meaningless.
 
 <details><summary><b>Example</b></summary>
 
@@ -115,13 +115,13 @@ no terminal detected
 
 <a name="IsLight"></a>
 
-## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L52>)
+## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L53>)
 
 ```go
 func IsLight() (bool, bool)
 ```
 
-**IsLight** reports (light, ok) for the controlling terminal. Like [IsDark](<#IsDark>), it performs terminal I/O on the first call and caches the result for the process. `ok` is false if no standard stream is a terminal or the terminal does not respond, in which case the first result is meaningless.
+**IsLight** reports (light, ok) for the controlling terminal. Like [IsDark](<#IsDark>), it performs terminal I/O on the first call and caches the result for the process. `ok` is false if no standard stream is a terminal open for reading and writing, or the terminal does not respond, in which case the first result is meaningless.
 
 <a name="Size"></a>
 

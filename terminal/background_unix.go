@@ -40,6 +40,18 @@ const (
 	bitsPerHexDigit        = 4
 )
 
+// canQuery reports whether `f` is a terminal open for both writing the query
+// and reading the reply. A standard stream reopened on the terminal in one
+// direction, as with `exec 0</dev/tty`, passes isatty but cannot carry the
+// exchange.
+func canQuery(f *os.File) bool {
+	if !Is(f) {
+		return false
+	}
+	flags, err := unix.FcntlInt(f.Fd(), unix.F_GETFL, 0)
+	return err == nil && flags&unix.O_ACCMODE == unix.O_RDWR
+}
+
 func queryBackground(f *os.File) (uint8, uint8, uint8, bool) {
 	fd := int(f.Fd())
 	state, err := term.MakeRaw(fd)

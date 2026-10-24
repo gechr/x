@@ -25,7 +25,7 @@ const (
 )
 
 var background = sync.OnceValue(func() backgroundResult {
-	dark, ok := detectBackground(terminalFile())
+	dark, ok := detectBackground(terminalFile(os.Stdout, os.Stderr, os.Stdin))
 	return backgroundResult{dark: dark, ok: ok}
 })
 
@@ -38,8 +38,8 @@ type backgroundResult struct {
 // I/O on the first call, returning as soon as the terminal has answered and
 // waiting no longer than half a second for one that never does. The result,
 // including no response, is cached for the process. `ok` is false if no
-// standard stream is a terminal or the terminal does not respond, in which
-// case the first result is meaningless.
+// standard stream is a terminal open for reading and writing, or the terminal
+// does not respond, in which case the first result is meaningless.
 func IsDark() (bool, bool) {
 	result := background()
 	return result.dark, result.ok
@@ -47,20 +47,21 @@ func IsDark() (bool, bool) {
 
 // IsLight reports (light, ok) for the controlling terminal. Like [IsDark], it
 // performs terminal I/O on the first call and caches the result for the process.
-// `ok` is false if no standard stream is a terminal or the terminal does not
-// respond, in which case the first result is meaningless.
+// `ok` is false if no standard stream is a terminal open for reading and
+// writing, or the terminal does not respond, in which case the first result is
+// meaningless.
 func IsLight() (bool, bool) {
 	dark, ok := IsDark()
 	return ok && !dark, ok
 }
 
-// terminalFile returns the first standard stream connected to a terminal, or
-// nil if none is. The background is a property of the terminal itself, so any
-// stream pointing at it answers the query - probing lets a redirected stdout
-// fall through to stderr or stdin.
-func terminalFile() *os.File {
-	for _, f := range []*os.File{os.Stdout, os.Stderr, os.Stdin} {
-		if Is(f) {
+// terminalFile returns the first of `files` that can carry a background query,
+// or nil if none can. The background is a property of the terminal itself, so
+// any stream pointing at it answers the query - probing lets a redirected
+// stdout fall through to stderr or stdin.
+func terminalFile(files ...*os.File) *os.File {
+	for _, f := range files {
+		if canQuery(f) {
 			return f
 		}
 	}
@@ -70,7 +71,7 @@ func terminalFile() *os.File {
 // detectBackground queries `f` for its background color, returning whether it is
 // dark and whether the query succeeded.
 func detectBackground(f *os.File) (bool, bool) {
-	if !Is(f) {
+	if !canQuery(f) {
 		return false, false
 	}
 
