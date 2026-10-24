@@ -7,3 +7,7 @@ var DetectBackground = detectBackground
 // DetectTrueColor exposes the env-driven detection core so tests can exercise
 // each environment without mutating the process or hitting the cached result.
 var DetectTrueColor = detectTrueColor
+
+// IsDarkColor exposes the color classification so tests can check it without a
+// terminal.
+var IsDarkColor = isDarkColor

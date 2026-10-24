@@ -48,3 +48,28 @@ func TestIsDark_NoTerminal(t *testing.T) {
 	require.False(t, ok)
 	require.False(t, light)
 }
+
+func TestIsDarkColor(t *testing.T) {
+	tests := map[string]struct {
+		red, green, blue uint8
+		dark             bool
+	}{
+		"black":    {0, 0, 0, true},
+		"white":    {255, 255, 255, false},
+		"gray 117": {117, 117, 117, true},
+		"gray 118": {118, 118, 118, false},
+		// HSL lightness puts every pure primary at 0.5, the old threshold, so
+		// it cannot tell dark blue from bright green.
+		"pure red":        {255, 0, 0, false},
+		"pure green":      {0, 255, 0, false},
+		"pure blue":       {0, 0, 255, true},
+		"solarized dark":  {0x00, 0x2b, 0x36, true},
+		"solarized light": {0xfd, 0xf6, 0xe3, false},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			require.Equal(t, test.dark, terminal.IsDarkColor(test.red, test.green, test.blue))
+		})
+	}
+}

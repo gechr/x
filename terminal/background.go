@@ -1,16 +1,27 @@
 package terminal
 
 import (
+	"math"
 	"os"
 	"sync"
 )
 
-// darkLightnessThreshold is the HSL lightness below which a background is
-// considered dark. 0.5 splits the range evenly between black and white.
 const (
-	darkLightnessThreshold = 0.5
+	// darkLuminanceThreshold is the WCAG relative luminance below which white
+	// text contrasts more with the background than black text does. It is
+	// sqrt(1.05 * 0.05) - 0.05, where the two contrast ratios are equal.
+	darkLuminanceThreshold = 0.179128784748
 	colorChannelMaximum    = 255
-	lightnessExtremaCount  = 2
+
+	// The sRGB transfer function and luminance weights from the WCAG
+	// definition of relative luminance.
+	srgbLinearThreshold  = 0.04045
+	srgbLinearSlope      = 12.92
+	srgbGammaOffset      = 0.055
+	srgbGammaExponent    = 2.4
+	redLuminanceWeight   = 0.2126
+	greenLuminanceWeight = 0.7152
+	blueLuminanceWeight  = 0.0722
 )
 
 var background = sync.OnceValue(func() backgroundResult {
@@ -68,7 +79,28 @@ func detectBackground(f *os.File) (bool, bool) {
 		return false, false
 	}
 
-	lightness := float64(int(max(red, green, blue))+int(min(red, green, blue))) /
-		(lightnessExtremaCount * colorChannelMaximum)
-	return lightness < darkLightnessThreshold, true
+	return isDarkColor(red, green, blue), true
+}
+
+// isDarkColor reports whether white text contrasts more with the given
+// background than black text does.
+func isDarkColor(red, green, blue uint8) bool {
+	return relativeLuminance(red, green, blue) < darkLuminanceThreshold
+}
+
+// relativeLuminance returns the WCAG relative luminance of an sRGB color, from
+// 0 (black) to 1 (white).
+func relativeLuminance(red, green, blue uint8) float64 {
+	return redLuminanceWeight*linearize(red) +
+		greenLuminanceWeight*linearize(green) +
+		blueLuminanceWeight*linearize(blue)
+}
+
+// linearize converts an 8-bit sRGB channel to linear light.
+func linearize(channel uint8) float64 {
+	value := float64(channel) / colorChannelMaximum
+	if value <= srgbLinearThreshold {
+		return value / srgbLinearSlope
+	}
+	return math.Pow((value+srgbGammaOffset)/(1+srgbGammaOffset), srgbGammaExponent)
 }

@@ -1,7 +1,7 @@
 module github.com/gechr/x
 
 // @clover
-go 1.27.2
+go 1.27.3
 
 tool (
 	github.com/gechr/coauthor

@@ -81,7 +81,7 @@ false
 
 <a name="IsDark"></a>
 
-## func [IsDark](<https://github.com/gechr/x/blob/main/terminal/background.go#L32>)
+## func [IsDark](<https://github.com/gechr/x/blob/main/terminal/background.go#L43>)
 
 ```go
 func IsDark() (bool, bool)
@@ -115,7 +115,7 @@ no terminal detected
 
 <a name="IsLight"></a>
 
-## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L41>)
+## func [IsLight](<https://github.com/gechr/x/blob/main/terminal/background.go#L52>)
 
 ```go
 func IsLight() (bool, bool)
