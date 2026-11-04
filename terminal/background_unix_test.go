@@ -71,6 +71,8 @@ func TestParseBackgroundResponse_Invalid(t *testing.T) {
 		"",
 		"\x1b]10;rgb:ffff/ffff/ffff\a",
 		"\x1b]11;rgb:ffff/ffff/ffff",
+		"\x1b]11;rgb:ffff/ffff/ffff\x1b",
+		"\x1b]11;rgb:ffff/ffff/ffff\x1b[0m",
 		"\x1b]11;rgb:gggg/ffff/ffff\a",
 		"\x1b]11;rgb:ffff/ffff\a",
 		"\x1b]11;rgb:fffff/ffff/ffff\a",
@@ -80,7 +82,7 @@ func TestParseBackgroundResponse_Invalid(t *testing.T) {
 	}
 }
 
-func TestDeviceAttributesComplete(t *testing.T) {
+func TestQueryResponse_DeviceAttributes(t *testing.T) {
 	tests := map[string]struct {
 		response string
 		complete bool
@@ -94,6 +96,38 @@ func TestDeviceAttributesComplete(t *testing.T) {
 		},
 		"reply after background response": {
 			response: "\x1b]11;rgb:0000/0000/0000\x1b\\\x1b[?1;2c",
+			complete: true,
+		},
+		"aborted introducer": {
+			response: "\x1b[?\x1b[0mc",
+		},
+		"intermediate byte": {
+			response: "\x1b[?62 qc",
+		},
+		"other CSI final": {
+			response: "\x1b[?25hc",
+		},
+		"color after aborted introducer": {
+			response: "\x1b[?\x1b]11;rgb:9abc/9abc/9abc\a",
+		},
+		"secondary attributes": {
+			response: "\x1b[>0;1c",
+		},
+		"tertiary attributes": {
+			response: "\x1b[=0;1c",
+		},
+		"cancelled attributes": {
+			response: "\x1b[?62\x18c",
+		},
+		"substituted attributes": {
+			response: "\x1b[?62\x1ac",
+		},
+		"recovered attributes": {
+			response: "\x1b[?62\x1b[?1;2c",
+			complete: true,
+		},
+		"attributes after control string": {
+			response: "\x1bPignored[?62c\x1b\\\x1b[?1;2c",
 			complete: true,
 		},
 		"minimal reply": {
@@ -115,7 +149,15 @@ func TestDeviceAttributesComplete(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			require.Equal(t, test.complete, deviceAttributesComplete(test.response))
+			var parser queryResponse
+			var complete bool
+			for i := range len(test.response) {
+				complete = parser.consume(test.response[i])
+				if i < len(test.response)-1 {
+					require.False(t, complete)
+				}
+			}
+			require.Equal(t, test.complete, complete)
 		})
 	}
 }

@@ -29,15 +29,11 @@ const (
 	// which a timeout alone cannot distinguish from a terminal that is merely
 	// slow. Reading through to DA1 also guarantees no reply is left behind in
 	// the input buffer, where the shell would echo it once the process exits.
-	backgroundQuery = "\x1b]11;?\x1b\\\x1b[0c"
-	// deviceAttributesPrefix and deviceAttributesFinal bracket a DA1 reply,
-	// which takes the form CSI ? Ps ; ... c.
-	deviceAttributesPrefix = "\x1b[?"
-	deviceAttributesFinal  = 'c'
-	backgroundResponse     = "\x1b]11;rgb:"
-	maxBackgroundResponse  = 128
-	rgbComponentCount      = 3
-	bitsPerHexDigit        = 4
+	backgroundQuery       = "\x1b]11;?\x1b\\\x1b[0c"
+	backgroundResponse    = "\x1b]11;rgb:"
+	maxBackgroundResponse = 128
+	rgbComponentCount     = 3
+	bitsPerHexDigit       = 4
 )
 
 // canQuery reports whether `f` is a terminal open for both writing the query
@@ -73,10 +69,10 @@ func queryBackground(f *os.File) (uint8, uint8, uint8, bool) {
 // them in the buffer rather than swallowing it in a bulk read.
 func readQueryResponse(f *os.File, fd int) string {
 	deadline := time.Now().Add(backgroundQueryTimeout)
-	var response strings.Builder
+	var response queryResponse
 	buffer := make([]byte, 1)
 
-	for response.Len() < maxBackgroundResponse {
+	for {
 		remaining := time.Until(deadline)
 		if remaining <= 0 {
 			break
@@ -97,24 +93,12 @@ func readQueryResponse(f *os.File, fd int) string {
 		if err != nil || count == 0 {
 			break
 		}
-		response.Write(buffer[:count])
-		if deviceAttributesComplete(response.String()) {
+		if response.consume(buffer[0]) {
 			break
 		}
 	}
 
-	return response.String()
-}
-
-// deviceAttributesComplete reports whether response ends with a complete DA1
-// reply. The search starts after the CSI ? introducer so that hex digits in an
-// OSC 11 reply cannot be mistaken for the final byte.
-func deviceAttributesComplete(response string) bool {
-	_, after, ok := strings.Cut(response, deviceAttributesPrefix)
-	if !ok {
-		return false
-	}
-	return strings.ContainsRune(after, deviceAttributesFinal)
+	return response.background
 }
 
 func parseBackgroundResponse(response string) (uint8, uint8, uint8, bool) {
@@ -125,7 +109,7 @@ func parseBackgroundResponse(response string) (uint8, uint8, uint8, bool) {
 
 	color := after
 	end := strings.IndexAny(color, "\a\x1b")
-	if end < 0 {
+	if end < 0 || (color[end] == '\x1b' && !strings.HasPrefix(color[end:], "\x1b\\")) {
 		return 0, 0, 0, false
 	}
 

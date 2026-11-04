@@ -14,6 +14,12 @@ import (
 // The controlling side stays open until the test ends.
 func openPTY(t *testing.T) string {
 	t.Helper()
+	_, path := openPTYPair(t)
+	return path
+}
+
+func openPTYPair(t *testing.T) (*os.File, string) {
+	t.Helper()
 
 	ptmx, err := os.OpenFile("/dev/ptmx", os.O_RDWR|unix.O_NOCTTY, 0)
 	require.NoError(t, err)
@@ -34,5 +40,5 @@ func openPTY(t *testing.T) string {
 	if errno != 0 {
 		require.NoError(t, errno)
 	}
-	return unix.ByteSliceToString(name[:])
+	return ptmx, unix.ByteSliceToString(name[:])
 }

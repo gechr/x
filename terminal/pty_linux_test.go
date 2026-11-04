@@ -13,6 +13,12 @@ import (
 // The controlling side stays open until the test ends.
 func openPTY(t *testing.T) string {
 	t.Helper()
+	_, path := openPTYPair(t)
+	return path
+}
+
+func openPTYPair(t *testing.T) (*os.File, string) {
+	t.Helper()
 
 	ptmx, err := os.OpenFile("/dev/ptmx", os.O_RDWR|unix.O_NOCTTY, 0)
 	require.NoError(t, err)
@@ -22,5 +28,5 @@ func openPTY(t *testing.T) string {
 	require.NoError(t, unix.IoctlSetPointerInt(fd, unix.TIOCSPTLCK, 0))
 	number, err := unix.IoctlGetUint32(fd, unix.TIOCGPTN)
 	require.NoError(t, err)
-	return "/dev/pts/" + strconv.FormatUint(uint64(number), 10)
+	return ptmx, "/dev/pts/" + strconv.FormatUint(uint64(number), 10)
 }
