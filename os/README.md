@@ -9,7 +9,7 @@ Package `os` provides OS helpers: file probes, safe writes, copy, line I/O, and 
 ## Index
 
 - [Constants](<#constants>)
-- [func AtomicWrite(path string, data \[\]byte, perm os.FileMode) error](<#AtomicWrite>)
+- [func AtomicWrite(path string, data \[\]byte, perm os.FileMode, opts ...AtomicWriteOption) error](<#AtomicWrite>)
 - [func CopyFile(src, dst string) error](<#CopyFile>)
 - [func EnsureDir(dir string, perm os.FileMode) error](<#EnsureDir>)
 - [func EnsureFile(path string, perm os.FileMode) error](<#EnsureFile>)
@@ -32,6 +32,9 @@ Package `os` provides OS helpers: file probes, safe writes, copy, line I/O, and 
 - [func SameFile(a, b string) (bool, error)](<#SameFile>)
 - [func Trash(path string) error](<#Trash>)
 - [func WriteLines(path string, lines \[\]string, perm os.FileMode) error](<#WriteLines>)
+- [type AtomicWriteOption](<#AtomicWriteOption>)
+  - [func WithNoFollow() AtomicWriteOption](<#WithNoFollow>)
+  - [func WithNoSync() AtomicWriteOption](<#WithNoSync>)
 
 ## Constants
 
@@ -80,17 +83,17 @@ const (
 
 <a name="AtomicWrite"></a>
 
-## func [AtomicWrite](<https://github.com/gechr/x/blob/main/os/write.go#L27>)
+## func [AtomicWrite](<https://github.com/gechr/x/blob/main/os/write.go#L26>)
 
 ```go
-func AtomicWrite(path string, data []byte, perm os.FileMode) error
+func AtomicWrite(path string, data []byte, perm os.FileMode, opts ...AtomicWriteOption) error
 ```
 
-**AtomicWrite** writes `data` to `path` via a temp-file-and-rename in the same directory. The temp file is removed on any failure.
+**AtomicWrite** writes `data` to `path` via a temp file renamed into place, and removes the temp file on failure.
 
-The replacement is durable, not merely atomic: the temp file's contents are synced before the rename and `path`'s directory is synced after it, so the new directory entry survives a crash rather than being lost to unflushed metadata. Directory syncing is Unix-only and a no-op elsewhere (see [IsUnix](<#IsUnix>)). A failing directory sync is reported as an error even though the rename has already landed - `data` is at `path`, only its durability is unproven - and `path` is deliberately left as written rather than rolled back.
+A symlink at `path` is followed: the file it points to is replaced, or created, and the link is kept. Pass [WithNoFollow](<#WithNoFollow>) to replace the link itself.
 
-A symlink at `path` is replaced by the new file, not written through to its target, because [os.Rename](<https://pkg.go.dev/os#Rename>) acts on the name. That is what keeps the write atomic, since a link's target may sit on another filesystem where no rename is possible. Callers wanting to write through a link must resolve it first (see [filepath.Resolve](<../filepath/README.md#Resolve>)) and accept the target's directory as the one being modified.
+The temp file and its directory are synced so the write survives a crash; pass [WithNoSync](<#WithNoSync>) to skip that. Directory syncing is Unix-only. If it fails after the rename, the error is returned and the new file is left in place.
 
 <details><summary><b>Example</b></summary>
 
@@ -118,7 +121,7 @@ hello
 
 <a name="CopyFile"></a>
 
-## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L110>)
+## func [CopyFile](<https://github.com/gechr/x/blob/main/os/write.go#L170>)
 
 ```go
 func CopyFile(src, dst string) error
@@ -155,7 +158,7 @@ hello
 
 <a name="EnsureDir"></a>
 
-## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L70>)
+## func [EnsureDir](<https://github.com/gechr/x/blob/main/os/write.go#L130>)
 
 ```go
 func EnsureDir(dir string, perm os.FileMode) error
@@ -191,7 +194,7 @@ true
 
 <a name="EnsureFile"></a>
 
-## func [EnsureFile](<https://github.com/gechr/x/blob/main/os/write.go#L89>)
+## func [EnsureFile](<https://github.com/gechr/x/blob/main/os/write.go#L149>)
 
 ```go
 func EnsureFile(path string, perm os.FileMode) error
@@ -640,3 +643,33 @@ Output:
 ```
 
 </details>
+
+<a name="AtomicWriteOption"></a>
+
+## type [AtomicWriteOption](<https://github.com/gechr/x/blob/main/os/write_options.go#L4>)
+
+**AtomicWriteOption** configures [AtomicWrite](<#AtomicWrite>).
+
+```go
+type AtomicWriteOption func(*atomicWriteConfig)
+```
+
+<a name="WithNoFollow"></a>
+
+### func [WithNoFollow](<https://github.com/gechr/x/blob/main/os/write_options.go#L13>)
+
+```go
+func WithNoFollow() AtomicWriteOption
+```
+
+**WithNoFollow** makes [AtomicWrite](<#AtomicWrite>) replace a symlink at `path` instead of writing through it.
+
+<a name="WithNoSync"></a>
+
+### func [WithNoSync](<https://github.com/gechr/x/blob/main/os/write_options.go#L20>)
+
+```go
+func WithNoSync() AtomicWriteOption
+```
+
+**WithNoSync** makes [AtomicWrite](<#AtomicWrite>) skip both syncs: the write stays atomic but may not survive a power loss. Syncing is slow on macOS (F\_FULLFSYNC), so this suits bulk rewrites such as formatting a tree.

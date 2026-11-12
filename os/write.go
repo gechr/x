@@ -1,31 +1,41 @@
 package os
 
 import (
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
 
-// AtomicWrite writes `data` to `path` via a temp-file-and-rename in the same
-// directory. The temp file is removed on any failure.
+// maxLinks matches [filepath.EvalSymlinks].
+const maxLinks = 255
+
+var errTooManyLinks = errors.New("too many levels of symbolic links")
+
+// AtomicWrite writes `data` to `path` via a temp file renamed into place, and
+// removes the temp file on failure.
 //
-// The replacement is durable, not merely atomic: the temp file's contents are
-// synced before the rename and `path`'s directory is synced after it, so the new
-// directory entry survives a crash rather than being lost to unflushed metadata.
-// Directory syncing is Unix-only and a no-op elsewhere (see [IsUnix]). A failing
-// directory sync is reported as an error even though the rename has already
-// landed - `data` is at `path`, only its durability is unproven - and `path` is
-// deliberately left as written rather than rolled back.
+// A symlink at `path` is followed: the file it points to is replaced, or created,
+// and the link is kept. Pass [WithNoFollow] to replace the link itself.
 //
-// A symlink at `path` is replaced by the new file, not written through to its
-// target, because [os.Rename] acts on the name. That is what keeps the write
-// atomic, since a link's target may sit on another filesystem where no rename is
-// possible. Callers wanting to write through a link must resolve it first (see
-// [github.com/gechr/x/filepath.Resolve]) and accept the target's directory as
-// the one being modified.
-func AtomicWrite(path string, data []byte, perm os.FileMode) error {
-	dir := filepath.Dir(path)
+// The temp file and its directory are synced so the write survives a crash; pass
+// [WithNoSync] to skip that. Directory syncing is Unix-only. If it fails after
+// the rename, the error is returned and the new file is left in place.
+func AtomicWrite(path string, data []byte, perm os.FileMode, opts ...AtomicWriteOption) error {
+	var cfg atomicWriteConfig
+	for _, opt := range opts {
+		opt(&cfg)
+	}
+	if !cfg.noFollow {
+		resolved, err := resolveLinks(path)
+		if err != nil {
+			return fmt.Errorf("failed to resolve symlink: %w", err)
+		}
+		path = resolved
+	}
+	dir := rawDir(path)
 	tmp, err := os.CreateTemp(dir, "."+filepath.Base(path)+".*")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)
@@ -43,10 +53,12 @@ func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 		cleanup()
 		return fmt.Errorf("failed to chmod temp file: %w", err)
 	}
-	if err := tmp.Sync(); err != nil {
-		_ = tmp.Close()
-		cleanup()
-		return fmt.Errorf("failed to sync temp file: %w", err)
+	if !cfg.noSync {
+		if err := tmp.Sync(); err != nil {
+			_ = tmp.Close()
+			cleanup()
+			return fmt.Errorf("failed to sync temp file: %w", err)
+		}
 	}
 	if err := tmp.Close(); err != nil {
 		cleanup()
@@ -56,12 +68,60 @@ func AtomicWrite(path string, data []byte, perm os.FileMode) error {
 		cleanup()
 		return fmt.Errorf("failed to rename temp file: %w", err)
 	}
+	if cfg.noSync {
+		return nil
+	}
 	// Past the rename `cleanup()` must never run: `tmpName` is gone, so it would
 	// remove `path` instead and turn a durability gap into data loss.
 	if err := syncDir(dir); err != nil {
 		return fmt.Errorf("failed to sync directory after rename: %w", err)
 	}
 	return nil
+}
+
+// resolveLinks follows the symlinks at `path` to the first path that is not a
+// link, which may not exist. Relative targets are joined without cleaning, so the
+// kernel resolves ".." through any symlinked directory.
+func resolveLinks(path string) (string, error) {
+	for range maxLinks {
+		info, err := os.Lstat(path)
+		if errors.Is(err, fs.ErrNotExist) {
+			return path, nil
+		}
+		if err != nil {
+			return "", err
+		}
+		if info.Mode()&fs.ModeSymlink == 0 {
+			return path, nil
+		}
+		target, err := os.Readlink(path)
+		if err != nil {
+			return "", err
+		}
+		if !filepath.IsAbs(target) {
+			target = rawDir(path) + string(filepath.Separator) + target
+		}
+		path = target
+	}
+	return "", &fs.PathError{Op: "resolve", Path: path, Err: errTooManyLinks}
+}
+
+// rawDir is [filepath.Dir] without cleaning, so ".." keeps its physical meaning.
+func rawDir(path string) string {
+	vol := len(filepath.VolumeName(path))
+	i := len(path) - 1
+	// UTF-8 continuation bytes never match a separator.
+	for i >= vol && !os.IsPathSeparator(path[i]) {
+		i--
+	}
+	switch {
+	case i < vol:
+		return path[:vol] + "."
+	case i == vol:
+		return path[:vol+1]
+	default:
+		return path[:i]
+	}
 }
 
 // EnsureDir creates `dir` and any missing parents, and guarantees `dir` itself

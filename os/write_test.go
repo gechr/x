@@ -54,7 +54,7 @@ func TestAtomicWrite_NoTempLeftBehind(t *testing.T) {
 	require.Equal(t, "config.txt", entries[0].Name())
 }
 
-func TestAtomicWrite_ReplacesSymlink(t *testing.T) {
+func TestAtomicWrite_WithNoFollowReplacesSymlink(t *testing.T) {
 	t.Parallel()
 
 	dir := t.TempDir()
@@ -63,7 +63,7 @@ func TestAtomicWrite_ReplacesSymlink(t *testing.T) {
 	require.NoError(t, os.WriteFile(target, []byte("original"), 0o600))
 	require.NoError(t, os.Symlink(target, link))
 
-	require.NoError(t, xos.AtomicWrite(link, []byte("new"), 0o600))
+	require.NoError(t, xos.AtomicWrite(link, []byte("new"), 0o600, xos.WithNoFollow()))
 
 	// The rename detaches the link rather than writing through it.
 	info, err := os.Lstat(link)
@@ -306,4 +306,145 @@ func TestCopyFile_SameFileViaHardlink(t *testing.T) {
 	got, err := os.ReadFile(src)
 	require.NoError(t, err)
 	require.Equal(t, "payload", string(got))
+}
+
+func TestAtomicWrite_WithNoSync(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	path := filepath.Join(dir, "config.txt")
+	require.NoError(t, os.WriteFile(path, []byte("old"), 0o644))
+
+	require.NoError(t, xos.AtomicWrite(path, []byte("new"), 0o600, xos.WithNoSync()))
+
+	got, err := os.ReadFile(path)
+	require.NoError(t, err)
+	require.Equal(t, "new", string(got))
+
+	info, err := os.Stat(path)
+	require.NoError(t, err)
+	requireMode(t, os.FileMode(0o600), info.Mode().Perm())
+
+	entries, err := os.ReadDir(dir)
+	require.NoError(t, err)
+	require.Len(t, entries, 1)
+	require.Equal(t, "config.txt", entries[0].Name())
+}
+
+func TestAtomicWrite_WritesThroughSymlinks(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	// link1 -> links/link2 -> real/target.txt, all relative.
+	require.NoError(t, os.Mkdir(filepath.Join(dir, "real"), 0o755))
+	require.NoError(t, os.Mkdir(filepath.Join(dir, "links"), 0o755))
+	target := filepath.Join(dir, "real", "target.txt")
+	link2 := filepath.Join(dir, "links", "link2.txt")
+	link1 := filepath.Join(dir, "link1.txt")
+	require.NoError(t, os.WriteFile(target, []byte("original"), 0o644))
+	require.NoError(t, os.Symlink(filepath.Join("..", "real", "target.txt"), link2))
+	require.NoError(t, os.Symlink(filepath.Join("links", "link2.txt"), link1))
+
+	require.NoError(t, xos.AtomicWrite(link1, []byte("new"), 0o600))
+
+	for _, link := range []string{link1, link2} {
+		info, err := os.Lstat(link)
+		require.NoError(t, err)
+		require.Equal(t, os.ModeSymlink, info.Mode().Type(), "%s should still be a symlink", link)
+	}
+	got, err := os.ReadFile(target)
+	require.NoError(t, err)
+	require.Equal(t, "new", string(got))
+	info, err := os.Stat(target)
+	require.NoError(t, err)
+	requireMode(t, os.FileMode(0o600), info.Mode().Perm())
+
+	requireDirEntries(t, filepath.Join(dir, "real"), "target.txt")
+	requireDirEntries(t, filepath.Join(dir, "links"), "link2.txt")
+}
+
+func TestAtomicWrite_TempFileGoesBesideTarget(t *testing.T) {
+	t.Parallel()
+
+	// The link's directory is read-only, so the temp file must go beside the
+	// target.
+	dir := t.TempDir()
+	links := filepath.Join(dir, "links")
+	require.NoError(t, os.Mkdir(links, 0o755))
+	target := filepath.Join(dir, "target.txt")
+	require.NoError(t, os.WriteFile(target, []byte("original"), 0o644))
+	require.NoError(t, os.Symlink(target, filepath.Join(links, "link.txt")))
+	require.NoError(t, os.Chmod(links, 0o555))
+	t.Cleanup(func() { _ = os.Chmod(links, 0o755) })
+
+	require.NoError(t, xos.AtomicWrite(filepath.Join(links, "link.txt"), []byte("new"), 0o644))
+
+	got, err := os.ReadFile(target)
+	require.NoError(t, err)
+	require.Equal(t, "new", string(got))
+}
+
+func TestAtomicWrite_ResolvesDotDotPhysically(t *testing.T) {
+	t.Parallel()
+
+	// a -> x/y, and x/y/link -> ../file. Through a, the kernel resolves the
+	// link to x/file, where lexical cleaning would give file.
+	dir := t.TempDir()
+	require.NoError(t, os.MkdirAll(filepath.Join(dir, "x", "y"), 0o755))
+	require.NoError(t, os.Symlink(filepath.Join("x", "y"), filepath.Join(dir, "a")))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "x", "file"), []byte("original"), 0o644))
+	require.NoError(
+		t,
+		os.Symlink(filepath.Join("..", "file"), filepath.Join(dir, "x", "y", "link")),
+	)
+
+	require.NoError(t, xos.AtomicWrite(filepath.Join(dir, "a", "link"), []byte("new"), 0o644))
+
+	got, err := os.ReadFile(filepath.Join(dir, "x", "file"))
+	require.NoError(t, err)
+	require.Equal(t, "new", string(got))
+	_, err = os.Stat(filepath.Join(dir, "file"))
+	require.ErrorIs(t, err, os.ErrNotExist)
+}
+
+func TestAtomicWrite_DanglingSymlinkCreatesTarget(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	link := filepath.Join(dir, "link.txt")
+	require.NoError(t, os.Symlink("missing.txt", link))
+
+	require.NoError(t, xos.AtomicWrite(link, []byte("new"), 0o644))
+
+	got, err := os.ReadFile(filepath.Join(dir, "missing.txt"))
+	require.NoError(t, err)
+	require.Equal(t, "new", string(got))
+	info, err := os.Lstat(link)
+	require.NoError(t, err)
+	require.Equal(t, os.ModeSymlink, info.Mode().Type())
+}
+
+func TestAtomicWrite_SymlinkLoop(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	a := filepath.Join(dir, "a")
+	b := filepath.Join(dir, "b")
+	require.NoError(t, os.Symlink("b", a))
+	require.NoError(t, os.Symlink("a", b))
+
+	err := xos.AtomicWrite(a, []byte("new"), 0o644)
+	require.Error(t, err)
+	requireDirEntries(t, dir, "a", "b")
+}
+
+func requireDirEntries(t *testing.T, dir string, want ...string) {
+	t.Helper()
+	entries, err := os.ReadDir(dir)
+	require.NoError(t, err)
+	got := make([]string, 0, len(entries))
+	for _, e := range entries {
+		got = append(got, e.Name())
+	}
+	require.Equal(t, want, got)
 }
