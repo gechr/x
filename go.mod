@@ -1,7 +1,7 @@
 module github.com/gechr/x
 
 // @clover
-go 1.27.3
+go 1.27.4
 
 tool (
 	github.com/gechr/coauthor
@@ -9,15 +9,15 @@ tool (
 )
 
 require (
-	charm.land/lipgloss/v2 v2.0.6
+	charm.land/lipgloss/v2 v2.1.0
 	github.com/charmbracelet/colorprofile v0.4.3
 	github.com/charmbracelet/x/ansi v0.11.9
 	github.com/gechr/gorules v0.0.4
 	github.com/lucasb-eyer/go-colorful v1.4.1
 	github.com/quasilyte/go-ruleguard/dsl v0.3.23
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/sys v0.49.0
-	golang.org/x/term v0.47.0
+	golang.org/x/sys v0.50.0
+	golang.org/x/term v0.48.0
 )
 
 require (
